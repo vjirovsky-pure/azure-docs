@@ -2,11 +2,11 @@
 title: Copy data from Azure Blob Storage to Azure SQL Database
 description: 'This tutorial provides step-by-step instructions for copying  data from Azure Blob Storage to Azure SQL Database.'
 author: jianleishen
-ms.service: data-factory
-ms.subservice: tutorials
 ms.topic: tutorial
-ms.date: 08/10/2023
+ms.date: 10/03/2024
+ms.subservice: data-movement
 ms.author: jianleishen
+ms.custom: sfi-ropc-nochange
 ---
 
 # Copy data from Azure Blob to Azure SQL Database using Azure Data Factory
@@ -27,7 +27,7 @@ You take the following steps in this tutorial:
 
 This tutorial uses .NET SDK. You can use other mechanisms to interact with Azure Data Factory; refer to samples under **Quickstarts**.
 
-If you don't have an Azure subscription, create a [free Azure account](https://azure.microsoft.com/free/) before you begin.
+If you don't have an Azure subscription, create a [free Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ If you don't have an Azure subscription, create a [free Azure account](https://a
 * *Azure SQL Database*. You use the database as *sink* data store. If you don't have a database in Azure SQL Database, see the [Create a database in Azure SQL Database](/azure/azure-sql/database/single-database-create-quickstart).
 * *Visual Studio*. The walkthrough in this article uses Visual Studio 2019.
 * *[Azure SDK for .NET](/dotnet/azure/dotnet-tools)*.
-* *Azure Active Directory application*. If you don't have an Azure Active Directory application, see the [Create an Azure Active Directory application](../active-directory/develop/howto-create-service-principal-portal.md#register-an-application-with-azure-ad-and-create-a-service-principal) section of [How to: Use the portal to create an Azure AD application](../active-directory/develop/howto-create-service-principal-portal.md). Copy the following values for use in later steps: **Application (client) ID**, **authentication key**, and **Directory (tenant) ID**. Assign the application to the **Contributor** role by following the instructions in the same article.
+* *Microsoft Entra application*. If you don't have a Microsoft Entra application, see the [Create a Microsoft Entra application](../active-directory/develop/howto-create-service-principal-portal.md#register-an-application-with-azure-ad-and-create-a-service-principal) section of [How to: Use the portal to create a Microsoft Entra application](../active-directory/develop/howto-create-service-principal-portal.md). Copy the following values for use in later steps: **Application (client) ID**, **authentication key**, and **Directory (tenant) ID**. Assign the application to the **Contributor** role by following the instructions in the same article.
 
 ### Create a blob and a SQL table
 
@@ -555,7 +555,7 @@ Checking copy activity run details...
 Press any key to exit...
 ```
 
-## Next steps
+## Related content
 
 The pipeline in this sample copies data from one location to another location in an Azure blob storage. You learned how to:
 

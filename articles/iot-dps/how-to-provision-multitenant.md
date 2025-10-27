@@ -2,13 +2,16 @@
 title: Tutorial - Provision devices for geo latency in DPS
 titleSuffix: Azure IoT Hub Device Provisioning Service
 description: This tutorial shows how to provision devices for geolocation/geolatency with your Device Provisioning Service (DPS) instance
-author: kgremban
-
-ms.author: kgremban
+author: SoniaLopezBravo
+ms.author: sonialopez
 ms.topic: tutorial
 ms.date: 08/24/2022
-ms.service: iot-dps
-ms.custom: devx-track-azurecli
+ms.service: azure-iot-hub
+ms.subservice: azure-iot-hub-dps
+ms.custom:
+  - devx-track-azurecli
+  - linux-related-content
+  - sfi-image-nochange
 ---
 
 # Tutorial: Provision for geo latency
@@ -27,15 +30,15 @@ This tutorial uses a simulated device sample from the [Azure IoT C SDK](https://
 > * Simulate the devices and verify that they're provisioned to the IoT hub in the closest region.
 
 >[!IMPORTANT]
-> Some regions may, from time to time, enforce restrictions on the creation of Virtual Machines. At the time of writing this guide, the *westus2* and *eastus* regions permitted the creation of VMs. If you're unable to create in either one of those regions, you can try a different region. To learn more about choosing Azure geographical regions when creating VMs, see [Regions for virtual machines in Azure](../virtual-machines/regions.md)
+> Some regions may, from time to time, enforce restrictions on the creation of Virtual Machines. At the time of writing this guide, the *westus2* and *eastus* regions permitted the creation of VMs. If you're unable to create in either one of those regions, you can try a different region. To learn more about choosing Azure geographical regions when creating VMs, see [Regions for virtual machines in Azure](/azure/virtual-machines/regions)
 
 ## Prerequisites
 
-* If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
+* If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 * Complete the steps in [Set up IoT Hub Device Provisioning Service with the Azure portal](./quick-setup-auto-provision.md).
 
-[!INCLUDE [azure-cli-prepare-your-environment-no-header.md](~/articles/reusable-content/azure-cli/azure-cli-prepare-your-environment-no-header.md)]
+[!INCLUDE [azure-cli-prepare-your-environment-no-header.md](~/reusable-content/azure-cli/azure-cli-prepare-your-environment-no-header.md)]
 
 ## Create two regional IoT hubs
 

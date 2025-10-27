@@ -4,12 +4,13 @@ titleSuffix: Azure Data Factory & Azure Synapse
 description: The webhook activity for Azure Data Factory and Synapse Analytics controls the execution of pipelines through custom code.
 author: nabhishek
 ms.author: abnarain
-ms.reviewer: jburchel
-ms.service: data-factory
+ms.reviewer: whhender
 ms.subservice: orchestration
-ms.custom: synapse
 ms.topic: conceptual
-ms.date: 10/25/2022
+ms.date: 09/26/2024
+ms.custom:
+  - synapse
+  - sfi-image-nochange
 ---
 
 # Webhook activity in Azure Data Factory
@@ -49,7 +50,7 @@ To use a Webhook activity in a pipeline, complete the following steps:
         "body": {
             "key": "value"
         },
-        "timeout": "00:03:00",
+        "timeout": "00:10:00",
         "reportStatusOnCallBack": false,
         "authentication": {
             "type": "ClientCertificate",
@@ -150,7 +151,7 @@ When you use the **Report status on callback** property, you must add the follow
 }
 ```
 
-## Next steps
+## Related content
 
 See the following supported control flow activities:
 

@@ -2,13 +2,14 @@
 title: Azure Data Box Gateway manage users | Microsoft Docs 
 description: Describes how to use the Azure portal to manage users on your Azure Data Box Gateway.
 services: databox
-author: alkohli
+author: stevenmatthew
 
-ms.service: databox
-ms.subservice: gateway
+ms.service: azure-data-box-gateway
 ms.topic: how-to
 ms.date: 03/25/2019
-ms.author: alkohli
+ms.author: shaas
+ms.custom: sfi-image-nochange
+# Customer intent: "As a system administrator, I want to manage user access on my data management gateway, so that I can control permissions for both read-only and full privilege users effectively."
 ---
 # Use the Azure portal to manage users on your Azure Data Box Gateway
 

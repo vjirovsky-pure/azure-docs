@@ -1,19 +1,19 @@
 ---
 title: Web application firewall exclusion lists in Azure Front Door
 description: This article provides information on exclusion list configuration in Azure Front Door.
-services: web-application-firewall
-author: vhorne
-ms.service: web-application-firewall
+author: halkazwini
+ms.author: halkazwini
+ms.service: azure-web-application-firewall
+ms.topic: concept-article
 ms.date: 03/07/2023
-ms.author: victorh
-ms.topic: conceptual
+# Customer intent: As a web application administrator, I want to configure exclusion lists in my web application firewall, so that I can prevent legitimate requests from being blocked by false positives.
 ---
 
 # Web Application Firewall with Azure Front Door exclusion lists
 
 Sometimes Azure Web Application Firewall in Azure Front Door might block a legitimate request. As part of tuning your web application firewall (WAF), you can configure the WAF to allow the request for your application. WAF exclusion lists allow you to omit specific request attributes from a WAF evaluation. The rest of the request is evaluated as normal.
 
-For example, Azure Active Directory provides tokens that are used for authentication. When these tokens are used in a request header, they can contain special characters that might trigger a false positive detection by one or more WAF rules. You can add the header to an exclusion list, which tells the WAF to ignore the header. The WAF still inspects the rest of the request for suspicious content.
+For example, Microsoft Entra ID provides tokens that are used for authentication. When these tokens are used in a request header, they can contain special characters that might trigger a false positive detection by one or more WAF rules. You can add the header to an exclusion list, which tells the WAF to ignore the header. The WAF still inspects the rest of the request for suspicious content.
 
 ## Exclusion scopes
 
@@ -22,6 +22,9 @@ You can create exclusions at the following scopes:
 - **Rule set**: These exclusions apply to all rules within a rule set.
 - **Rule group**: These exclusions apply to all the rules of a particular category within a rule set. For example, you can configure an exclusion that applies to all the SQL injection rules.
 - **Rule**: These exclusions apply to a single rule.
+
+> [!TIP]
+> It's a good practice to make exclusions as narrow and specific as possible, to avoid accidentally leaving room for attackers to exploit your system. When you need to add an exclusion rule, use per-rule exclusions wherever possible.
 
 ## Exclusion selectors
 
@@ -75,7 +78,7 @@ The following table shows example values from WAF logs and the corresponding exc
 | HeaderValue:SOME_NAME	| Request header name Equals SOME_NAME |
 | PostParamValue:SOME_NAME | Request body POST args name Equals SOME_NAME |
 | QueryParamValue:SOME_NAME | Query string args name Equals SOME_NAME |
-| SOME_NAME | Request body JSON args name Equals SOME_NAME |
+| JsonValue:SOME_NAME | Request body JSON args name Equals SOME_NAME |
 
 ### Exclusions for JSON request bodies
 

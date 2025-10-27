@@ -1,10 +1,12 @@
 ---
 title: "Tutorial: Blueprint sample to new environment"
 description: In this tutorial, you use a blueprint sample to create a blueprint definition that sets up two resource groups and configures a role assignment for each.
-ms.date: 08/17/2021
+ms.date: 09/07/2023
 ms.topic: tutorial
 ---
 # Tutorial: Create an environment from a blueprint sample
+
+[!INCLUDE [Blueprints deprecation note](../../../../includes/blueprints-deprecation-note.md)]
 
 Sample blueprints provide examples of what can be done using Azure Blueprints. Each is a sample with
 a specific intent or purpose, but doesn't create a complete environment by themselves. Each is
@@ -24,7 +26,7 @@ aspects of the Azure Blueprints service. The following steps are covered:
 ## Prerequisites
 
 To complete this tutorial, an Azure subscription is needed. If you don't have an Azure
-subscription, create a [free account](https://azure.microsoft.com/free/) before you begin.
+subscription, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 ## Create blueprint definition from sample
 

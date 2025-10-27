@@ -5,9 +5,10 @@ description: Deployment guide for hybrid infrastructure using Tiger Bridge and A
 author: dukicn
 ms.author: nikoduki
 ms.date: 12/23/2021
-ms.topic: conceptual
+ms.topic: concept-article
 ms.service: azure-storage
 ms.subservice: storage-partner-integration
+# Customer intent: "As a data manager, I want to deploy a hybrid data infrastructure using Tiger Bridge with Azure Blob Storage, so that I can efficiently manage, replicate, and tier unstructured data across multiple environments while ensuring secure access and collaboration."
 ---
 
 # Deploy hybrid data infrastructure with Tiger Bridge and Azure Blob Storage
@@ -151,5 +152,5 @@ Tiger Technology provides 365x24x7 support for Tiger Bridge. To contact support,
 - [Tiger Bridge website](https://www.tiger-technology.com/software/tiger-bridge/)
 - [Tiger Bridge guides](https://www.tiger-technology.com/software/tiger-bridge/docs/)
 - [Azure Storage partners for primary and secondary storage](./partner-overview.md)
-- [Tiger Bridge Marketplace offering](https://azuremarketplace.microsoft.com/marketplace/apps/tiger-technology.tigerbridge_vm)
+- [Tiger Bridge Marketplace offering](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/tiger-technology.tiger_bridge_saas_soft_only?tab=Overview)
 - [Running ISV file services in Azure](./isv-file-services.md)

@@ -7,13 +7,15 @@ ms.service: azure-communication-services
 ms.subservice: pstn
 ms.date: 06/01/2023
 ms.topic: include
-ms.custom: include file
 ms.author: nikuklic
+ms.custom:
+  - include file
+  - sfi-ropc-blocked
 ---
 
 ## Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 - [Python](https://www.python.org/downloads/) 3.7+.
 - A deployed Communication Services resource and a connection string. [Create a Communication Services resource](../../create-communication-resource.md).
 - The fully qualified domain name (FQDN) and port number of a session border controller (SBC) in an operational telephony system.
@@ -59,13 +61,13 @@ pip install azure-communication-phonenumbers==1.1.0
 
 ## Authenticate the client
 
-With `SipRoutingClient`, you can use Azure Active Directory (Azure AD) authentication. Using the `DefaultAzureCredential` object is the easiest way to get started with Azure AD, and you can install it by using the `pip install` command:
+With `SipRoutingClient`, you can use Microsoft Entra authentication. Using the `DefaultAzureCredential` object is the easiest way to get started with Microsoft Entra ID, and you can install it by using the `pip install` command:
 
 ```console
 pip install azure-identity
 ```
 
-Creating a `DefaultAzureCredential` object requires you to have `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, and `AZURE_TENANT_ID` already set as environment variables with their corresponding values from your registered Azure AD application. For a quick way to get these environment variables, see [Authenticate using Azure Active Directory](../../identity/service-principal.md).
+Creating a `DefaultAzureCredential` object requires you to have `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, and `AZURE_TENANT_ID` already set as environment variables with their corresponding values from your registered Microsoft Entra application. For a quick way to get these environment variables, see [Authenticate using Microsoft Entra ID](../../identity/service-principal.md).
 
 After you've installed the `azure-identity` library, you can continue with authenticating the client:
 

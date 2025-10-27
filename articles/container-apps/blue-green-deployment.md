@@ -3,21 +3,24 @@ title: Blue-Green Deployment in Azure Container Apps
 description: Minimize downtime and reduce the risks associated with new releases by using Blue/Green deployment in Azure Container Apps.
 services: container-apps
 author: ruslany
-ms.service: container-apps
-ms.custom: devx-track-azurecli, devx-track-bicep
+ms.service: azure-container-apps
+ms.custom:
+  - devx-track-azurecli
+  - devx-track-bicep
+  - build-2025
 ms.topic: how-to
 ms.date: 06/23/2023
 ms.author: ruslany
 zone_pivot_groups: azure-cli-bicep
 ---
 
-# Blue-Green Deployment in Azure Container Apps
+# Blue-green deployment in Azure Container Apps
 
 [Blue-Green Deployment](https://martinfowler.com/bliki/BlueGreenDeployment.html) is a software release strategy that aims to minimize downtime and reduce the risk associated with deploying new versions of an application. In a blue-green deployment, two identical environments, referred to as "blue" and "green," are set up. One environment (blue) is running the current application version and one environment (green) is running the new application version. 
 
 Once green environment is tested, the live traffic is directed to it, and the blue environment is used to deploy a new application version during next deployment cycle.
 
-You can enable blue-green deployment in Azure Container Apps by combining [container apps revisions](revisions.md), [traffic weights](traffic-splitting.md), and [revision labels](revisions.md#revision-labels).
+You can enable blue-green deployment in Azure Container Apps by combining [container apps revisions](revisions.md), [traffic weights](traffic-splitting.md), and [revision labels](revisions.md#labels).
 
 :::image type="content" source="media/blue-green-deployment/azure-container-apps-blue-green-deployment.png" alt-text="Screenshot of Azure Container Apps: Blue/Green deployment.":::
 
@@ -32,7 +35,7 @@ After you test and verify the new revision, you can then point production traffi
 
 | Actions | Description |
 |---|---|
-| Testing and verification | The *green* revision is thoroughly tested and verified to ensure that the new version of the application functions as expected. This testing may involve various tasks, including functional tests, performance tests, and compatibility checks. |
+| Testing and verification | The *green* revision is thoroughly tested and verified to ensure that the new version of the application functions as expected. This testing might involve various tasks, including functional tests, performance tests, and compatibility checks. |
 | Traffic switch | Once the *green* revision passes all the necessary tests, a traffic switch is performed so that the *green* revision starts serving production load. This switch is done in a controlled manner, ensuring a smooth transition. |
 | Rollback | If problems occur in the *green* revision, you can revert the traffic switch, routing traffic back to the stable *blue* revision. This rollback ensures minimal impact on users if there are issues in the new version. The *green* revision is still available for the next deployment. |
 | Role change | The roles of the blue and green revisions change after a successful deployment to the *green* revision. During the next release cycle, the *green* revision represents the stable production environment while the new version of the application code is deployed and tested in the *blue* revision.
@@ -194,7 +197,7 @@ output fqdn string = blueGreenDeploymentApp.properties.configuration.ingress.fqd
 output latestRevisionName string = blueGreenDeploymentApp.properties.latestRevisionName
 ```
 
-Deploy the app with the Bicep template using this command:
+Deploy the app with the Bicep file using this command:
 
 ```azurecli
 export APP_NAME=<APP_NAME>
@@ -282,10 +285,10 @@ export APP_DOMAIN=$(az containerapp env show -g $RESOURCE_GROUP -n $APP_ENVIRONM
 #Test the production FQDN
 curl -s https://$APP_NAME.$APP_DOMAIN/api/env | jq | grep COMMIT
 
-#Test the blue lable FQDN
+#Test the blue label FQDN
 curl -s https://$APP_NAME---blue.$APP_DOMAIN/api/env | jq | grep COMMIT
 
-#Test the green lable FQDN
+#Test the green label FQDN
 curl -s https://$APP_NAME---green.$APP_DOMAIN/api/env | jq | grep COMMIT
 ```
 

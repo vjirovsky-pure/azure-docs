@@ -1,11 +1,14 @@
 ---
-title: Runbook authoring using VS code in Azure Automation
+title: Runbook authoring using VS Code in Azure Automation
 description: This article provides an overview authoring runbooks in Azure Automation using the visual studio code.
 services: automation
 ms.subservice: process-automation
-ms.date: 01/10/2023
-ms.topic: conceptual
+ms.date: 09/09/2024
+ms.topic: overview
 ms.custom:
+ms.service: azure-automation
+ms.author: v-jasmineme
+author: jasminemehndir
 ---
 
 # Runbook authoring through VS Code in Azure Automation
@@ -15,7 +18,7 @@ This article explains about the Visual Studio extension that you can use to crea
 Azure Automation provides a new extension from VS Code to create and manage runbooks. Using this extension, you can perform all runbook management operations such as, creating and editing runbooks, triggering a job, tracking recent jobs output, linking a schedule, asset management, and local debugging. 
 
 ## Prerequisites 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).  
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).  
 - [Visual Studio Code](https://code.visualstudio.com/).
 - PowerShell modules and Python packages used by runbook must be locally installed on the machine to run the runbook locally. 
 
@@ -28,7 +31,7 @@ The test matrix includes the following operating systems:
 1. **Ubuntu** 20.04 with PowerShell Core 7.2.7
 
 >[!NOTE]
->- The extension should work anywhere in VS Code and it supports [PowerShell 7.2 or higher](https://learn.microsoft.com/powershell/scripting/install/PowerShell-Support-Lifecycle?view=powershell-7.3). For Windows PowerShell, only version 5.1 is supported.
+>- The extension should work anywhere in VS Code and it supports [PowerShell 7.2 or higher](/powershell/scripting/install/PowerShell-Support-Lifecycle?view=powershell-7.3&preserve-view=true). For Windows PowerShell, only version 5.1 is supported.
 >-  PowerShell Core 6 is end-of-life and not supported.
 
 

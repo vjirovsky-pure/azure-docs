@@ -2,13 +2,13 @@
 title: Manage bandwidth schedules on Azure Data Box Gateway  | Microsoft Docs 
 description: Describes how to use the Azure portal to manage bandwidth schedules on your Azure Data Box Gateway.
 services: databox
-author: alkohli
+author: stevenmatthew
 
-ms.service: databox
-ms.subservice: gateway
+ms.service: azure-data-box-gateway
 ms.topic: how-to
 ms.date: 10/14/2020
-ms.author: alkohli
+ms.author: shaas
+# Customer intent: "As a data administrator, I want to manage bandwidth schedules on my Data Box Gateway, so that I can optimize network usage for uploads and downloads per defined time periods."
 ---
 # Use the Azure portal to manage bandwidth schedules on your Azure Data Box Gateway  
 

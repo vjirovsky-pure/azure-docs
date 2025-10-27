@@ -2,17 +2,16 @@
 title: Monitoring SAP HANA on Azure (Large Instances) | Microsoft Docs
 description: Learn about monitoring SAP HANA on an Azure (Large Instances).
 services: virtual-machines-linux
-documentationcenter: 
-author: lauradolan
+author: ju-shim
 manager: bburns
 ms.service: sap-on-azure
 ms.subservice: sap-large-instances
 ms.topic: article
 ms.tgt_pltfrm: vm-linux
-ms.workload: infrastructure
 ms.date: 10/19/2022
-ms.author: ladolan
-ms.custom: H1Hack27Feb2017, contperf-fy21q4
+ms.author: jushiman
+ms.custom: H1Hack27Feb2017
+# Customer intent: As an IT administrator managing SAP HANA on large instances, I want to monitor resource consumption (CPU, memory, network bandwidth, and disk space) in Azure, so that I can ensure optimal performance and prevent resource depletion.
 ---
 
 # Monitor SAP HANA (Large instances) on Azure
@@ -69,9 +68,4 @@ tar  -czvf health_check_logs.tar.gz /var/log/health_check
 
 You can use Azure Monitor for SAP solutions to monitor all of the resources listed above and more. Azure Monitor for SAP solutions is native to Azure. It allows you to collect data from Azure infrastructure and databases into a single location and visually correlate the data for faster troubleshooting. For more information, see [Monitor SAP on Azure](../monitor/about-azure-monitor-sap-solutions.md).
 
-## Next steps
 
-Learn about how to monitor and troubleshoot from within SAP HANA.
-
-> [!div class="nextstepaction"]
-> [Monitoring and troubleshooting from HANA side](hana-monitor-troubleshoot.md)

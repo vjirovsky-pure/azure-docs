@@ -1,13 +1,14 @@
 ---
 title: Build a migration plan with Azure Migrate
 description: Provides guidance on building a migration plan with Azure Migrate.
-author: rashi-ms
-ms.author: rajosh
-ms.manager: abhemraj
 ms.service: azure-migrate
-ms.topic: conceptual
-ms.date: 07/10/2023
-ms.custom: engagement-fy23
+ms.topic: concept-article
+ms.date: 09/26/2024
+ms.reviewer: v-uhabiba
+ms.custom:
+  - engagement-fy23
+  - sfi-image-nochange
+# Customer intent: "As a cloud architect, I want to create a detailed migration plan for our on-premises workloads to Azure, so that I can ensure a successful and efficient transition while minimizing downtime and optimizing costs."
 ---
 
 # Build migration plan with Azure Migrate
@@ -28,7 +29,7 @@ Response to regulatory compliance changes | Preparation for new technical capabi
 New data sovereignty requirements | Scaling to meet market demands
 Reduction in disruptions, and IT stability improvements | Scaling to meet geographic demands
 
-Identifying your motivation helps you to pin down your strategic migration goals. The next step is to identify and plan a migration path that's tailored for your workloads. The [Azure Migrate: Discovery and Assessment](migrate-services-overview.md#azure-migrate-discovery-and-assessment-tool) tool helps you to assess on-premises workloads, and provides guidance and tools to help you migrate.
+Identifying your motivation helps you to pin down your strategic migration goals. The next step is to identify and plan a migration path that's tailored for your workloads. The [Azure Migrate: Discovery and Assessment](migrate-services-overview.md) tool helps you to assess on-premises workloads, and provides guidance and tools to help you migrate.
 
 ## Understand your digital estate
 
@@ -60,7 +61,7 @@ After server discovery, you can [analyze dependencies](concepts-dependency-visua
 
 ### Optimization and sizing
 
-Azure provides flexibility to resize your cloud capacity over time, and migration provides an opportunity for you to optimize the CPU and memory resources allocated to your servers. Creating an assessment on servers you've identity helps you to understand your workload performance history. This is crucial for right sizing Azure VM SKUs, and disk recommendations in Azure.
+Azure provides flexibility to resize your cloud capacity over time, and migration provides an opportunity for you to optimize the CPU and memory resources allocated to your servers. Creating an assessment on servers you've identity helps you to understand your workload performance history. This is crucial for right-sizing Azure VM SKUs, and disk recommendations in Azure.
 
 ## Assess migration readiness
 
@@ -115,7 +116,7 @@ A few recommendations:
 
     **State** | **Action**
     --- | ---
-    **Azure ready VMs** | Export the assessment report, and filter all servers with state *Ready for Azure*. This might be the first group of servers that you lift and shift to Azure, using the [Migration and modernization](migrate-services-overview.md#migration-and-modernization-tool) tool.
+    **Azure ready VMs** | Export the assessment report, and filter all servers with state *Ready for Azure*. This might be the first group of servers that you lift and shift to Azure, using the [Migration and modernization](migrate-services-overview.md) tool.
     **End-of-support operating systems** | Export the assessment report, and filter all servers running Windows Server 2008 R2/Windows Server 2008. These operating systems are at the end of support, and only Azure provides a free three years of security updates when you migrate them to Azure. If you combine Azure Hybrid Benefit, and use RIs, the savings could be higher.
     **SQL Server migration** | Use the database assessment recommendations to migrate databases that are ready for Azure SQL Database, using the Azure Migrate: Database Migration tool. Migrate the databases ready for Azure SQL VM using the Migration and modernization tool.
     **End-of-support software** | Export your application inventory, and filter for any software/extensions that might be reaching end-of-support. Prioritize these applications for migration.
@@ -132,7 +133,7 @@ Before finalizing your migration plan, make sure you consider and mitigate other
 - **Network requirements**: Evaluate network bandwidth and latency constraints, which might cause unforeseen delays and disruptions to migration replication speed.
 - **Testing/post-migration tweaks**: Allow a time buffer to conduct performance and user acceptance testing for migrated apps, or to configure/tweak apps post-migration, such as updating database connection strings, configuring web servers, performing cut-overs/cleanup etc.
 - **Permissions**: Review recommended Azure permissions, and server/database access roles and permissions needed for migration.
-- **Training**: Prepare your organization for the digital transformation. A solid training foundation is important for successful organizational change. Check out free [Microsoft Learn training](/training/azure/?ocid=CM_Discovery_Checklist_PDF), including courses on Azure fundamentals, solution architectures, and security. Encourage your team to explore [Azure certifications](https://learn.microsoft.com/certifications). 
+- **Training**: Prepare your organization for the digital transformation. A solid training foundation is important for successful organizational change. Check out free [Microsoft Learn training](/training/azure/?ocid=CM_Discovery_Checklist_PDF), including courses on Azure fundamentals, solution architectures, and security. Encourage your team to explore [Azure certifications](/certifications). 
 - **Implementation support**: Get support for your implementation if you need it. Many organizations opt for outside help to support their cloud migration. To move to Azure quickly and confidently with personalized assistance, consider an [Azure Expert Managed Service Provider](https://www.microsoft.com/solution-providers/search?cacheId=9c2fed4f-f9e2-42fb-8966-4c565f08f11e&ocid=CM_Discovery_Checklist_PDF), or [FastTrack for Azure](https://azure.microsoft.com/programs/azure-fasttrack/?ocid=CM_Discovery_Checklist_PDF). 
 
 
@@ -155,7 +156,7 @@ When you're ready for migration, use the Migration and modernization tool, and t
 
 Azure Migrate provides an option to customers to upgrade their Windows Server OS seamlessly during the migration. Azure Migrate OS upgrade allows you to move from an older operating system to a newer one while keeping your settings, server roles, and data intact. [Learn more](how-to-upgrade-windows.md).
 
-Azure Migrate OS upgrade uses an Azure VM [Custom script extension](../virtual-machines/extensions/custom-script-windows.md) to perform the following activities for an in-place upgrade experience:
+Azure Migrate OS upgrade uses an Azure VM [Custom script extension](/azure/virtual-machines/extensions/custom-script-windows) to perform the following activities for an in-place upgrade experience:
 
 - A data disk containing Windows Server setup files is created and attached to the VM.
 - A Custom Script Extension called `InPlaceOsUpgrade` is enabled on the VM, which downloads a script from the storage account and initiates the upgrade in a quiet mode.

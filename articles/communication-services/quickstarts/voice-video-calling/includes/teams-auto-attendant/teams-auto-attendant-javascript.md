@@ -6,9 +6,44 @@ ms.date: 07/17/2023
 ms.author: ruslanzdor
 ---
 
+In this quickstart you're going to learn how to start a call from Azure Communication Services user to Teams Auto Attendant. You're going to achieve it with the following steps:
+
+1. Enable federation of Azure Communication Services resource with Teams Tenant.
+2. Select or create Teams Auto Attendant via Teams Admin Center.
+3. Get email address of Auto Attendant via Teams Admin Center.
+4. Get Object ID of the Auto Attendant via Graph API.
+5. Start a call with Azure Communication Services Calling SDK.
+
+If you'd like to skip ahead to the end, you can download this quickstart as a sample on [GitHub](https://github.com/Azure-Samples/communication-services-javascript-quickstarts/tree/main/voice-apps-calling).
+
+[!INCLUDE [Enable interoperability in your Teams tenant](../../../../concepts/includes/enable-interoperability-for-teams-tenant.md)]
+
+## Create or select Teams Auto Attendant
+
+Teams Auto Attendant is system that provides an automated call handling system for incoming calls. It serves as a virtual receptionist, allowing callers to be automatically routed to the appropriate person or department without the need for a human operator. You can select existing or create new Auto Attendant via [Teams Admin Center](https://aka.ms/teamsadmincenter).
+
+Learn more about how to create Auto Attendant using Teams Admin Center [here](/microsoftteams/create-a-phone-system-auto-attendant?tabs=general-info).
+
+## Find Object ID for Auto Attendant
+
+After Auto Attendant is created, we need to find correlated Object ID to use it later for calls. Object ID is connected to Resource Account that was attached to Auto Attendant - open [Resource Accounts tab](https://admin.teams.microsoft.com/company-wide-settings/resource-accounts) in Teams Admin and find email of account.
+:::image type="content" source="../../../media/teams-call-queue-resource-account.PNG" alt-text="Screenshot of Resource Accounts in Teams Admin Portal.":::
+All required information for Resource Account can be found in [Microsoft Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) using this email in the search.
+
+```console
+https://graph.microsoft.com/v1.0/users/lab-test2-cq-@contoso.com
+```
+
+In results we'll are able to find "ID" field
+
+```json
+    "userPrincipalName": "lab-test2-cq@contoso.com",
+    "id": "31a011c2-2672-4dd0-b6f9-9334ef4999db"
+```
+
 ## Prerequisites
 
-- Obtain an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- Obtain an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 - [Node.js](https://nodejs.org/en/) Active LTS and Maintenance LTS versions (8.11.1 and 10.14.1)
 - Create an active Communication Services resource. [Create a Communication Services resource](../../../create-communication-resource.md?pivots=platform-azp&tabs=windows).
 
@@ -26,11 +61,11 @@ mkdir calling-quickstart && cd calling-quickstart
 
 Use the `npm install` command to install the Azure Communication Services Calling SDK for JavaScript.
 > [!IMPORTANT]
-> This quickstart uses the Azure Communication Services Calling SDK version `latest`.
+> This quickstart uses the Azure Communication Services Calling SDK version `next`.
 
 ```console
 npm install @azure/communication-common@next --save
-npm install @azure/communication-calling@latest --save
+npm install @azure/communication-calling@next --save
 ```
 
 ### Set up the app framework
@@ -38,7 +73,7 @@ npm install @azure/communication-calling@latest --save
 This quickstart uses webpack to bundle the application assets. Run the following command to install the `webpack`, `webpack-cli` and `webpack-dev-server` npm packages and list them as development dependencies in your `package.json`:
 
 ```console
-npm install webpack@4.42.0 webpack-cli@3.3.11 webpack-dev-server@3.10.3 --save-dev
+npm install copy-webpack-plugin@^11.0.0 webpack@^5.88.2 webpack-cli@^5.1.4 webpack-dev-server@^4.15.1 --save-dev
 ```
 
 Create an `index.html` file in the root directory of your project. We'll use this file to configure a basic layout that will allow the user to place a 1:1 video call.
@@ -78,7 +113,7 @@ Here's the code:
         <br>
         <div id="localVideoContainer" style="width: 30%;" hidden>Local video stream:</div>
         <!-- points to the bundle generated from client.js -->
-        <script src="./bundle.js"></script>
+        <script src="./main.js"></script>
     </body>
 </html>
 ```
@@ -169,7 +204,7 @@ startCallButton.onclick = async () => {
     try {
         const localVideoStream = await createLocalVideoStream();
         const videoOptions = localVideoStream ? { localVideoStreams: [localVideoStream] } : undefined;
-        call = callAgent.startCall([{ botId: applicationObjectId.value.trim(), cloud:"public" }], { videoOptions: videoOptions });
+        call = callAgent.startCall([{ teamsAppId: applicationObjectId.value.trim(), cloud:"public" }], { videoOptions: videoOptions });
         // Subscribe to the call's properties and events.
         subscribeToCall(call);
     } catch (error) {
@@ -194,12 +229,12 @@ acceptCallButton.onclick = async () => {
     }
 }
 // Subscribe to a call obj.
-// Listen for property changes and collection udpates.
+// Listen for property changes and collection updates.
 subscribeToCall = (call) => {
     try {
         // Inspect the initial call.id value.
         console.log(`Call Id: ${call.id}`);
-        //Subsribe to call's 'idChanged' event for value changes.
+        //Subscribe to call's 'idChanged' event for value changes.
         call.on('idChanged', () => {
             console.log(`Call ID changed: ${call.id}`); 
         });
@@ -224,6 +259,11 @@ subscribeToCall = (call) => {
                 console.log(`Call ended, call end reason={code=${call.callEndReason.code}, subCode=${call.callEndReason.subCode}}`);
             }   
         });
+
+        call.on('isLocalVideoStartedChanged', () => {
+            console.log(`isLocalVideoStarted changed: ${call.isLocalVideoStarted}`);
+        });
+        console.log(`isLocalVideoStarted: ${call.isLocalVideoStarted}`);
         call.localVideoStreams.forEach(async (lvs) => {
             localVideoStream = lvs;
             await displayLocalVideoStream();
@@ -259,7 +299,7 @@ subscribeToCall = (call) => {
     }
 }
 // Subscribe to a remote participant obj.
-// Listen for property changes and collection udpates.
+// Listen for property changes and collection updates.
 subscribeToRemoteParticipant = (remoteParticipant) => {
     try {
         // Inspect the initial remoteParticipant.state value.
@@ -273,7 +313,7 @@ subscribeToRemoteParticipant = (remoteParticipant) => {
             subscribeToRemoteVideoStream(remoteVideoStream)
         });
         // Subscribe to the remoteParticipant's 'videoStreamsUpdated' event to be
-        // notified when the remoteParticiapant adds new videoStreams and removes video streams.
+        // notified when the remoteParticipant adds new videoStreams and removes video streams.
         remoteParticipant.on('videoStreamsUpdated', e => {
             // Subscribe to newly added remote participant's video streams.
             e.added.forEach(remoteVideoStream => {
@@ -387,19 +427,48 @@ hangUpCallButton.addEventListener("click", async () => {
 });
 ```                                                          
 
+## Add the webpack local server code
+
+Create a file in the root directory of your project called **webpack.config.js** to contain the local server logic for this quickstart. Add the following code to **webpack.config.js**:
+```javascript
+const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
+
+module.exports = {
+    mode: 'development',
+    entry: './client.js',
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        static: {
+            directory: path.join(__dirname, './')
+        },
+    },
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                './index.html'
+            ]
+        }),
+    ]
+};
+```
+
 ## Run the code
 
 Use the `webpack-dev-server` to build and run your app. Run the following command to bundle the application host in a local webserver:
 
 ```console
-npx webpack-dev-server --entry ./client.js --output bundle.js --debug --devtool inline-source-map
+npx webpack serve --config webpack.config.js
 ```
 
-Manual steps to setup the call:
+Manual steps to set up the call:
 
 1. Open your browser and navigate to http://localhost:8080/.
 2. Enter a valid user access token. Refer to the [user access token documentation](../../../manage-teams-identity.md) if you don't already have access tokens available to use.
 3. Click on the "Initialize Call Agent" buttons.
-4. Enter the Auto Attendant Object ID, and select the "Start Call" button. Application will start the outgoing call to the auto attendant with given object ID.
+4. Enter the Auto Attendant Object ID, and select the "Start Call" button. Application will start the outgoing call to the Auto Attendant with given object ID.
 5. Call is connected to the Auto Attendant.
-6. Communication Services user is routed through Auto Attendant based on it's configuration.
+6. Communication Services user is routed through Auto Attendant based on its configuration.

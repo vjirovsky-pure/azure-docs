@@ -3,11 +3,9 @@ title: What's new in Azure Data Factory
 description: This page highlights new features and recent improvements for Azure Data Factory. Data Factory is a managed cloud service that's built for complex hybrid extract-transform-and-load (ETL), extract-load-and-transform (ELT), and data integration projects.
 author: pennyzhou-msft
 ms.author: xupzhou
-ms.service: data-factory
-ms.subservice: concepts
 ms.topic: overview
 ms.custom: references_regions
-ms.date: 10/10/2022
+ms.date: 09/25/2024
 ---
 
 # What's new in Azure Data Factory
@@ -24,129 +22,82 @@ This page is updated monthly, so revisit it regularly.  For older months' update
 
 Check out our [What's New video archive](https://www.youtube.com/playlist?list=PLt4mCx89QIGS1rQlNt2-7iuHHAKSomVLv) for all of our monthly update videos.
 
-## July 2023
+>[!TIP]
+>Also check [what's new for Data Factory in Microsoft Fabric](/fabric/fundamentals/whats-new?toc=%2Ffabric%2Fdata-factory%2Ftoc.json#data-factory-in-microsoft-fabric)
 
-### Change Data Capture
+## August 2024
 
-Top-level CDC resource now supports schema evolution. [Learn more](how-to-change-data-capture-resource-with-schema-evolution.md)
+## Data movement
 
-### Data flow
+- Azure Table Storage connector now supports two more authentication types: system-assigned managed identity authentication and user-assigned managed identity authentication. [Learn more](connector-azure-table-storage.md)
+- Azure Files connector now supports two more authentication types: system-assigned managed identity authentication and user-assigned managed identity authentication. [Learn more](connector-azure-file-storage.md)
 
-Merge schema option in delta sink now supports schema evolution in Mapping Data Flows. [Learn more](format-delta.md#delta-sink-optimization-options)
+## June 2024
 
 ### Data movement
 
-- Comment Out Part of Pipeline with Deactivation. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/comment-out-part-of-pipeline/ba-p/3868069)
-- Pipeline return value is now generally available. [Learn more](tutorial-pipeline-return-value.md)
+The new ServiceNow connector provides improved native support in Copy and Lookup activities. [Learn more](connector-servicenow.md)
 
-### Developer productivity
+## April 2024
 
-Documentation search now included in the Azure Data Factory search toolbar. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/documentation-search-now-embedded-in-azure-data-factory/ba-p/3873890)
+### Data flow
 
-## June 2023
+We're updating Azure Data Factory Mapping Data Flows to use Spark 3.3.
+
+### Data movement
+
+Pipeline activity limit lifted to 80 activities. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/data-factory-increases-maximum-activities-per-pipeline-to-80/ba-p/4096418)
+
+## March 2024
+
+### Data movement
+
+- PostgreSQL Connector available for Copy activity with improved native PostgreSQL support and better copy performance. [Learn more](connector-postgresql.md) 
+- Google BigQuery Connector available for Copy activity with improved native support and better copy performance. [Learn more](connector-google-bigquery.md)
+- Snowflake Connector available for Copy activity with support for Basic and Key pair authentication for both source and sink. [Learn more](connector-snowflake.md)
+- New connectors available for Microsoft Fabric Warehouse, for Copy, Lookup, Get Metadata, Script and Stored procedure activities. [Learn more](connector-microsoft-fabric-warehouse.md)
+
+## February 2024
+
+### Data movement
+
+- MySQL Connector driver upgrade available for Copy activity. [Learn more](connector-mysql.md)
+- MariaDB Connector driver upgrade available for Copy activity. [Learn more](connector-mariadb.md)
+- We added native UI support of parameterization for the following linked services: SAP HANA; MariaDB; Google BigQuery. [Learn more](parameterize-linked-services.md#supported-linked-service-types)
+
+## January 2024
+
+### Data movement
+
+- The new Salesforce connector now supports OAuth authentication on Bulk API 2.0 for both source and sink. [Learn more](connector-salesforce.md)
+- The new Salesforce Service Cloud connector now supports OAuth authentication on Bulk API 2.0 for both source and sink. [Learn more](connector-salesforce-service-cloud.md) 
+- The Google Ads connector now supports upgrading to the newer driver version with the native Google Ads Query Language (GAQL). [Learn more](connector-google-adwords.md#upgrade-the-google-ads-driver-version) 
+
+### Region expansion 
+
+Azure Data Factory is now available in Israel Central and Italy North. You can co-locate your ETL workflow in this new region if you are utilizing the region for storing and managing your modern data warehouse. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/continued-region-expansion-azure-data-factory-is-generally/ba-p/4029391) 
+
+## November 2023
 
 ### Continuous integration and continuous deployment
 
-NPM package now supports pre-downloaded bundle for building ARM templates. If your firewall setting is blocking direct download for your NPM package, you can now pre-load the package upfront, and let NPM package consume local version instead. This is a super boost for your CI/CD pipeline in a firewalled environment.
+Azure Data Factory now supports Azure DevOps Server 2022 for Git integration, including on-premises ADO server. [Learn more](source-control.md)
+
+## October 2023
+
+### Data movement
+
+General Availability of Time to Live (TTL) for Managed Virtual Network [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/general-availability-of-time-to-live-ttl-for-managed-virtual/ba-p/3922218)
 
 ### Region expansion
 
-Azure Data Factory is now available in Sweden Central. You can co-locate your ETL workflow in this new region if you are utilizing the region for storing and managing your modern data warehouse. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/continued-region-expansion-azure-data-factory-just-became/ba-p/3857249)
+Azure Data Factory is generally available in Poland Central [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/continued-region-expansion-azure-data-factory-is-generally/ba-p/3965769)
 
-### Data movement
-
-Securing outbound traffic with Azure Data Factory's outbound network rules is now supported. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/securing-outbound-traffic-with-azure-data-factory-s-outbound/ba-p/3844032)
-
-### Connectors
-
-The Amazon S3 connector is now supported as a sink destination using Mapping Data Flows. [Learn more](connector-amazon-simple-storage-service.md)
-
-### Data flow
-
-We introduce optional Source settings for DelimitedText and JSON sources in top-level CDC resource. The top-level CDC resource in data factory now supports optional source configurations for Delimited and JSON sources. You can now select the column/row delimiters for delimited sources and set the document type for JSON sources. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/introducing-optional-source-settings-for-delimitedtext-and-json/ba-p/3824274)
-
-## May 2023
-
-### Data Factory in Microsoft Fabric
-
-[Data factory in Microsoft Fabric](/fabric/data-factory/) provides cloud-scale data movement and data transformation services that allow you to solve the most complex data factory and ETL scenarios. It's intended to make your data factory experience easy to use, powerful, and truly enterprise-grade.
-
-## April 2023
-
-### Data flow
-
-Easily unroll multiple arrays in ADF data flows. ADF updated the **Flatten** transformation that now makes it super easy to unroll multiple arrays from a single **Flatten** transformation step. [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/unroll-multiple-arrays-in-a-single-flatten-step-in-adf/ba-p/3802457)
-
-### Continuous integration and continuous deployment
-
-You can customize the commit message in Git mode now. Type in a detailed description about the changes you make, and we will save it to Git repository.
-
-### Connectors
-
-The Azure Blob Storage connector now supports anonymous authentication. [Learn more](connector-azure-blob-storage.md#anonymous-authentication)
-
-## March 2023
-
-### Connectors
-
-Azure Data Lake Storage Gen2 connector now supports shared access signature authentication. [Learn more](connector-azure-data-lake-storage.md#shared-access-signature-authentication)
-
-## February 2023
-
-### Data movement
-
-- Anonymous authentication type supported for Azure Blob storage [Learn more](connector-azure-blob-storage.md?tabs=data-factory#anonymous-authentication)
-- Updated SAP template to easily move SAP data to ADLSGen2 in Delta format [Learn more](industry-sap-templates.md)
-
-### Monitoring
-
-Container monitoring view available in default ADF studio [Learn more](how-to-manage-studio-preview-exp.md#container-view)
-
-### Orchestration
-
-- Set pipeline output value (Public preview) [Learn more](tutorial-pipeline-return-value.md)
-- Managed Airflow (Public preview) [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/introducing-managed-airflow-in-azure-data-factory/ba-p/3730151)
-
-### Developer productivity
-
-Dark theme support added (Public preview) [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/introducing-dark-mode-for-adf-studio/ba-p/3757961)
-
-## January 2023
-
-### Data flow
-
-- Flowlets now support schema drift [Learn more](connector-office-365.md?tabs=data-factory)
-- SQL CDC incremental extract now supports numeric columns [Learn more](connector-sql-server.md?tabs=data-factory#native-change-data-capture)
-
-### Data movement
-
-New top-level CDC resource - native CDC configuration in 3 simple steps [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/announcing-the-public-preview-of-a-new-top-level-cdc-resource-in/ba-p/3720519)
-
-### Orchestration
-
-Orchestrate Synapse notebooks and Synapse spark job definitions natively [Learn more](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/orchestrate-and-operationalize-synapse-notebooks-and-spark-job/ba-p/3724379)
-
-### Region expansion
-
-- Continued region expansion - China North 3 now supported [Learn more](https://azure.microsoft.com/explore/global-infrastructure/products-by-region/?products=data-factory)
-- Continued region expansion - Switzerland West now supported [Learn more](https://azure.microsoft.com/explore/global-infrastructure/products-by-region/?products=data-factory)
-
-### SQL Server Integration Services (SSIS)
-
-Express virtual network injection for SSIS now generally available [Learn more](https://techcommunity.microsoft.com/t5/sql-server-integration-services/general-availability-of-express-virtual-network-injection-for/ba-p/3699993)
-
-### Developer productivity
-
-- Added support for favoriting resources on home page
-- Save column width for pipeline monitoring
-- Monitor filter updates for faster searches
-- Directly launch Pipeline Template Gallery through Azure portal [Learn more]()
-
-## More information
+## Related content
 
 - [What's new archive](whats-new-archive.md)
 - [What's New video archive](https://www.youtube.com/playlist?list=PLt4mCx89QIGS1rQlNt2-7iuHHAKSomVLv)
 - [Blog - Azure Data Factory](https://techcommunity.microsoft.com/t5/azure-data-factory/bg-p/AzureDataFactoryBlog)
 - [Stack Overflow forum](https://stackoverflow.com/questions/tagged/azure-data-factory)
-- [Twitter](https://twitter.com/AzDataFactory?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor)
+- [X](https://x.com/AzDataFactory?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor)
 - [Videos](https://www.youtube.com/channel/UC2S0k7NeLcEm5_IhHUwpN0g/featured)

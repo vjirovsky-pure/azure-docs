@@ -3,12 +3,13 @@ title: Set up a self-hosted integration runtime for the SAP CDC connector
 titleSuffix: Azure Data Factory
 description: Learn how to create and set up a self-hosted integration runtime for the SAP change data capture (CDC) connector in Azure Data Factory.
 author: ukchrist
-ms.service: data-factory
 ms.subservice: data-movement
-ms.custom: ignite-2022, devx-track-dotnet
 ms.topic: conceptual
-ms.date: 07/20/2023
+ms.date: 05/15/2024
 ms.author: ulrichchrist
+ms.custom:
+  - devx-track-dotnet
+  - sfi-image-nochange
 ---
 
 # Set up a self-hosted integration runtime for the SAP CDC connector
@@ -69,6 +70,6 @@ yyy.yyy.yyy.yyy sapbw01
 zzz.zzz.zzz.zzz sapnw01 
 ```
 
-## Next steps
+## Related content
 
 [Set up an SAP CDC linked service and source dataset](sap-change-data-capture-prepare-linked-service-source-dataset.md)

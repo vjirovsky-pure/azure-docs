@@ -5,7 +5,8 @@ author: stevenmatthew
 ms.author: shaas
 ms.service: azure-storage-mover
 ms.topic: how-to
-ms.date: 08/04/2023
+ms.date: 10/30/2023
+ms.custom: sfi-image-nochange
 ---
 
 <!-- 
@@ -31,18 +32,30 @@ When you migrate a share to Azure, you need to describe the source share, the Az
 
 Before you begin following the examples in this article, it's important that you have an understanding of the Azure Storage Mover resource hierarchy. Review the [Understanding the Storage Mover resource hierarchy](resource-hierarchy.md) article, to understand the necessity of the job definition prerequisites.
 
-There are three prerequisites to the definition the migration of your source shares:
+The following are the prerequisites to the definition the migration of your source shares:
 
 - **An existing storage mover resource.**<br/>
   If you haven't deployed a storage mover resource, follow the steps in the *[Create a storage mover resource](storage-mover-create.md)* article. These steps help you deploy a storage mover resource to the desired region within your Azure subscription.
 - **At least one existing Azure Storage Mover agent virtual machine (VM).**<br/>
   The steps in the [Azure Storage Mover agent VM deployment](agent-deploy.md) and [agent registration](agent-register.md) articles guide you through the deployment and registration process.
-- **Finally, you need to create a job definition to define a migration.**<br/>
+- **A job definition to define migration.**<br/>
   Job definitions are organized in a migration project. You need at least one migration project in your storage mover resource. If you haven't already done so, follow the deployment steps in the [manage projects](project-manage.md) article to create a migration project.
+ - **Storage account access in case of firewall setting.**<br/>
+   If you have storage account firewall (security system) restrictions set, ensure that the traffic from agent VM is permitted to the storage account.
+- **Accessible endpoints.**<br/>
+  The below endpoints must be accessible from the agent.
+
+|Source protocol   |Target                               |Azure Endpoint                                        |Description                    |
+|------------------|-------------------------------------|------------------------------------------------------|-------------------------------|
+|SMB 2.x mount     |Azure file share (SMB)               |`< your-storage-account-name>.file.core.windows.net`  |Azure Files endpoint.          |
+|SMB 2.x mount     |Azure file share (SMB)               |`<your-keyvault-name>.vault.azure.net`                |Azure Key Vault endpoint.       |
+|NFS 3 & 4 mount   |Azure blob storage container         |`< your-storage-account-name>.blob.core.windows.net`  |Azure Blob container endpoint. |
+ 
+
 
 ## Create and start a job definition
 
-A job definition is created within a project resource. Creating a job definition requires you to select or configure a project, a source and target storage endpoint, and a job name. If you've followed the examples contained in previous articles, you may have an existing project within a previously deployed storage mover resource. Follow the steps in this section to add a job definition to a project.
+A job definition is created within a project resource. Creating a job definition requires you to select or configure a project, a source and target storage endpoint, and a job name. If you've followed the examples contained in previous articles, you might have an existing project within a previously deployed storage mover resource. Follow the steps in this section to add a job definition to a project.
 
 Storage endpoints are separate resources in your storage mover. You need to create a source and target endpoint before you can reference them within a job definition. The examples in this section describe the process of creating endpoints.
 
@@ -60,7 +73,7 @@ Refer to the [resource naming convention](../azure-resource-manager/management/r
 
    :::image type="content" source="media/job-definition-create/project-selected-sml.png" alt-text="Screen capture of the Project Explorer's Overview tab within the Azure portal highlighting the use of filters." lightbox="media/job-definition-create/project-selected-lrg.png":::
 
-1. In the **Basics** tab of the **Create a migration job** window, enter a value in the required **Name** field. You may also add an optional description value of less than 1024 characters. Finally, in the **Migration agent** section, select the agent to perform the data migration and then select **Next** to open the **Source** tab. You should choose an agent located as near your data source as possible. The selected agent should also have resources appropriate to the size and complexity of the job. You can assign a different agent to your job at a later time if desired.
+1. In the **Basics** tab of the **Create a migration job** window, enter a value in the required **Name** field. You can also add an optional description value of less than 1024 characters. Finally, in the **Migration agent** section, select the agent to perform the data migration and then select **Next** to open the **Source** tab. You should choose an agent located as near your data source as possible. The selected agent should also have resources appropriate to the size and complexity of the job. You can assign a different agent to your job at a later time if desired.
 
    :::image type="content" source="media/job-definition-create/tab-basics-sml.png" alt-text="Screen capture of the migration job's Basics tab, showing the location of the data fields." lightbox="media/job-definition-create/tab-basics-lrg.png":::
 
@@ -70,15 +83,15 @@ Refer to the [resource naming convention](../azure-resource-manager/management/r
 
    :::image type="content" source="media/job-definition-create/endpoint-source-existing-sml.png" alt-text="Screen capture of the Source tab illustrating the location of the Existing Source Endpoint field." border="false" lightbox="media/job-definition-create/endpoint-source-existing-lrg.png":::
 
-   To define a new source endpoint from which to migrate your data, select the **Create a new endpoint** option. Next, provide values for the required **Host name or IP**, **Share name**, and **Protocol version** fields. You may also add an optional description value of less than 1024 characters.
+   To define a new source endpoint from which to migrate your data, select the **Create a new endpoint** option. Next, provide values for the required **Host name or IP**, **Share name**, and **Protocol version** fields. You can also add an optional description value of less than 1024 characters.
 
    :::image type="content" source="media/job-definition-create/endpoint-source-new-sml.png" alt-text="Screen capture of the Source tab illustrating the location of the New Source Endpoint fields." lightbox="media/job-definition-create/endpoint-source-new-lrg.png":::
 
-   Only certain types of endpoints may be used as a source or a target, respectively. The steps to create different endpoint types are similar, as are their corresponding data fields. The key differentiator between the creation of NFS- and SMB-enabled endpoints is the use of Azure Key Vault to store the shared credential for SMB resources. When you create an endpoint resource that supports the SMB protocol, you're required to provide values for the Key Vault name, and the names of the username and password secrets as well.
+   Only certain types of endpoints can be used as a source or a target, respectively. The steps to create different endpoint types are similar, as are their corresponding data fields. The key differentiator between the creation of NFS- and SMB-enabled endpoints is the use of Azure Key Vault to store the shared credential for SMB resources. When you create an endpoint resource that supports the SMB protocol, you're required to provide values for the Key Vault name, and the names of the username and password secrets as well.
 
    Select the name of the Key Vault from the **Key Vault** drop-down lists. You can provide values for the **Secret for username** and **Secret for password** by selecting the relevant secret from the corresponding drop-down list. Alternatively, you can provide the URI to the secret as shown in the following screen capture.
 
-   For more details on endpoint resources, see the [Managing Storage Mover endpoints](endpoint-manage.md) article.
+   For more information on endpoint resources, see the [Managing Storage Mover endpoints](endpoint-manage.md) article.
 
    :::image type="content" source="media/job-definition-create/endpoint-smb-new-sml.png" alt-text="Screen capture of the fields required to create a new SMB source endpoint resource." lightbox="media/job-definition-create/endpoint-smb-new-lrg.png":::
 
@@ -97,14 +110,11 @@ Refer to the [resource naming convention](../azure-resource-manager/management/r
 
    :::image type="content" source="media/job-definition-create/endpoint-target-existing-sml.png" alt-text="Screen capture of the Target tab illustrating the location of the Existing Target Endpoint field." border="false" lightbox="media/job-definition-create/endpoint-target-existing-lrg.png":::
 
-   Similarly, to define a new target endpoint, choose the **Create a new endpoint** option. Next, select values from the drop-down lists for the required **Subscription** and **Storage account** fields. You may also add an optional description value of less than 1024 characters. Depending on your use case, select the appropriate ***Target type**.
+   Similarly, to define a new target endpoint, choose the **Create a new endpoint** option. Next, select values from the drop-down lists for the required **Subscription** and **Storage account** fields. You can also add an optional description value of less than 1024 characters. Depending on your use case, select the appropriate ***Target type**.
 
-   Recall that certain types of endpoints may be used as a source or a target, respectively.
+   Recall that certain types of endpoints can only be used as a source or a target, respectively.
 
    [!INCLUDE [protocol-endpoint-agent](includes/protocol-endpoint-agent.md)]
-
-   > [!IMPORTANT]
-   > Support for the SMB protocol is currently in public preview and some functionality may not yet be available. Currently, the only supported migration path consists of an SMB mount source to an Azure file share destination.
 
    :::image type="content" source="media/job-definition-create/endpoint-target-new-sml.png" alt-text="Screen capture of the Target tab illustrating the location of the New Target Endpoint fields." lightbox="media/job-definition-create/endpoint-target-new-lrg.png":::
 
@@ -134,6 +144,13 @@ Refer to the [resource naming convention](../azure-resource-manager/management/r
 1. Review the settings for job name and description, and source and target storage endpoint settings. Use the **Previous** and **Next** options to navigate through the tabs and correct any mistakes, if needed. Finally, select **Create** to provision the job definition.
 
    :::image type="content" source="media/job-definition-create/review-sml.png" alt-text="Screen capture of the Review tab illustrating the location of the fields and settings." lightbox="media/job-definition-create/review-lrg.png":::
+
+1. Navigate to the Project explorer page within the Azure portal to view a list of available projects. Select a project and you will see a list of jobs. Select a job and select **Start job**.
+
+> [!NOTE]
+- Currently, only one job can be run on a given agent at a time. If there is already another job in running state, starting of another job will fail. Mover agent puts a marker file on target share or container when it starts a job (file name "").
+- User can have only one job running at given time for a target container or share. If you are running multiple agents, you cannot use it to run job against same target share or container. The job that runs later will get error "Failed to claim the target: Target is busy" (Error AZSM1027)
+
 
 ### [PowerShell](#tab/powershell)
 

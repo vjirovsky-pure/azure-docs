@@ -2,11 +2,12 @@
 title: 'Troubleshoot Azure Bastion'
 description: Learn how to troubleshoot Azure Bastion.
 services: bastion
-author: charwen
-ms.service: bastion
+author: isamorris
+ms.service: azure-bastion
 ms.topic: troubleshooting
-ms.date: 05/08/2023
-ms.author: charwen
+ms.date: 03/31/2025
+ms.author: isamorris
+# Customer intent: "As a network administrator, I want to troubleshoot connectivity issues in Azure Bastion, so that I can ensure seamless access to my virtual machines and efficiently manage network security settings."
 ---
 
 # Troubleshoot Azure Bastion
@@ -62,26 +63,33 @@ The key's randomart image is:
 
 **Q:** I'm unable to connect to my Windows virtual machine that is domain-joined.
 
-**A:** Azure Bastion supports domain-joined VM sign-in for username-password based domain sign-in only. When specifying the domain credentials in  the Azure portal, use the UPN (username@domain) format instead of *domain\username* format to sign in. This is supported for domain-joined or hybrid-joined (both domain-joined and Azure AD-joined) virtual machines. It isn't supported for Azure AD-joined-only virtual machines.
+**A:** Azure Bastion supports domain-joined VM sign-in for username-password based domain sign-in only. When specifying the domain credentials in  the Azure portal, use the UPN (username@domain) format instead of *domain\username* format to sign in. This is supported for domain-joined or hybrid-joined (both domain-joined and Microsoft Entra joined) virtual machines. It isn't supported for Microsoft Entra joined-only virtual machines.
 
 ## <a name="connectivity"></a> Unable to connect to virtual machine
 
 **Q:** I'm unable to connect to my virtual machine (and I'm not experiencing the problems above).
 
-**A:** You can troubleshoot your connectivity issues by navigating to the **Connection Troubleshoot** tab (in the **Monitoring** section) of your Azure Bastion resource in the Azure portal. Network Watcher Connection Troubleshoot provides the capability to check a direct TCP connection from a virtual machine (VM) to a VM, fully qualified domain name (FQDN), URI, or IPv4 address. To start, choose a source to start the connection from, and the destination you wish to connect to and select "Check". For more information, see [Connection Troubleshoot](../network-watcher/network-watcher-connectivity-overview.md).
+**A:** You can troubleshoot your connectivity issues by navigating to the **Connection Troubleshoot** tab (in the **Help** section) of your Azure Bastion resource in the Azure portal. Network Watcher Connection Troubleshoot provides the capability to check a direct TCP connection from a virtual machine (VM) to a VM, fully qualified domain name (FQDN), URI, or IPv4 address. To start, choose a source to start the connection from, and the destination you wish to connect to and select "Check". For more information, see [Connection Troubleshoot](../network-watcher/network-watcher-connectivity-overview.md).
+
+If just-in-time (JIT) is enabled, you might need to add additional role assignments to connect to Bastion. Add the following permissions to the user, and then try reconnecting to Bastion. For more information, see [Enable just-in-time access on VMs](/azure/defender-for-cloud/just-in-time-access-usage).
+
+| Setting | Description|
+|---|---|
+|Microsoft.Security/locations/jitNetworkAccessPolicies/read|Gets the just-in-time network access policies|
+Microsoft.Security/locations/jitNetworkAccessPolicies/write | Creates a new just-in-time network access policy or updates an existing one |
 
 
 ## <a name="filetransfer"></a>File transfer issues
 
 **Q:** Is file transfer supported with Azure Bastion?
 
-**A:** File transfer isn't supported at this time. We're working on adding support.
+**A:** Azure Bastion offers support for file transfer between your target VM and local computer using Bastion and a native RDP or SSH client. At this time, you can't upload or download files using PowerShell or via the Azure portal. For more information, see [Upload and download files using the native client](./vm-upload-download-native.md).
 
 ## <a name="blackscreen"></a>Black screen in the Azure portal
 
 **Q:** When I try to connect using Azure Bastion, I can't connect to the target VM, and I get a black screen in the Azure portal.
 
-**A:** This happens when there's either a network connectivity issue between your web browser and Azure Bastion (your client Internet firewall may be blocking WebSockets traffic or similar), or between the Azure Bastion and your target VM. Most cases include an NSG applied either to AzureBastionSubnet, or on your target VM subnet that is blocking the RDP/SSH traffic in your virtual network. Allow WebSockets traffic on your client internet firewall, and check the NSGs on your target VM subnet. See [Unable to connect to virtual machine](#connectivity) to learn how to use **Connection Troubleshoot** to troubleshoot your connectivity issues.
+**A:** This happens when there's either a network connectivity issue between your web browser and Azure Bastion (your client Internet firewall might be blocking WebSockets traffic or similar), or between the Azure Bastion and your target VM. Most cases include an NSG applied either to AzureBastionSubnet, or on your target VM subnet that is blocking the RDP/SSH traffic in your virtual network. Allow WebSockets traffic on your client internet firewall, and check the NSGs on your target VM subnet. See [Unable to connect to virtual machine](#connectivity) to learn how to use **Connection Troubleshoot** to troubleshoot your connectivity issues.
 
 ## Next steps
 

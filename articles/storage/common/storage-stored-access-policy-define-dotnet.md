@@ -3,16 +3,20 @@ title: Create a stored access policy with .NET
 titleSuffix: Azure Storage
 description: Use Azure Storage and .NET to create a stored access policy. Exercise additional levels of control over service-level shared access signatures on the server.
 services: storage
-author: pauljewellmsft
+author: stevenmatthew
 
 ms.service: azure-storage
+ms.subservice: storage-common-concepts
 ms.topic: how-to
 ms.date: 07/12/2021
-ms.author: pauljewell
+ms.author: shaas
 ms.reviewer: ozgun
-ms.subservice: storage-common-concepts
 ms.devlang: csharp
-ms.custom: devx-track-csharp, devx-track-dotnet
+ms.custom:
+  - devx-track-csharp
+  - devx-track-dotnet
+  - sfi-ropc-blocked
+# Customer intent: As a developer, I want to create a stored access policy using .NET for Azure Storage, so that I can manage and control shared access signatures with specified permissions and time constraints effectively.
 ---
 
 # Create a stored access policy with .NET
@@ -35,7 +39,7 @@ For more information about stored access policies, see [Create a stored access p
 
 ## Create a stored access policy
 
-The underlying REST operation to create a stored access policy is [Set Container ACL](/rest/api/storageservices/set-container-acl). You must authorize the operation to create a stored access policy via Shared Key by using the account access keys in a connection string. Authorizing the **Set Container ACL** operation with Azure AD credentials is not supported. For more information, see [Permissions for calling data operations](/rest/api/storageservices/authorize-with-azure-active-directory#permissions-for-calling-data-operations).
+The underlying REST operation to create a stored access policy is [Set Container ACL](/rest/api/storageservices/set-container-acl). You must authorize the operation to create a stored access policy via Shared Key by using the account access keys in a connection string. Authorizing the **Set Container ACL** operation with Microsoft Entra credentials is not supported. For more information, see [Permissions for calling data operations](/rest/api/storageservices/authorize-with-azure-active-directory#permissions-for-calling-data-operations).
 
 The following code examples create a stored access policy on a container. You can use the access policy to specify constraints for a service SAS on the container or its blobs.
 
@@ -97,3 +101,4 @@ async static Task CreateStoredAccessPolicyAsync(string containerName)
 ## Resources
 
 For related code samples using deprecated .NET version 11.x SDKs, see [Code samples using .NET version 11.x](../blobs/blob-v11-samples-dotnet.md#create-a-stored-access-policy).
+

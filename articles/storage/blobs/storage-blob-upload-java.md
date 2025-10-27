@@ -3,26 +3,40 @@ title: Upload a blob with Java
 titleSuffix: Azure Storage
 description: Learn how to upload a blob to your Azure Storage account using the Java client library.
 services: storage
-author: pauljewellmsft
+author: stevenmatthew
 
-ms.author: pauljewell
-ms.date: 08/02/2023
+ms.author: shaas
+ms.date: 03/25/2025
 ms.service: azure-blob-storage
 ms.topic: how-to
 ms.devlang: java
 ms.custom: devx-track-java, devguide-java, devx-track-extended-java
+# Customer intent: As a Java developer, I want to upload block blobs to Azure Storage using the Java client library, so that I can efficiently manage and store data in my cloud applications.
 ---
 
 # Upload a block blob with Java
 
+[!INCLUDE [storage-dev-guide-selector-upload](../../../includes/storage-dev-guides/storage-dev-guide-selector-upload.md)]
+
 This article shows how to upload a block blob using the [Azure Storage client library for Java](/java/api/overview/azure/storage-blob-readme). You can upload data to a block blob from a file path, a stream, a binary object, or a text string. You can also upload blobs with index tags.
 
-## Prerequisites
+[!INCLUDE [storage-dev-guide-prereqs-java](../../../includes/storage-dev-guides/storage-dev-guide-prereqs-java.md)]
 
-- This article assumes you already have a project set up to work with the Azure Blob Storage client library for Java. To learn about setting up your project, including package installation, adding `import` directives, and creating an authorized client object, see [Get Started with Azure Storage and Java](storage-blob-java-get-started.md).
-- The [authorization mechanism](../common/authorize-data-access.md) must have permissions to perform an upload operation. To learn more, see the authorization guidance for the following REST API operations:
-    - [Put Blob](/rest/api/storageservices/put-blob#authorization)
-    - [Put Block](/rest/api/storageservices/put-block#authorization)
+## Set up your environment
+
+[!INCLUDE [storage-dev-guide-project-setup-java](../../../includes/storage-dev-guides/storage-dev-guide-project-setup-java.md)]
+
+#### Add import statements
+
+Add the following `import` statements:
+
+:::code language="java" source="~/azure-storage-snippets/blobs/howto/Java/blob-devguide/blob-devguide-blobs/src/main/java/com/blobs/devguide/blobs/BlobUpload.java" id="Snippet_Imports":::
+
+#### Authorization
+
+The authorization mechanism must have the necessary permissions to upload a blob. For authorization with Microsoft Entra ID (recommended), you need Azure RBAC built-in role **Storage Blob Data Contributor** or higher. To learn more, see the authorization guidance for [Put Blob (REST API)](/rest/api/storageservices/put-blob#authorization) and [Put Block (REST API)](/rest/api/storageservices/put-block#authorization).
+
+[!INCLUDE [storage-dev-guide-create-client-java](../../../includes/storage-dev-guides/storage-dev-guide-create-client-java.md)]
 
 ## Upload data to a block blob
 
@@ -35,6 +49,9 @@ To upload a block blob from a file path, use the following method:
 - [uploadFromFile](/java/api/com.azure.storage.blob.blobclient)
 
 Each of these methods can be called using a [BlobClient](/java/api/com.azure.storage.blob.blobclient) object or a [BlockBlobClient](/java/api/com.azure.storage.blob.specialized.blockblobclient) object.
+
+> [!NOTE]
+> The Azure Storage client libraries don't support concurrent writes to the same blob. If your app requires multiple processes writing to the same blob, you should implement a strategy for concurrency control to provide a predictable experience. To learn more about concurrency strategies, see [Manage concurrency in Blob Storage](concurrency-manage.md).
 
 ## Upload a block blob from a local file path
 
@@ -60,17 +77,23 @@ You can define client library configuration options when uploading a blob. These
 
 ### Specify data transfer options on upload
 
-You can configure values in [ParallelTransferOptions](/java/api/com.azure.storage.blob.models.paralleltransferoptions) to improve performance for data transfer operations. The following table lists the methods you can use to set these options, along with a description:
+You can configure values in [ParallelTransferOptions](/java/api/com.azure.storage.blob.models.paralleltransferoptions) to improve performance for data transfer operations. The following values can be tuned for uploads based on the needs of your app:
 
-| Method | Description |
-| --- | --- |
-| [`setBlockSizeLong(Long blockSize)`](/java/api/com.azure.storage.blob.models.paralleltransferoptions#com-azure-storage-blob-models-paralleltransferoptions-setblocksizelong(java-lang-long)) | Sets the block size to transfer for each request. For uploads, the parameter `blockSize` is the size of each block that's staged. This value also determines the number of requests that need to be made. If `blockSize` is large, the upload makes fewer network calls, but each individual call sends more data. |
-| [`setMaxConcurrency(Integer maxConcurrency)`](/java/api/com.azure.storage.blob.models.paralleltransferoptions#com-azure-storage-blob-models-paralleltransferoptions-setmaxconcurrency(java-lang-integer)) | The parameter `maxConcurrency` is the maximum number of parallel requests that are issued at any given time as a part of a single parallel transfer. This value applies per API call. |
-| [`setMaxSingleUploadSizeLong(Long maxSingleUploadSize)`](/java/api/com.azure.storage.blob.models.paralleltransferoptions#com-azure-storage-blob-models-paralleltransferoptions-setmaxsingleuploadsizelong(java-lang-long)) | If the size of the data is less than or equal to this value, it's uploaded in a single put rather than broken up into chunks. If the data is uploaded in a single shot, the block size is ignored. |
+- `blockSize`: The maximum block size to transfer for each request. You can set this value by using the [setBlockSizeLong](/java/api/com.azure.storage.blob.models.paralleltransferoptions#com-azure-storage-blob-models-paralleltransferoptions-setblocksizelong(java-lang-long)) method.
+- `maxSingleUploadSize`: If the size of the data is less than or equal to this value, it's uploaded in a single put rather than broken up into chunks. If the data is uploaded in a single shot, the block size is ignored. You can set this value by using the [setMaxSingleUploadSizeLong](/java/api/com.azure.storage.blob.models.paralleltransferoptions#com-azure-storage-blob-models-paralleltransferoptions-setmaxsingleuploadsizelong(java-lang-long)) method.
+- `maxConcurrency`: The maximum number of parallel requests issued at any given time as a part of a single parallel transfer. You can set this value by using the [setMaxConcurrency](/java/api/com.azure.storage.blob.models.paralleltransferoptions#com-azure-storage-blob-models-paralleltransferoptions-setmaxconcurrency(java-lang-integer)) method.
+
+Make sure you have the following `import` directive to use `ParallelTransferOptions` for an upload:
+
+```java
+import com.azure.storage.blob.models.*;
+```
 
 The following code example shows how to set values for [ParallelTransferOptions](/java/api/com.azure.storage.blob.models.paralleltransferoptions) and include the options as part of a [BlobUploadFromFileOptions](/java/api/com.azure.storage.blob.options.blobuploadfromfileoptions) instance. The values provided in this sample aren't intended to be a recommendation. To properly tune these values, you need to consider the specific needs of your app.
 
 :::code language="java" source="~/azure-storage-snippets/blobs/howto/Java/blob-devguide/blob-devguide-blobs/src/main/java/com/blobs/devguide/blobs/BlobUpload.java" id="Snippet_UploadBlobWithTransferOptions":::
+
+To learn more about tuning data transfer options, see [Performance tuning for uploads and downloads with Java](storage-blobs-tune-upload-download-java.md).
 
 ### Upload a block blob with index tags
 
@@ -100,6 +123,10 @@ You can have greater control over how to divide uploads into blocks by manually 
 
 To learn more about uploading blobs using the Azure Blob Storage client library for Java, see the following resources.
 
+### Code samples
+
+- [View code samples from this article (GitHub)](https://github.com/Azure-Samples/AzureStorageSnippets/blob/master/blobs/howto/Java/blob-devguide/blob-devguide-blobs/src/main/java/com/blobs/devguide/blobs/BlobUpload.java)
+
 ### REST API operations
 
 The Azure SDK for Java contains libraries that build on top of the Azure REST API, allowing you to interact with REST API operations through familiar Java paradigms. The client library methods for uploading blobs use the following REST API operations:
@@ -107,13 +134,11 @@ The Azure SDK for Java contains libraries that build on top of the Azure REST AP
 - [Put Blob](/rest/api/storageservices/put-blob) (REST API)
 - [Put Block](/rest/api/storageservices/put-block) (REST API)
 
-### Code samples
-
-- [View code samples from this article (GitHub)](https://github.com/Azure-Samples/AzureStorageSnippets/blob/master/blobs/howto/Java/blob-devguide/blob-devguide-blobs/src/main/java/com/blobs/devguide/blobs/BlobUpload.java)
-
 [!INCLUDE [storage-dev-guide-resources-java](../../../includes/storage-dev-guides/storage-dev-guide-resources-java.md)]
 
 ### See also
 
 - [Manage and find Azure Blob data with blob index tags](storage-manage-find-blobs.md)
 - [Use blob index tags to manage and find data on Azure Blob Storage](storage-blob-index-how-to.md)
+
+[!INCLUDE [storage-dev-guide-next-steps-java](../../../includes/storage-dev-guides/storage-dev-guide-next-steps-java.md)]

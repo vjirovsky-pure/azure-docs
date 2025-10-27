@@ -3,19 +3,22 @@ title: Create an account SAS with Python
 titleSuffix: Azure Storage
 description: Learn how to create an account shared access signature (SAS) using the Python client library.
 services: storage
-author: pauljewellmsft
+author: stevenmatthew
 
 ms.service: azure-storage
 ms.topic: how-to
-ms.date: 06/09/2023
-ms.author: pauljewell
+ms.date: 08/05/2024
+ms.author: shaas
 ms.reviewer: dineshm
 ms.subservice: storage-common-concepts
 ms.devlang: python
 ms.custom: devx-track-python, devguide-python
+# Customer intent: As a developer, I want to create an account shared access signature (SAS) using Python, so that I can delegate access to multiple service-level operations within my Azure Storage account.
 ---
 
 # Create an account SAS with Python
+
+[!INCLUDE [storage-dev-guide-selector-account-sas](../../../includes/storage-dev-guides/storage-dev-guide-selector-account-sas.md)]
 
 [!INCLUDE [storage-auth-sas-intro-include](../../../includes/storage-auth-sas-intro-include.md)]
 
@@ -34,7 +37,7 @@ Stored access policies aren't supported for an account SAS.
 
 An account SAS is signed with the account access key. The following code example shows how to call the [generate_account_sas](/python/api/azure-storage-blob/azure.storage.blob#azure-storage-blob-generate-account-sas) method to get the account SAS token string. 
 
-:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob-devguide-create-sas.py" id="Snippet_create_account_sas":::
+:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_create_sas.py" id="Snippet_create_account_sas":::
 
 Valid parameters for the [ResourceTypes](/python/api/azure-storage-blob/azure.storage.blob.resourcetypes) constructor are:
 
@@ -48,7 +51,7 @@ For available permissions, see [AccountSasPermissions](/python/api/azure-storage
 
 To use the account SAS to access service-level APIs for the Blob service, create a [BlobServiceClient](/python/api/azure-storage-blob/azure.storage.blob.blobserviceclient) object using the account SAS and the Blob Storage endpoint for your storage account.
 
-:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob-devguide-create-sas.py" id="Snippet_use_account_sas":::
+:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_create_sas.py" id="Snippet_use_account_sas":::
 
 You can also use an account SAS to authorize and work with a [ContainerClient](/python/api/azure-storage-blob/azure.storage.blob.containerclient) object or [BlobClient](/python/api/azure-storage-blob/azure.storage.blob.blobclient) object, if those resource types are granted access as part of the signature values.
 
@@ -58,7 +61,7 @@ To learn more about creating an account SAS using the Azure Blob Storage client 
 
 ### Code samples
 
-- [View code samples from this article (GitHub)](https://github.com/Azure-Samples/AzureStorageSnippets/blob/master/blobs/howto/python/blob-devguide-py/blob-devguide-create-sas.py)
+- [View code samples from this article (GitHub)](https://github.com/Azure-Samples/AzureStorageSnippets/blob/master/blobs/howto/python/blob-devguide-py/blob_devguide_create_sas.py)
 
 [!INCLUDE [storage-dev-guide-resources-python](../../../includes/storage-dev-guides/storage-dev-guide-resources-python.md)]
 
@@ -66,3 +69,4 @@ To learn more about creating an account SAS using the Azure Blob Storage client 
 
 - [Grant limited access to Azure Storage resources using shared access signatures (SAS)](storage-sas-overview.md)
 - [Create an account SAS](/rest/api/storageservices/create-account-sas)
+

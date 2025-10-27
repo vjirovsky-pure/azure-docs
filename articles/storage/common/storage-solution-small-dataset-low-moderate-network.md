@@ -5,9 +5,11 @@ services: storage
 author: stevenmatthew
 
 ms.service: azure-storage
-ms.topic: conceptual
+ms.subservice: storage-common-concepts
+ms.topic: concept-article
 ms.date: 12/05/2018
 ms.author: shaas
+# Customer intent: As a data manager with limited bandwidth, I want to find suitable Azure data transfer options for small datasets, so that I can effectively manage transfers without compromising performance.
 ---
 
 # Data transfer for small datasets with low to moderate network bandwidth

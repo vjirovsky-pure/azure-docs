@@ -3,12 +3,14 @@ title: Copy data from and to IBM Informix
 description: Learn how to copy data from and to IBM Informix using a copy activity in an Azure Data Factory or Synapse Analytics pipeline.
 titleSuffix: Azure Data Factory & Azure Synapse
 author: jianleishen
-ms.service: data-factory
 ms.subservice: data-movement
-ms.custom: synapse
 ms.topic: conceptual
-ms.date: 01/18/2023
+ms.date: 10/20/2023
 ms.author: jianleishen
+ms.custom:
+  - synapse
+  - sfi-image-nochange
+  - sfi-ropc-nochange
 ---
 
 # Copy data from and to IBM Informix using Azure Data Factory or Synapse Analytics
@@ -26,7 +28,7 @@ This Informix connector is supported for the following capabilities:
 |[Copy activity](copy-activity-overview.md) (source/sink)|&#9313;|
 |[Lookup activity](control-flow-lookup-activity.md)|&#9313;|
 
-<small>*&#9312; Azure integration runtime &#9313; Self-hosted integration runtime*</small>
+*&#9312; Azure integration runtime &#9313; Self-hosted integration runtime*
 
 For a list of data stores that are supported as sources/sinks by the copy activity, see the [Supported data stores](copy-activity-overview.md#supported-data-stores-and-formats) table.
 
@@ -229,5 +231,5 @@ To copy data to Informix, the following properties are supported in the copy act
 To learn details about the properties, check [Lookup activity](control-flow-lookup-activity.md).
 
 
-## Next steps
+## Related content
 For a list of data stores supported as sources and sinks by the copy activity, see [supported data stores](copy-activity-overview.md#supported-data-stores-and-formats).

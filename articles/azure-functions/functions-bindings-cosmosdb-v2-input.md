@@ -3,9 +3,17 @@ title: Azure Cosmos DB input binding for Functions 2.x and higher
 description: Learn to use the Azure Cosmos DB input binding in Azure Functions.
 ms.topic: reference
 ms.date: 03/02/2023
-ms.devlang: csharp, java, javascript, powershell, python
-ms.custom: devx-track-csharp, devx-track-python, ignite-2022, devx-track-extended-java, devx-track-js
-zone_pivot_groups: programming-languages-set-functions-lang-workers
+ms.devlang: csharp
+# ms.devlang: csharp, java, javascript, powershell, python
+zone_pivot_groups: programming-languages-set-functions
+ms.custom:
+  - devx-track-csharp
+  - devx-track-python
+  - devx-track-extended-java
+  - devx-track-js
+  - devx-track-ts
+  - build-2025
+  - sfi-ropc-nochange
 ---
 
 # Azure Cosmos DB input binding for Azure Functions 2.x and higher
@@ -15,21 +23,14 @@ The Azure Cosmos DB input binding uses the SQL API to retrieve one or more Azure
 For information on setup and configuration details, see the [overview](./functions-bindings-cosmosdb-v2.md).
 
 > [!NOTE]
-> When the collection is [partitioned](../cosmos-db/partitioning-overview.md#logical-partitions), lookup operations must also specify the partition key value.
+> When the collection is [partitioned](/azure/cosmos-db/partitioning-overview#logical-partitions), lookup operations must also specify the partition key value.
 >
 
+::: zone pivot="programming-language-javascript,programming-language-typescript"
+[!INCLUDE [functions-nodejs-model-tabs-description](../../includes/functions-nodejs-model-tabs-description.md)]
+::: zone-end
 ::: zone pivot="programming-language-python"
-Azure Functions supports two programming models for Python. The way that you define your bindings depends on your chosen programming model.
-
-# [v2](#tab/python-v2)
-The Python v2 programming model lets you define bindings using decorators directly in your Python function code. For more information, see the [Python developer guide](functions-reference-python.md?pivots=python-mode-decorators#programming-model).
-
-# [v1](#tab/python-v1)
-The Python v1 programming model requires you to define bindings in a separate *function.json* file in the function folder. For more information, see the [Python developer guide](functions-reference-python.md?pivots=python-mode-configuration#programming-model).
-
----
-
-This article supports both programming models.
+[!INCLUDE [functions-bindings-python-models-intro](../../includes/functions-bindings-python-models-intro.md)]
 
 ::: zone-end
 
@@ -41,7 +42,30 @@ Unless otherwise noted, examples in this article target version 3.x of the [Azur
 
 [!INCLUDE [functions-bindings-csharp-intro](../../includes/functions-bindings-csharp-intro.md)]
 
-# [In-process](#tab/in-process)
+[!INCLUDE [functions-in-process-model-retirement-note](../../includes/functions-in-process-model-retirement-note.md)]
+
+# [Isolated worker model](#tab/isolated-process)
+
+This section contains examples that require version 3.x of Azure Cosmos DB extension and 5.x of Azure Storage extension. If not already present in your function app, add reference to the following NuGet packages:
+
+  * [Microsoft.Azure.Functions.Worker.Extensions.CosmosDB](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.CosmosDB)
+  * [Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues/5.0.0)
+
+* [Queue trigger, look up ID from JSON](#queue-trigger-look-up-id-from-json-isolated)
+
+The examples refer to a simple `ToDoItem` type:
+
+:::code language="csharp" source="~/azure-functions-dotnet-worker/samples/Extensions/CosmosDB/CosmosInputBindingFunctions.cs" range="244-264":::
+
+<a id="queue-trigger-look-up-id-from-json-isolated"></a>
+
+### Queue trigger, look up ID from JSON
+
+The following example shows a function that retrieves a single document. The function is triggered by a JSON message in the storage queue. The queue trigger parses the JSON into an object of type `ToDoItemLookup`, which contains the ID and partition key value to retrieve. That ID and partition key value are used to return a `ToDoItem` document from the specified database and collection.
+
+:::code language="csharp" source="~/azure-functions-dotnet-worker/samples/Extensions/CosmosDB/CosmosInputBindingFunctions.cs" range="244-264":::
+
+# [In-process model](#tab/in-process)
 
 This section contains the following examples for using [in-process C# class library functions](functions-dotnet-class-library.md) with extension version 3.x:
 
@@ -229,7 +253,7 @@ The following example shows a [C# function](functions-dotnet-class-library.md) t
 The example shows how to use a binding expression in the `SqlQuery` parameter. You can pass route data to the `SqlQuery` parameter as shown, but currently [you can't pass query string values](https://github.com/Azure/azure-functions-host/issues/2554#issuecomment-392084583).
 
 > [!NOTE]
-> If you need to query by just the ID, it is recommended to use a look up, like the [previous examples](#http-trigger-look-up-id-from-query-string-c), as it will consume less [request units](../cosmos-db/request-units.md). Point read operations (GET) are [more efficient](../cosmos-db/optimize-cost-reads-writes.md) than queries by ID.
+> If you need to query by just the ID, it is recommended to use a lookup, like the [previous examples](#http-trigger-look-up-id-from-query-string-c), as it consumes less [request units](/azure/cosmos-db/request-units). Point read operations (GET) are [more efficient](/azure/cosmos-db/optimize-cost-reads-writes) than queries by ID.
 >
 
 ```cs
@@ -436,27 +460,6 @@ namespace CosmosDBSamplesV2
 }
 ```
 
-# [Isolated process](#tab/isolated-process)
-
-This section contains examples that require version 3.x of Azure Cosmos DB extension and 5.x of Azure Storage extension. If not already present in your function app, add reference to the following NuGet packages:
-
-  * [Microsoft.Azure.Functions.Worker.Extensions.CosmosDB](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.CosmosDB)
-  * [Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues/5.0.0)
-
-* [Queue trigger, look up ID from JSON](#queue-trigger-look-up-id-from-json-isolated)
-
-The examples refer to a simple `ToDoItem` type:
-
-:::code language="csharp" source="~/azure-functions-dotnet-worker/samples/Extensions/CosmosDB/CosmosInputBindingFunctions.cs" range="244-264":::
-
-<a id="queue-trigger-look-up-id-from-json-isolated"></a>
-
-### Queue trigger, look up ID from JSON
-
-The following example shows a function that retrieves a single document. The function is triggered by a JSON message in the storage queue. The queue trigger parses the JSON into an object of type `ToDoItemLookup`, which contains the ID and partition key value to retrieve. That ID and partition key value are used to return a `ToDoItem` document from the specified database and collection.
-
-:::code language="csharp" source="~/azure-functions-dotnet-worker/samples/Extensions/CosmosDB/CosmosInputBindingFunctions.cs" range="244-264":::
-
 ---
 
 ::: zone-end
@@ -639,7 +642,7 @@ public class DocByIdFromRoute {
 The following example shows a Java function that retrieves a single document. The function is triggered by an HTTP request that uses a route parameter to specify the ID to look up. That ID is used to retrieve a document from the specified database and collection, converting the result set to a `ToDoItem[]`, since many documents may be returned, depending on the query criteria.
 
 > [!NOTE]
-> If you need to query by just the ID, it is recommended to use a look up, like the [previous examples](#http-trigger-look-up-id-from-query-string---pojo-parameter-java), as it will consume less [request units](../cosmos-db/request-units.md). Point read operations (GET) are [more efficient](../cosmos-db/optimize-cost-reads-writes.md) than queries by ID.
+> If you need to query by just the ID, it is recommended to use a lookup, like the [previous examples](#http-trigger-look-up-id-from-query-string---pojo-parameter-java), as it consumes less [request units](/azure/cosmos-db/request-units). Point read operations (GET) are [more efficient](/azure/cosmos-db/optimize-cost-reads-writes) than queries by ID.
 >
 
 ```java
@@ -725,6 +728,82 @@ public class DocsFromRouteSqlQuery {
 ```
 
 ::: zone-end  
+::: zone pivot="programming-language-typescript"  
+
+This section contains the following examples that read a single document by specifying an ID value from various sources:
+
+* [Queue trigger, look up ID from JSON](#queue-trigger-look-up-id-from-json-typescript)
+* [HTTP trigger, look up ID from query string](#http-trigger-look-up-id-from-query-string-typescript)
+* [HTTP trigger, look up ID from route data](#http-trigger-look-up-id-from-route-data-typescript)
+* [Queue trigger, get multiple docs, using SqlQuery](#queue-trigger-get-multiple-docs-using-sqlquery-typescript)
+
+<a id="queue-trigger-look-up-id-from-json-typescript"></a>
+
+### Queue trigger, look up ID from JSON
+
+The following example shows a [TypeScript function](functions-reference-node.md?tabs=typescript) that reads a single document and updates the document's text value.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="typescript" source="~/azure-functions-nodejs-v4/ts/src/functions/cosmosInput1.ts" :::
+
+# [Model v3](#tab/nodejs-v3)
+
+TypeScript samples are not documented for model v3.
+
+---
+
+<a id="http-trigger-look-up-id-from-query-string-typescript"></a>
+
+### HTTP trigger, look up ID from query string
+
+The following example shows a [TypeScript function](functions-reference-node.md?tabs=typescript) that retrieves a single document. The function is triggered by an HTTP request that uses a query string to specify the ID and partition key value to look up. That ID and partition key value are used to retrieve a `ToDoItem` document from the specified database and collection.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="typescript" source="~/azure-functions-nodejs-v4/ts/src/functions/cosmosInput2.ts" :::
+
+# [Model v3](#tab/nodejs-v3)
+
+TypeScript samples are not documented for model v3.
+
+---
+
+<a id="http-trigger-look-up-id-from-route-data-typescript"></a>
+
+### HTTP trigger, look up ID from route data
+
+The following example shows a [TypeScript function](functions-reference-node.md?tabs=typescript) that retrieves a single document. The function is triggered by an HTTP request that uses route data to specify the ID and partition key value to look up. That ID and partition key value are used to retrieve a `ToDoItem` document from the specified database and collection.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="typescript" source="~/azure-functions-nodejs-v4/ts/src/functions/cosmosInput3.ts" :::
+
+# [Model v3](#tab/nodejs-v3)
+
+TypeScript samples are not documented for model v3.
+
+---
+
+<a id="queue-trigger-get-multiple-docs-using-sqlquery-typescript"></a>
+
+### Queue trigger, get multiple docs, using SqlQuery
+
+The following example shows a [TypeScript function](functions-reference-node.md?tabs=typescript) that retrieves multiple documents specified by a SQL query, using a queue trigger to customize the query parameters.
+
+The queue trigger provides a parameter `departmentId`. A queue message of `{ "departmentId" : "Finance" }` would return all records for the finance department.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="typescript" source="~/azure-functions-nodejs-v4/ts/src/functions/cosmosInput4.ts" :::
+
+# [Model v3](#tab/nodejs-v3)
+
+TypeScript samples are not documented for model v3.
+
+---
+
+::: zone-end  
 ::: zone pivot="programming-language-javascript"  
 
 This section contains the following examples that read a single document by specifying an ID value from various sources:
@@ -738,7 +817,13 @@ This section contains the following examples that read a single document by spec
 
 ### Queue trigger, look up ID from JSON
 
-The following example shows an Azure Cosmos DB input binding in a *function.json* file and a [JavaScript function](functions-reference-node.md) that uses the binding. The function reads a single document and updates the document's text value.
+The following example shows a [JavaScript function](functions-reference-node.md) that reads a single document and updates the document's text value.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="javascript" source="~/azure-functions-nodejs-v4/js/src/functions/cosmosInput1.js" :::
+
+# [Model v3](#tab/nodejs-v3)
 
 Here's the binding data in the *function.json* file:
 
@@ -777,11 +862,19 @@ Here's the JavaScript code:
     };
 ```
 
+---
+
 <a id="http-trigger-look-up-id-from-query-string-javascript"></a>
 
 ### HTTP trigger, look up ID from query string
 
 The following example shows a [JavaScript function](functions-reference-node.md) that retrieves a single document. The function is triggered by an HTTP request that uses a query string to specify the ID and partition key value to look up. That ID and partition key value are used to retrieve a `ToDoItem` document from the specified database and collection.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="javascript" source="~/azure-functions-nodejs-v4/js/src/functions/cosmosInput2.js" :::
+
+# [Model v3](#tab/nodejs-v3)
 
 Here's the *function.json* file:
 
@@ -833,12 +926,19 @@ module.exports = async function (context, req, toDoItem) {
     }
 };
 ```
+---
 
 <a id="http-trigger-look-up-id-from-route-data-javascript"></a>
 
 ### HTTP trigger, look up ID from route data
 
 The following example shows a [JavaScript function](functions-reference-node.md) that retrieves a single document. The function is triggered by an HTTP request that uses route data to specify the ID and partition key value to look up. That ID and partition key value are used to retrieve a `ToDoItem` document from the specified database and collection.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="javascript" source="~/azure-functions-nodejs-v4/js/src/functions/cosmosInput3.js" :::
+
+# [Model v3](#tab/nodejs-v3)
 
 Here's the *function.json* file:
 
@@ -892,13 +992,21 @@ module.exports = async function (context, req, toDoItem) {
 };
 ```
 
+---
+
 <a id="queue-trigger-get-multiple-docs-using-sqlquery-javascript"></a>
 
 ### Queue trigger, get multiple docs, using SqlQuery
 
-The following example shows an Azure Cosmos DB input binding in a *function.json* file and a [JavaScript function](functions-reference-node.md) that uses the binding. The function retrieves multiple documents specified by a SQL query, using a queue trigger to customize the query parameters.
+The following example shows a [JavaScript function](functions-reference-node.md) that retrieves multiple documents specified by a SQL query, using a queue trigger to customize the query parameters.
 
 The queue trigger provides a parameter `departmentId`. A queue message of `{ "departmentId" : "Finance" }` would return all records for the finance department.
+
+# [Model v4](#tab/nodejs-v4)
+
+:::code language="javascript" source="~/azure-functions-nodejs-v4/js/src/functions/cosmosInput4.js" :::
+
+# [Model v3](#tab/nodejs-v3)
 
 Here's the binding data in the *function.json* file:
 
@@ -921,12 +1029,13 @@ Here's the JavaScript code:
 ```javascript
 module.exports = async function (context, input) {
   var documents = context.bindings.documents;
-  for (var i = 0; i < documents.length; i++) {
-    var document = documents[i];
+  for (const document of documents) {
     // operate on each document
   }
 };
 ```
+
+---
 
 ::: zone-end  
 ::: zone pivot="programming-language-powershell"  
@@ -1157,6 +1266,34 @@ This section contains the following examples that read a single document by spec
 <a id="queue-trigger-look-up-id-from-json-python"></a>
 
 The examples depend on whether you use the [v1 or v2 Python programming model](functions-reference-python.md).
+
+### Using SDK-Type Bindings for Cosmos DB (Preview)
+This example uses SDK types to directly access the underlying [`CosmosClient`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-cosmosdb/samples/cosmosdb_samples_cosmosclient/function_app.py) object provided by the Cosmos DB input binding:
+
+The function loops through all the databases and logs their IDs.
+```python
+import logging
+import azure.functions as func
+import azurefunctions.extensions.bindings.cosmosdb as cosmos
+
+app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+
+@app.route(route="cosmos")
+@app.cosmos_db_input(arg_name="client",
+                     connection="CosmosDBConnection",
+                     database_name=None,
+                     container_name=None)
+def get_docs(req: func.HttpRequest, client: cosmos.CosmosClient):
+    databases = client.list_databases()
+    for db in databases:
+        logging.info(f"Found database with ID: {db.get('id')}")
+
+    return "ok"
+```
+
+For examples of using other SDK types, see the [`ContainerProxy`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-cosmosdb/samples/cosmosdb_samples_containerproxy/function_app.py) and [`DatabaseProxy`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-cosmosdb/samples/cosmosdb_samples_databaseproxy/function_app.py) samples. For a step-by-step tutorial on how to include SDK-type bindings in your function app, follow the [Python SDK Bindings for CosmosDB Sample](https://github.com/Azure-Samples/azure-functions-cosmosdb-sdk-bindings-python).
+
+To learn more, including what other SDK type bindings are supported, see [SDK type bindings](functions-reference-python.md#sdk-type-bindings).
 
 ### Queue trigger, look up ID from JSON
 
@@ -1403,7 +1540,7 @@ Here's the binding data in the *function.json* file:
 ::: zone pivot="programming-language-csharp"
 ## Attributes
 
-Both [in-process](functions-dotnet-class-library.md) and [isolated worker process](dotnet-isolated-process-guide.md) C# libraries use attributes to define the function. C# script instead uses a function.json configuration file as described in the [C# scripting guide](./functions-reference-csharp.md#cosmos-db-input).
+Both [in-process](functions-dotnet-class-library.md) and [isolated worker process](dotnet-isolated-process-guide.md) C# libraries use attributes to define the function. C# script instead uses a function.json configuration file as described in the [C# scripting guide](./functions-reference-csharp.md#azure-cosmos-db-v2-input).
 
 # [Extension 4.x+](#tab/extensionv4/in-process)
 
@@ -1430,7 +1567,20 @@ Both [in-process](functions-dotnet-class-library.md) and [isolated worker proces
 
 _Applies only to the Python v2 programming model._
 
-For Python v2 functions defined using a decorator, the following properties on the `cosmos_db_input`:
+Python v2 functions are defined using the `cosmos_db_input` decorator, which supports these properties, depending on the extension version:
+
+### [Extension 4.x+](#tab/extensionv4)
+
+| Property    | Description |
+|-------------|-----------------------------|
+|`arg_name` | The variable name used in function code that represents the list of documents with changes. |
+|`database_name`  | The name of the Azure Cosmos DB database with the collection being monitored. |
+|`container_name`  | The name of the Azure Cosmos DB collection being monitored. |
+|`connection` | The connection string of the Azure Cosmos DB being monitored. |
+|`partition_key` | The partition key of the Azure Cosmos DB being monitored. |
+|`id` | The ID of the document to retrieve. |
+
+### [Functions 2.x+](#tab/functionsv2)
 
 | Property    | Description |
 |-------------|-----------------------------|
@@ -1440,6 +1590,8 @@ For Python v2 functions defined using a decorator, the following properties on t
 |`connection_string_setting` | The connection string of the Azure Cosmos DB being monitored. |
 |`partition_key` | The partition key of the Azure Cosmos DB being monitored. |
 |`id` | The ID of the document to retrieve. |
+
+---
 
 For Python functions defined by using *function.json*, see the [Configuration](#configuration) section.
 ::: zone-end
@@ -1459,7 +1611,7 @@ From the [Java functions runtime library](/java/api/overview/azure/functions/run
 + [sqlQuery](/java/api/com.microsoft.azure.functions.annotation.cosmosdbinput.sqlquery)
 
 ::: zone-end  
-::: zone pivot="programming-language-javascript,programming-language-powershell,programming-language-python"  
+::: zone pivot="programming-language-javascript,programming-language-typescript,programming-language-powershell,programming-language-python"  
 ## Configuration
 ::: zone-end
 
@@ -1467,9 +1619,25 @@ From the [Java functions runtime library](/java/api/overview/azure/functions/run
 _Applies only to the Python v1 programming model._
 
 ::: zone-end
-::: zone pivot="programming-language-javascript,programming-language-powershell,programming-language-python"  
+::: zone pivot="programming-language-javascript,programming-language-typescript"  
+
+# [Model v4](#tab/nodejs-v4)
+
+The following table explains the properties that you can set on the `options` object passed to the `input.cosmosDB()` method. The `type`, `direction`, and `name` properties don't apply to the v4 model.
+
+# [Model v3](#tab/nodejs-v3)
 
 The following table explains the binding configuration properties that you set in the *function.json* file, where properties differ by extension version:  
+
+---
+
+::: zone-end
+::: zone pivot="programming-language-powershell,programming-language-python"  
+
+The following table explains the binding configuration properties that you set in the *function.json* file, where properties differ by extension version:
+
+::: zone-end  
+::: zone pivot="programming-language-javascript,programming-language-typescript,programming-language-powershell,programming-language-python"  
 
 # [Extension 4.x+](#tab/extensionv4)
 
@@ -1531,14 +1699,33 @@ See [Binding types](./functions-bindings-cosmosdb-v2.md?tabs=isolated-process%2C
 ::: zone pivot="programming-language-java"
 From the [Java functions runtime library](/java/api/overview/azure/functions/runtime), the [@CosmosDBInput](/java/api/com.microsoft.azure.functions.annotation.cosmosdbinput) annotation exposes Azure Cosmos DB data to the function. This annotation can be used with native Java types, POJOs, or nullable values using `Optional<T>`.
 ::: zone-end  
-::: zone pivot="programming-language-javascript,programming-language-powershell"  
-Updates are not made automatically upon function exit. Instead, use `context.bindings.<documentName>In` and `context.bindings.<documentName>Out` to make updates. See the [JavaScript example](#example) for more detail.
+::: zone pivot="programming-language-javascript,programming-language-typescript"  
+
+# [Model v4](#tab/nodejs-v4)
+
+Access the document by using `context.extraInputs.get()`.
+
+# [Model v3](#tab/nodejs-v3)
+
+Access the document by using `context.bindings.<name>` where `<name>` is the value specified in the `name` property of *function.json*.
+
+---
+
 ::: zone-end  
 ::: zone pivot="programming-language-powershell"  
 Updates to documents are not made automatically upon function exit. To update documents in a function use an [output binding](./functions-bindings-cosmosdb-v2-input.md). See the [PowerShell example](#example) for more detail.
 ::: zone-end   
 ::: zone pivot="programming-language-python"  
 Data is made available to the function via a `DocumentList` parameter. Changes made to the document are not automatically persisted.
+Functions also support Python SDK type bindings for Azure Cosmos, which lets you work with data using these underlying SDK types:
+
++ [`ContainerProxy`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-cosmosdb/samples/cosmosdb_samples_containerproxy/function_app.py)
++ [`CosmosClient`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-cosmosdb/samples/cosmosdb_samples_cosmosclient/function_app.py)
++ [`DatabaseProxy`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-cosmosdb/samples/cosmosdb_samples_databaseproxy/function_app.py)
+
+> [!IMPORTANT]  
+> > Support for CosmosDB SDK types for Python is in Preview and is only supported for the Python v2 programming model. For more information, see [SDK types in Python](./functions-reference-python.md#sdk-type-bindings).
+
 ::: zone-end  
 
 [!INCLUDE [functions-cosmosdb-connections](../../includes/functions-cosmosdb-connections.md)]

@@ -2,11 +2,14 @@
 title: Create and use private endpoints for Azure Backup
 description: Understand the process to creating private endpoints for Azure Backup where using private endpoints helps maintain the security of your resources.
 ms.topic: how-to
-ms.date: 04/26/2023
-ms.custom: devx-track-azurepowershell
-ms.service: backup
+ms.date: 06/26/2025
+ms.service: azure-backup
 author: AbhishekMallick-MS
-ms.author: v-abhmallick
+ms.author: v-mallicka
+ms.custom:
+  - devx-track-azurepowershell
+  - sfi-image-nochange
+# Customer intent: "As a cloud administrator, I want to create and manage private endpoints for Azure Backup, so that I can ensure secure communication and access to my backup resources within a virtual network."
 ---
 
 # Create and use private endpoints (v1 experience) for Azure Backup
@@ -48,7 +51,8 @@ Follow these steps:
    :::image type="content" source="./media/backup-azure-private-endpoints/deny-public-network.png" alt-text="Screenshot showing how to select the Deny option.":::
 
    >[!Note]
-   >- Once you deny access, you can still access the vault, but you can't move data to/from networks that don't contain private endpoints. For more information, see [Create private endpoints for Azure Backup](#create-private-endpoints-for-azure-backup).
+   >- After you deny access, you can still access the vault, but you can't move data to/from networks that don't contain private endpoints. For more information, see [Create private endpoints for Azure Backup](#create-private-endpoints-for-azure-backup).
+   >- If public access is denied and a private endpoint isn’t enabled, backups succeed, but restore operations fail for all workloads except Virtual Machines. However, Virtual Machine item-level recovery also fails. Ensure that you configure network restrictions carefully.
    >- Denying public access is currently not supported for [vaults that have cross-regions restore](backup-create-rs-vault.md#set-cross-region-restore) enabled.
 
 3. Select **Apply** to save the changes.
@@ -219,7 +223,7 @@ Once the private endpoints created for the vault in your VNet have been approved
 
 In the VM in the locked down network, ensure the following:
 
-1. The VM should have access to Azure AD.
+1. The VM should have access to Microsoft Entra ID.
 2. Execute **nslookup** on the backup URL (`xxxxxxxx.privatelink.<geo>.backup.windowsazure.com`) from your VM, to ensure connectivity. This should return the private IP assigned in your virtual network.
 
 ### Configure backup
@@ -256,7 +260,7 @@ After you run the first backup and you're using a custom DNS server (without con
 1. Navigate to your Resource Group, and search for the private endpoint you created.
 1. Aside from the three private endpoints discussed earlier, you'll now see a fourth private endpoint with its name starting with `<the name of the private endpoint>_prot` and are suffixed with `_blob`.
 
-    ![Private endpoing with suffix "prot"](./media/private-endpoints/private-endpoint-prot.png)
+    ![Private endpoint with suffix "prot"](./media/private-endpoints/private-endpoint-prot.png)
 
 1. Navigate to this new private endpoint. In the DNS configuration option, you'll see a record with an FQDN and an IP address. Add these to your private DNS server, in addition to the ones described earlier.
 
@@ -285,8 +289,8 @@ When using the MARS Agent to back up your on-premises resources, make sure your 
 But if you remove private endpoints for the vault after a MARS agent has been registered to it, you'll need to re-register the container with the vault. You don't need to stop protection for them.
 
 >[!NOTE]
-> - Private endpoints are supported with only DPM server 2022 and later.
-> - Private endpoints are not yet supported with MABS.
+>- Private endpoints are supported with only *DPM server 2022 (10.22.123.0)* and later.
+>- Private endpoints are supported with only *MABS V4 (14.0.30.0)* and later.
 
 ## Deleting Private EndPoints
 
@@ -538,7 +542,7 @@ To configure a proxy server for Azure VM or on-premises machine, follow these st
    | ------- | ------ | ---- |
    | Azure Backup | *.backup.windowsazure.com | 443 |
    | Azure Storage | *.blob.core.windows.net <br><br> *.queue.core.windows.net <br><br> *.blob.storage.azure.net | 443 |
-   | Azure active directory <br><br> Updated domain URLs mentioned under sections 56 and 59 in [Microsoft 365 Common and Office Online](/microsoft-365/enterprise/urls-and-ip-address-ranges?view=o365-worldwide&preserve-view=true#microsoft-365-common-and-office-online). | *.msftidentity.com, *.msidentity.com, account.activedirectory.windowsazure.com, accounts.accesscontrol.windows.net, adminwebservice.microsoftonline.com, api.passwordreset.microsoftonline.com, autologon.microsoftazuread-sso.com, becws.microsoftonline.com, clientconfig.microsoftonline-p.net, companymanager.microsoftonline.com, device.login.microsoftonline.com, graph.microsoft.com, graph.windows.net, login.microsoft.com, login.microsoftonline.com, login.microsoftonline-p.com, login.windows.net, logincert.microsoftonline.com, loginex.microsoftonline.com, login-us.microsoftonline.com, nexus.microsoftonline-p.com, passwordreset.microsoftonline.com, provisioningapi.microsoftonline.com <br><br> 20.190.128.0/18, 40.126.0.0/18, 2603:1006:2000::/48, 2603:1007:200::/48, 2603:1016:1400::/48, 2603:1017::/48, 2603:1026:3000::/48, 2603:1027:1::/48, 2603:1036:3000::/48, 2603:1037:1::/48, 2603:1046:2000::/48, 2603:1047:1::/48, 2603:1056:2000::/48, 2603:1057:2::/48 <br><br> *.hip.live.com, *.microsoftonline.com, *.microsoftonline-p.com, *.msauth.net, *.msauthimages.net, *.msecnd.net, *.msftauth.net, *.msftauthimages.net, *.phonefactor.net, enterpriseregistration.windows.net, management.azure.com, policykeyservice.dc.ad.msft.net | As applicable. |
+   | Microsoft Entra ID <br><br> Updated domain URLs mentioned under sections 56 and 59 in [Microsoft 365 Common and Office Online](/microsoft-365/enterprise/urls-and-ip-address-ranges?view=o365-worldwide&preserve-view=true#microsoft-365-common-and-office-online). | *.msftidentity.com, *.msidentity.com, account.activedirectory.windowsazure.com, accounts.accesscontrol.windows.net, adminwebservice.microsoftonline.com, api.passwordreset.microsoftonline.com, autologon.microsoftazuread-sso.com, becws.microsoftonline.com, clientconfig.microsoftonline-p.net, companymanager.microsoftonline.com, device.login.microsoftonline.com, graph.microsoft.com, graph.windows.net, login.microsoft.com, login.microsoftonline.com, login.microsoftonline-p.com, login.windows.net, logincert.microsoftonline.com, loginex.microsoftonline.com, login-us.microsoftonline.com, nexus.microsoftonline-p.com, passwordreset.microsoftonline.com, provisioningapi.microsoftonline.com <br><br> 20.190.128.0/18, 40.126.0.0/18, 2603:1006:2000::/48, 2603:1007:200::/48, 2603:1016:1400::/48, 2603:1017::/48, 2603:1026:3000::/48, 2603:1027:1::/48, 2603:1036:3000::/48, 2603:1037:1::/48, 2603:1046:2000::/48, 2603:1047:1::/48, 2603:1056:2000::/48, 2603:1057:2::/48 <br><br> *.hip.live.com, *.microsoftonline.com, *.microsoftonline-p.com, *.msauth.net, *.msauthimages.net, *.msecnd.net, *.msftauth.net, *.msftauthimages.net, *.phonefactor.net, enterpriseregistration.windows.net, management.azure.com, policykeyservice.dc.ad.msft.net | As applicable. |
 
 1. Allow access to these domains in the proxy server and link private DNS zone ( `*.privatelink.<geo>.backup.windowsazure.com`, `*.privatelink.blob.core.windows.net`, `*.privatelink.queue.core.windows.net`) with the VNET where proxy server is created or uses a custom DNS server with the respective DNS entries. <br><br> The VNET where proxy server is running and the VNET where private endpoint NIC is created should be peered, which would allow the proxy server to redirect the requests to private IP.
 
@@ -553,7 +557,9 @@ To configure a proxy server for Azure VM or on-premises machine, follow these st
 
 The following diagram shows a setup (while using the Azure Private DNS zones) with a proxy server, whose VNet is linked to a private DNS zone with required DNS entries. The proxy server can also have its own custom DNS server, and the above domains can be conditionally forwarded to 168.63.129.16. If you're using a custom DNS server/host file for DNS resolution, see the sections on [managing DNS entries](#manage-dns-records) and [configuring protection](#configure-backup).
 
-:::image type="content" source="./media/private-endpoints/setup-with-proxy-server-inline.png" alt-text="Diagram showing a setup with a proxy server." lightbox="./media/private-endpoints/setup-with-proxy-server-expanded.png":::
+:::image type="content" source="./media/private-endpoints/setup-with-proxy-server.png" alt-text="Diagram showing a setup with a proxy server." lightbox="./media/private-endpoints/setup-with-proxy-server.png":::
+
+3. To auto-update the MARS Agent allow access to `download.microsoft.com/download/MARSagent/*`.
 
 ### Create DNS entries when the DNS server/DNS zone is present in another subscription
 
@@ -626,9 +632,9 @@ To set up private endpoint for Recovery Services vault correctly through this wo
 
 ## Frequently asked questions
 
-### Can I create a private endpoint for an existing Backup vault?<br>
+### Can I create a private endpoint for an existing Recovery Services vault?<br>
 
-No, private endpoints can be created for new Backup vaults only. So the vault must not have ever had any items protected to it. In fact, no attempts to protect any items to the vault can be made before creating private endpoints.
+No, private endpoints can be created for new Recovery Services Vaults only. So the vault must not have ever had any items protected to it. In fact, no attempts to protect any items to the vault can be made before creating private endpoints.
 
 ### I tried to protect an item to my vault, but it failed and the vault still doesn't contain any items protected to it. Can I create private endpoints for this vault?<br>
 

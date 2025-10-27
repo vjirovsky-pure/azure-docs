@@ -4,17 +4,17 @@ titleSuffix: Microsoft Azure Maps
 description: This article demonstrates how to use the 3D column layer in an Azure Maps Power BI visual.
 author: deniseatmicrosoft
 ms.author: limingchen
-ms.date: 11/29/2021
+ms.date: 01/17/2025
 ms.topic: how-to
 ms.service: azure-maps
-services: azure-maps
+ms.subservice: power-bi-visual
 ---
 
 # Add a 3D column layer
 
 The **3D column layer** is useful for taking data to the next dimension by allowing visualization of location data as 3D cylinders on the map. Similar to the bubble layer, the 3D column chart can easily visualize two metrics at the same time using color and relative height. In order for the columns to have height, a measure needs to be added to the **Size** bucket of the **Fields** pane. If a measure isn't provided, columns with no height show as flat squares or circles depending on the **Shape** option.
 
-:::image type="content" source="./media/power-bi-visual/3d-column-layer-styled.png" alt-text="A map displaying point data using the 3D column layer":::
+:::image type="content" source="./media/power-bi-visual/3d-column-layer-styled.png" alt-text="A map displaying point data using the 3D column layer." lightbox="./media/power-bi-visual/3d-column-layer-styled.png":::
 
 Users can tilt and rotate the map to view your data from different perspectives. The map can be tilted or pitched using one of the following methods.
 
@@ -46,7 +46,7 @@ The following are all settings in the **Format** pane that are available in the 
 | Layer position       | Specifies the position of the layer relative to other map layers. |
 
 > [!NOTE]
-> If the columns have a small width value and the **Scale width on zoom** option is disabled, they may disappear when zoomed out a lot as their rendered width would be less than a pixel in size. However, when the **Scale width on zoom** option is enabled, additional calculations are performed when the zoom level changes which can impact performance of large data sets.
+> If the columns have a small width value and the **Scale width on zoom** option is disabled, they can disappear when zoomed out a lot as their rendered width would be less than a pixel in size. However, when the **Scale width on zoom** option is enabled, more calculations are performed when the zoom level changes which can affect performance of large data sets.
 
 ## Next steps
 

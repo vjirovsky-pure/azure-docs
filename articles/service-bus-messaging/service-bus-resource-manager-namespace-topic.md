@@ -1,7 +1,6 @@
 ---
 title: Create Azure Service Bus namespace topic using a template
 description: 'Quickstart: Create a Service Bus namespace with topic and subscription using Azure Resource Manager template'
-documentationcenter: .net
 author: spelluru
 ms.author: spelluru
 ms.date: 09/27/2021
@@ -149,6 +148,10 @@ Now that you've created and deployed resources using Azure Resource Manager, lea
 
 * [Manage Service Bus with PowerShell](service-bus-manage-with-ps.md)
 * [Manage Service Bus resources with the Service Bus Explorer](https://github.com/paolosalvatori/ServiceBusExplorer/releases)
+
+> [!NOTE]
+> To create or manage topics and subscriptions using the REST API, see the [Service Bus REST API reference for subscriptions](https://learn.microsoft.com/rest/api/servicebus/create-subscription).
+
 
 [Authoring Azure Resource Manager templates]: ../azure-resource-manager/templates/syntax.md
 [Azure Quickstart Templates]: https://azure.microsoft.com/resources/templates/?term=service+bus

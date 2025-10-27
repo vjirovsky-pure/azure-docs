@@ -2,7 +2,7 @@
 title: How to create a WebPubSubServiceClient with Python and Azure Identity
 description: How to create a WebPubSubServiceClient with Python and Azure Identity
 author: terencefan
-ms.author: tefa
+ms.author: lianwei
 ms.date: 11/15/2021
 ms.service: azure-web-pubsub
 ms.custom: devx-track-python
@@ -60,7 +60,3 @@ This how-to guide shows you how to create a `WebPubSubServiceClient` using Micro
    ```
 
    Learn how to use this client, see [Azure Web PubSub service client library for Python](/python/api/overview/azure/messaging-webpubsubservice-readme)
-
-## Complete sample
-
-- [Simple chatroom with Microsoft Entra ID authorization](https://github.com/Azure/azure-webpubsub/tree/main/samples/python/chatapp-aad)

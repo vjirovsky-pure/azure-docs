@@ -1,50 +1,64 @@
 ---
-title: 'Configuration deployments in Azure Virtual Network Manager'
-description: Learn about how configuration deployments work in Azure Virtual Network Manager.
+title: 'Manage Configuration Deployments in Azure Virtual Network Manager'
+description: Learn how configuration deployments work in Azure Virtual Network Manager, and discover best practices to manage your network configurations effectively.
 author: mbender-ms    
 ms.author: mbender
-ms.service: virtual-network-manager
-ms.topic: conceptual
-ms.date: 3/22/2023
-ms.custom: template-concept
+ms.service: azure-virtual-network-manager
+ms.topic: concept-article
+ms.date: 07/11/2025
 ---
 
-# Configuration deployments in Azure Virtual Network Manager
+# Manage configuration deployments in Azure Virtual Network Manager
 
-In this article, you learn about how configurations are applied to your network resources. Also, you explore how updating a configuration deployment is different for each membership type. Then we go into details about *Deployment status* and *Goal state model*.
+Learn how configuration deployments in Azure Virtual Network Manager are applied to your network resources. Explore how updating a configuration deployment differs by network group membership type, and understand details about [deployment status](#deployment-status-and-monitoring) and the [goal state model](#goalstate).
+
+## How deployment works
+
+*Deployment* is the method Azure Virtual Network Manager uses to apply configurations to your network groups' virtual networks. Configurations don't take effect until they're deployed. When a deployment request is sent to Azure Virtual Network Manager, it calculates the [goal state](#goalstate) of all targeted resources under your network manager in the targeted regions. The goal state is a combination of deployed configurations and network group membership. Azure Virtual Network Manager applies the necessary changes to your resources' settings to achieve the desired goal state.
+
+When committing a deployment, you select the regions where you want the selected configurations to apply. The time it takes for a deployment to complete depends on how large the configuration is. Once the virtual networks are members of a network group targeted by a configuration, deploying that configuration onto that network group can take a few minutes. This scenario includes adding or removing virtual networks to or from the targeted network group manually or conditionally with Azure Policy. Safe deployment practices recommend gradually rolling out changes on a per-region basis.
 
 > [!IMPORTANT]
-> Azure Virtual Network Manager is generally available for Virtual Network Manager and hub and spoke connectivity configurations. 
->
-> Mesh connectivity configurations and security admin rules remain in public preview.
-> This preview version is provided without a service level agreement, and it's not recommended for production workloads. Certain features might not be supported or might have constrained capabilities.
-> For more information, see [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/).
+> For security admin and routing configurations, only one of each configuration can be deployed from a single network manager to a region at a time. However, multiple connectivity configurations can exist in a region. To deploy multiple sets of security admin rules or routing rules to a region, you can create multiple rule collections within those respective configurations.
 
-## Deployment
+## Deployment latency and timing
 
-*Deployment* is the method Azure Virtual Network Manager uses to apply configurations to your virtual networks in network groups. Configurations don't take effect until they're deployed. When a deployment request is sent to Azure Virtual Network Manager, it calculates the [goal state](#goalstate) of all resources under your network manager in that region. Goal state is a combination of deployed configurations and network group membership. Network manager applies the necessary changes to your infrastructure.
+There are two factors in how quickly a deployment's configurations are applied and take effect: 
 
-When committing a deployment, you select the region(s) to which the configuration applies. The length of time for a deployment depends on how large the configuration is.  Once the virtual networks are members of a network group, deploying a configuration onto that network group takes a few minutes. This includes adding or removing group members directly, or configuring an Azure Policy resource. Safe deployment practices recommend gradually rolling out changes on a per-region basis. 
-## Deployment latency
+- The base time of applying a configuration is a few minutes.
 
-Deployment latency is the time it takes for a deployment configuration to be applied and take effect. There are two factors in how quickly the configurations are applied: 
+- The time to update network group membership (and thus the members onto which active configurations are newly applied to or removed from) can vary.
 
-- The base time of applying a configuration is a few minutes. 
+For manually added members, the network group membership immediately updates. For conditionally added members where the scope is less than 1,000 subscriptions, the network group membership can take a few minutes to update. For conditionally added members in environments with more than 1,000 subscriptions, the network group gets notified by Azure Policy in a 24-hour window; after that notification, active configurations are applied to the updated network group members in a few minutes. Changes to network group membership take effect without the need for configuration redeployment.
 
-- The time to receive a notification of network group membership can vary. 
+For example, if a virtual network is newly added to a network group with an active configuration already deployed onto it in the same region as that new virtual network member, that virtual network automatically receives the configuration without manually deploying the configuration again.
 
-For manually added members, notification is immediate. For dynamic members where the scope is less than 1000 subscriptions, notification takes a few minutes. In environments with more than 1000 subscriptions, the notification mechanism works in a 24-hour window. Changes to network groups take effect without the need for configuration redeployment.   
+## Deployment status and monitoring
 
-Virtual network manager applies the configuration to the virtual networks in the network group even if your network group consists of dynamic members from more than 1000 subscriptions. When the virtual network manager is notified of group membership, the configuration is applied in a few minutes. 
-## Deployment status
-
-When you commit a configuration deployment, the API does a POST operation. Once the deployment request has been made, Azure Virtual Network Manager calculates the goal state of your networks in the deployed regions and request the underlying infrastructure to make the changes. You can see the deployment status on the *Deployment* page of the Virtual Network Manager.
+When you commit a configuration deployment, the API forms a POST operation. Once the deployment request is made, Azure Virtual Network Manager calculates the goal state of your networks in the deployed regions and requests the underlying infrastructure to make the changes. You can see the deployment status on the *Deployment* page of your Azure Virtual Network Manager instance, or network manager.
 
 :::image type="content" source="./media/tutorial-create-secured-hub-and-spoke/deployment-in-progress.png" alt-text="Screenshot of deployment in progress in deployment list.":::
 
+### Deployment Status Visibility
+The deployment status is visible on the Deployment page of your Azure Virtual Network Manager instance. This status reflects only the overall success or failure of the configuration deployment, not the individual resource-level (e.g., virtual network or subnet) results.
+### Error Message Emission
+Error messages are only populated when the deployment status is "Failed." If the deployment is successful, the error message field remains empty. This ensures customers focus on actionable errors and avoids confusion from internal or resource-level failures that do not impact the overall deployment.
+### Error Message Content
+For failed deployments, the error message should provide the reason for the failure.
+### Resource-Level Monitoring
+Detailed status for individual virtual networks or subnets, such as why a specific resource failed,  is available through deployment details and logs.
+
 ## <a name = "goalstate"></a> Goal state model
 
-When you commit a deployment of configuration(s), you're describing the goal state of your network manager in that region. This goal state is enforced during the next deployment. For example, when you commit configurations named *Config1* and *Config2* into a region, these two configurations get applied and become the region's goal state. If you decided to commit configuration named *Config1* and *Config3* into the same region, *Config2* would then be removed, and *Config3* would be added. To remove all configurations, you would deploy a **None** configuration against the region(s) you no longer wish to have any configurations applied.
+When you commit a deployment of configurations, you describe the goal state of your network manager in the targeted regions. This goal state is enforced during the next deployment. For example, when you commit configurations *Config1* and *Config2* into a region, these two configurations get applied and become the region's goal state. If you decided to commit configurations *Config1* and *Config3* into the same region, *Config2* would then be removed, and *Config3* would be added. To remove all configurations, you would deploy **None** to the regions where you no longer wish to have any configurations applied.
+
+You may have multiple connectivity configurations deployed simultaneously in a given region. The connectivity defined in each configuration is additive. If you modify one configuration, under this goal state model you must still deploy all connectivity configurations you want to take effect in that region. For example, given the *East US* region has *Config1* and *Config2* deployed there, if you modify *Config1*, you must deploy both *Config1* and *Config2* again in *East US* in order for both the changes from *Config1* and the behavior from *Config2* to take effect on the virtual networks in the region.
+
+## Configuration availability
+
+A network manager is available in a region as long as the region is up and running. Should a region with a network manager go down, the network manager is no longer available to submit new configuration deployments or modify existing configurations. However, the configurations that were deployed to the targeted network groups' virtual networks in the targeted regions are still in effect unless those virtual networks are in the region that went down.
+
+For example, if a network manager exists in *regionA* and has deployed configurations onto virtual networks in *regionB*, those configurations are still in effect even if *regionA* goes down. However, you won't be able to create new, modify existing, or deploy configurations from the network manager in *regionA*. As another example, if *regionB* goes down, those configurations are no longer in effect. In this case, further deployments to virtual networks in *regionB* won't be successful.
 
 ## Next steps
 

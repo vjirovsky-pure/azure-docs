@@ -2,15 +2,16 @@
 title: "Quickstart: Azure Blob storage library v12 - JS Browser"
 titleSuffix: Azure Storage
 description: In this quickstart, you learn how to use the Azure Blob storage npm client library version 12 for JavaScript in a browser. You create a container and an object in Blob storage. Next, you learn how to list all of the blobs in a container. Finally, you learn how to delete blobs and delete a container.
-author: normesta
+author: stevenmatthew
 
-ms.author: normesta
+ms.author: shaas
 ms.date: 02/25/2022
-ms.service: storage
+ms.service: azure-blob-storage
 ms.topic: quickstart
 ms.devlang: javascript
 ms.custom: devx-track-js, mode-api
 #Customer intent: As a web application developer I want to interface with Azure Blob storage entirely on the client so that I can build a SPA application that is able to upload and delete files on blob storage.
+# Customer intent: "As a web application developer, I want to manage blobs using the Azure Blob storage client library in the browser, so that I can create a single-page application that allows users to upload, list, and delete files dynamically."
 ---
 
 # Quickstart: Manage blobs with JavaScript v12 SDK in a browser
@@ -33,9 +34,9 @@ Additional resources:
 
 ## Prerequisites
 
-- [An Azure account with an active subscription](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio)
+- [An Azure account with an active subscription](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 - [An Azure Storage account](../common/storage-account-create.md)
-- [Node.js LTS](https://nodejs.org/en/download/)
+- [Node.js LTS](https://nodejs.org/en/download/package-manager/)
 - [Microsoft Visual Studio Code](https://code.visualstudio.com)
 
 
@@ -247,25 +248,25 @@ This code calls the [ContainerClient.deleteBlob](/javascript/api/@azure/storage-
     http://localhost:1234
     ```
 
-## Step 1 - Create a container
+## Step 1: Create a container
 
 1. In the web app, select **Create container**. The status indicates that a container was created.
 2. In the Azure portal, verify your container was created. Select your storage account. Under **Blob service**, select **Containers**. Verify that the new container appears. (You may need to select **Refresh**.)
 
-## Step 2 - Upload a blob to the container
+## Step 2: Upload a blob to the container
 
 1. On your local computer, create and save a test file, such as *test.txt*.
 2. In the web app, select **Select and upload files**.
 3. Browse to your test file, and then select **Open**. The status indicates that the file was uploaded, and the file list was retrieved.
 4. In the Azure portal, select the name of the new container that you created earlier. Verify that the test file appears.
 
-## Step 3 - Delete the blob
+## Step 3: Delete the blob
 
 1. In the web app, under **Files**, select the test file.
 2. Select **Delete selected files**. The status indicates that the file was deleted and that the container contains no files.
 3. In the Azure portal, select **Refresh**. Verify that you see **No blobs found**.
 
-## Step 4 - Delete the container
+## Step 4: Delete the container
 
 1. In the web app, select **Delete container**. The status indicates that the container was deleted.
 2. In the Azure portal, select the **\<account-name\> | Containers** link at the top-left of the portal pane.
@@ -294,3 +295,4 @@ For tutorials, samples, quickstarts, and other documentation, visit:
 
 - To learn more, see the [Azure Blob storage client library for JavaScript](https://github.com/Azure/azure-sdk-for-js/blob/master/sdk/storage/storage-blob).
 - To see Blob storage sample apps, continue to [Azure Blob storage client library v12 JavaScript samples](https://github.com/Azure/azure-sdk-for-js/tree/master/sdk/storage/storage-blob/samples).
+

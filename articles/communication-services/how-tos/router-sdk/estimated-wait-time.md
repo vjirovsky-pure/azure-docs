@@ -2,8 +2,9 @@
 title: Estimated wait time and position of a Job in queue
 titleSuffix: An Azure Communication Services how-to guide
 description: Use Azure Communication Services SDKs to get estimated wait time and position for a job in a queue
-author: williamzhao
-ms.author: williamzhao
+manager: chpalm
+ms.author: chpalm
+author: tophpalmer
 ms.service: azure-communication-services
 ms.topic: how-to 
 ms.date: 06/08/2023
@@ -14,13 +15,11 @@ zone_pivot_groups: acs-js-csharp-java-python
 
 # How to get estimated wait time and job position
 
-[!INCLUDE [Public Preview Disclaimer](../../includes/public-preview-include-document.md)]
-
 In the context of a call center, customers might want to know how long they need to wait before they're connected to an agent. As such, Job Router can calculate the estimated wait time or position of a job in a queue.
 
 ## Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 - A deployed Communication Services resource. [Create a Communication Services resource](../../quickstarts/create-communication-resource.md).
 - Optional: Complete the quickstart to [get started with Job Router](../../quickstarts/router/get-started-router.md)
 - Optional: Complete the how-to [accept job offers](../../how-tos/router-sdk/accept-decline-offer.md)
@@ -41,8 +40,8 @@ Console.WriteLine($"Queue statistics: {JsonSerializer.Serialize(queueStatistics.
 ::: zone pivot="programming-language-javascript"
 
 ```typescript
-var queueStatistics = await client.getQueueStatistics("queue1");
-console.log(`Queue statistics: ${JSON.stringify(queueStatistics)}`);
+var queueStatistics = await client.path("/routing/queues/{queueId}/statistics", "queue-1").get();
+console.log(`Queue statistics: ${JSON.stringify(queueStatistics.body)}`);
 ```
 
 ::: zone-end
@@ -59,8 +58,8 @@ print("Queue statistics: " + queue_statistics)
 ::: zone pivot="programming-language-java"
 
 ```java
-var queueStatistics = client.getQueueStatistics("queue1");
-System.out.println("Queue statistics: " + new GsonBuilder().toJson(queueStatistics));
+RouterQueueStatistics queueStatistics = client.getQueueStatisticsWithResponse("queue1").getValue();
+System.out.println("Queue statistics: " + BinaryData.fromObject(queueStatistics).toString());
 ```
 
 ::: zone-end
@@ -87,8 +86,8 @@ Console.WriteLine($"Queue position details: {JsonSerializer.Serialize(queuePosit
 ::: zone pivot="programming-language-javascript"
 
 ```typescript
-var queuePositionDetails = await client.getQueuePosition("job1");
-console.log(`Queue position details: ${JSON.stringify(queuePositionDetails)}`);
+var queuePositionDetails = await client.path("/routing/jobs/{jobId}/position", "job1").get();
+console.log(`Queue position details: ${JSON.stringify(queuePositionDetails.body)}`);
 ```
 
 ::: zone-end

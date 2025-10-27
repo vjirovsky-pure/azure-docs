@@ -3,8 +3,9 @@ title: Mount a virtual file system on a pool
 description: Learn how to mount different kinds of virtual file systems on Batch pool nodes, and how to troubleshoot mounting issues.
 ms.topic: how-to
 ms.devlang: csharp
-ms.custom: devx-track-csharp, devx-track-azurepowershell, devx-track-linux
-ms.date: 04/28/2023
+ms.custom: devx-track-csharp, devx-track-azurepowershell, linux-related-content
+ms.date: 06/10/2024
+# Customer intent: As a cloud engineer, I want to mount a virtual file system on Batch pool nodes, so that I can efficiently manage shared data access for tasks running on those compute nodes.
 ---
 
 # Mount a virtual file system on a Batch pool
@@ -15,7 +16,7 @@ Mounting the file system to the pool makes accessing data easier and more effici
 
 Also, you can choose the underlying file system to meet performance, throughout, and input/output operations per second (IOPS) requirements. You can independently scale the file system based on the number of compute nodes that concurrently access the data.
 
-For example, you could use an [Avere vFXT](/azure/avere-vfxt/avere-vfxt-overview) distributed in-memory cache to support large movie-scale renders with thousands of concurrent render nodes that access on-premises source data. Or, for data that's already in cloud-based blob storage, you can use [BlobFuse](/azure/storage/blobs/storage-how-to-mount-container-linux) to mount the data as a local file system. BlobFuse is available only on Linux nodes except Ubuntu 22.04, but [Azure Files](/azure/storage/files/storage-files-introduction) provides a similar workflow and is available on both Windows and Linux.
+For example, you could use an [Avere vFXT](/azure/avere-vfxt/avere-vfxt-overview) distributed in-memory cache to support large movie-scale renders with thousands of concurrent render nodes that access on-premises source data. Or, for data that's already in cloud-based blob storage, you can use [BlobFuse](/azure/storage/blobs/storage-how-to-mount-container-linux) to mount the data as a local file system. [Azure Files](/azure/storage/files/storage-files-introduction) provides a similar workflow to that of BlobFuse and is available on both Windows and Linux.
 
 ## Supported configurations
 
@@ -30,10 +31,8 @@ Batch supports the following virtual file system types for node agents that are 
 
 | OS Type | Azure Files share | Azure Blob container | NFS mount | CIFS mount |
 |---|---|---|---|---|
-| Linux | :heavy_check_mark: | :heavy_check_mark:* | :heavy_check_mark: | :heavy_check_mark: |
+| Linux | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | Windows | :heavy_check_mark: | :x: | :x: | :x: |
-
-\*Azure Blob container isn't supported on Ubuntu 22.04.
 
 > [!NOTE]
 > Mounting a virtual file system isn't supported on Batch pools created before August 8, 2019.
@@ -46,8 +45,8 @@ When you use virtual file mounts with Batch pools in a virtual network, keep the
 
 - **Azure Blob containers** require TCP port 443 to be open for traffic to and from the `storage` service tag. Virtual machines (VMs) must have access to `https://packages.microsoft.com` to download the `blobfuse` and `gpg` packages. Depending on your configuration, you might need access to other URLs.
 
-- **Network File System (NFS)** requires access to port 2049 by default. Your configuration might have other requirements. VMs must have access to the appropriate package manager to download the `nfs-common` (for Debian or Ubuntu) or `nfs-utils` (for CentOS) packages. The URL might vary based on your OS version. Depending on your configuration, you might also need access to other URLs.
-  
+- **Network File System (NFS)** requires access to port 2049 by default. Your configuration might have other requirements. VMs must have access to the appropriate package manager to download the `nfs-common` (for Debian or Ubuntu) packages. The URL might vary based on your OS version. Depending on your configuration, you might also need access to other URLs.
+
   Mounting Azure Blob or Azure Files through NFS might have more networking requirements. For example, your compute nodes might need to use the same virtual network subnet as the storage account.
 
 - **Common Internet File System (CIFS)** requires access to TCP port 445. VMs must have access to the appropriate package manager to download the `cifs-utils` package. The URL might vary based on your OS version.
@@ -64,7 +63,7 @@ All mount configuration objects need the following base parameters. Some mount c
 
 - **Relative mount path or source**, the location of the file system to mount on the compute node, relative to the standard *\\fsmounts* directory accessible via `AZ_BATCH_NODE_MOUNTS_DIR`.
 
-  The exact *\\fsmounts* directory location varies depending on node OS. For example, the location on an Ubuntu node maps to *mnt\batch\tasks\fsmounts*. On a CentOS node, the location maps to *mnt\resources\batch\tasks\fsmounts*.
+  The exact *\\fsmounts* directory location varies depending on node OS. For example, the location on an Ubuntu node maps to *mnt\batch\tasks\fsmounts*.
 
 - **Mount options or BlobFuse options** that describe specific parameters for mounting a file system.
 
@@ -104,7 +103,7 @@ You can use [Azure PowerShell](/powershell/) to mount an Azure Files share on a 
     ```
 
 1. Get the context for your Batch account. Replace the `<batch-account-name>` placeholder with your Batch account name.
-    
+
     ```powershell-interactive
     $context = Get-AzBatchAccount -AccountName <batch-account-name>
     ```
@@ -115,13 +114,13 @@ You can use [Azure PowerShell](/powershell/) to mount an Azure Files share on a 
 
     ```powershell-interactive
     $fileShareConfig = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSAzureFileShareConfiguration" -ArgumentList @("<storage-account-name>", "https://<storage-account-name>.file.core.windows.net/batchfileshare1", "S", "<storage-account-key>")
-    
+
     $mountConfig = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSMountConfiguration" -ArgumentList @($fileShareConfig)
-    
+
     $imageReference = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSImageReference" -ArgumentList @("WindowsServer", "MicrosoftWindowsServer", "2016-Datacenter", "latest")
-    
+
     $configuration = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSVirtualMachineConfiguration" -ArgumentList @($imageReference, "batch.node.windows amd64")
-    
+
     New-AzBatchPool -Id "<pool-name>" -VirtualMachineSize "STANDARD_D2_V2" -VirtualMachineConfiguration $configuration -TargetDedicatedComputeNodes 1 -MountConfiguration @($mountConfig) -BatchContext $context
     ```
 
@@ -163,13 +162,13 @@ cmdkey /add:"<storage-account-name>.file.core.windows.net" /user:"Azure\<storage
 
     ```powershell-interactive
     $fileShareConfig = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSAzureFileShareConfiguration" -ArgumentList @("<storage-account-name>", https://<storage-account-name>.file.core.windows.net/<file-share-name>, "S", "<storage-account-key>", "-o vers=3.0,dir_mode=0777,file_mode=0777,sec=ntlmssp")
-    
+
     $mountConfig = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSMountConfiguration" -ArgumentList @($fileShareConfig)
-    
+
     $imageReference = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSImageReference" -ArgumentList @("0001-com-ubuntu-server-focal", "canonical", "20_04-lts", "latest")
-    
+
     $configuration = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSVirtualMachineConfiguration" -ArgumentList @($imageReference, "batch.node.ubuntu 20.04")
-    
+
     New-AzBatchPool -Id "<pool-name>" -VirtualMachineSize "Standard_DS1_v2" -VirtualMachineConfiguration $configuration -TargetDedicatedComputeNodes 1 -MountConfiguration @($mountConfig) -BatchContext $Context
     ```
 
@@ -195,7 +194,8 @@ To get log files for debugging, you can use the [OutputFiles](batch-task-output-
 
 ### Investigate mounting errors
 
-If you get the following error when you try to mount an Azure file share to a Batch node, you can RDP or SSH to the node to check the related log files.
+You can RDP or SSH to the node to check the log files pertaining to filesystem mounts.
+The following example error message is possible when you try to mount an Azure file share to a Batch node:
 
 ```output
 Mount Configuration Error | An error was encountered while configuring specified mount(s)
@@ -203,7 +203,7 @@ Message: System error (out of memory, cannot fork, no more loop devices)
 MountConfigurationPath: S
 ```
 
-If you receive this error, RDP or SSH to the node to check the related log files. The Batch agent implements mounting differently on Windows and Linux. On Linux, Batch installs the package `cifs-utils`. Then, Batch issues the mount command. On Windows, Batch uses `cmdkey` to add your Batch account credentials. Then, Batch issues the mount command through `net use`. For example:
+If you receive this error, RDP or SSH to the node to check the related log files. The Batch agent implements mounting differently on Windows and Linux for Azure file shares. On Linux, Batch installs the package `cifs-utils`. Then, Batch issues the mount command. On Windows, Batch uses `cmdkey` to add your Batch account credentials. Then, Batch issues the mount command through `net use`. For example:
 
 ```powershell-interactive
 net use S: \\<storage-account-name>.file.core.windows.net\<fileshare> /u:AZURE\<storage-account-name> <storage-account-key>
@@ -220,7 +220,7 @@ net use S: \\<storage-account-name>.file.core.windows.net\<fileshare> /u:AZURE\<
     ```output
     CMDKEY: Credential added successfully.
     System error 86 has occurred.
-    
+
     The specified network password is not correct.
     ```
 
@@ -262,15 +262,15 @@ If you can't use RDP or SSH to check the log files on the node, you can upload t
 
 1. When the upload completes, download the files and open *agent-debug.log*.
 
-1. Review the error messages, for example: 
+1. Review the error messages, for example:
 
     ```output
     ..20210322T113107.448Z.00000000-0000-0000-0000-000000000000.ERROR.agent.mount.filesystems.basefilesystem.basefilesystem.py.run_cmd_persist_output_async.59.2912.MainThread.3580.Mount command failed with exit code: 2, output:
-    
+
     CMDKEY: Credential added successfully.
-    
+
     System error 86 has occurred.
-    
+
     The specified network password is not correct.
     ```
 
@@ -286,9 +286,9 @@ If you can't diagnose or fix mounting errors, you can use PowerShell to mount th
 
     ```powershell-interactive
     $imageReference = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSImageReference" -ArgumentList @("WindowsServer", "MicrosoftWindowsServer", "2016-Datacenter", "latest")
-    
+
     $configuration = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSVirtualMachineConfiguration" -ArgumentList @($imageReference, "batch.node.windows amd64")
-    
+
     New-AzBatchPool -Id "<pool-name>" -VirtualMachineSize "STANDARD_D2_V2" -VirtualMachineConfiguration $configuration -TargetDedicatedComputeNodes 1  -BatchContext $Context
     ```
 
@@ -322,9 +322,9 @@ If you can't diagnose or fix mounting errors, you can use PowerShell to mount th
 
     ```powershell-interactive
     $imageReference = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSImageReference" -ArgumentList @("0001-com-ubuntu-server-focal", "canonical", "20_04-lts", "latest")
-    
+
     $configuration = New-Object -TypeName "Microsoft.Azure.Commands.Batch.Models.PSVirtualMachineConfiguration" -ArgumentList @($imageReference, "batch.node.ubuntu 20.04")
-    
+
     New-AzBatchPool -Id "<pool-name>" -VirtualMachineSize "Standard_DS1_v2" -VirtualMachineConfiguration $configuration -TargetDedicatedComputeNodes 1 -BatchContext $Context
     ```
 
@@ -420,7 +420,7 @@ new PoolAddParameter
 }
 ```
 
-To get default access to the BlobFuse mounted directory, run the task as an administrator. BlobFuse mounts the directory at the user space, and at pool creation mounts the directory as root. In Linux, all administrator tasks are root. The [FUSE reference page](https://manpages.ubuntu.com/manpages/xenial/man8/mount.fuse.8.html) describes all options for the FUSE module.
+To get default access to the BlobFuse mounted directory, run the task as an administrator. BlobFuse mounts the directory at the user space, and at pool creation mounts the directory as root. In Linux, all administrator tasks are root. The [FUSE reference page](https://manpages.ubuntu.com/manpages/questing/man8/mount.fuse.8.html) describes all options for the FUSE module.
 
 For more information and tips on using BlobFuse, see the following references:
 

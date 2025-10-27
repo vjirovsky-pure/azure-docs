@@ -1,23 +1,23 @@
 ---
 title: Reliability in Azure Bot Service 
-description: Find out about reliability in Azure Bot Service  
+description: Learn how Azure Bot Service provides reliability through availability zones, zone redundancy, and disaster recovery for regional bots with local data residency.  
 author: hibrenda 
 ms.author: anaharris
-ms.topic: overview
+ms.topic: reliability-article
 ms.custom: subject-reliability
-ms.service: bot-service
+ms.service: azure-ai-bot-service
 ms.date: 01/06/2022 
 ---
 
 
 # Reliability in Azure Bot Service
 
-When you create an application (bot) in Azure, you can choose whether or not your bot resource will have global or local data residency. Local data residency ensures that your bot's personal data is preserved, stored, and processed within certain geographic boundaries (like EU boundaries).
+This article describes reliability support in Azure Bot Service. It covers both regional reliability with availability zones and cross-region resiliency with disaster recovery for bots with local data residency. For a more detailed overview of reliability in Azure, see [Azure reliability](/azure/architecture/framework/resiliency/overview).
+
+When you create an application (bot) in Bot Service, you can choose global or local data residency. Local data residency ensures that your bot's personal data is preserved, stored, and processed within specific geographic boundaries, such as the European Union. This approach helps you meet compliance and regional reliability requirements.
 
 >[!IMPORTANT]
 >Availability zone support is not enabled for any standard channels in the regional bot service.
-
-This article describes reliability support in Azure Bot Service, and covers both regional reliability with availability zones and cross-region resiliency with disaster recovery for bots with local data residency. For a more detailed overview of reliability in Azure, see [Azure reliability](/azure/architecture/framework/resiliency/overview).
 
 For more information on deploying bots with local data residency and regional compliance, see [Regionalization in Azure Bot Service](/azure/bot-service/bot-builder-concept-regionalization).
 
@@ -38,9 +38,11 @@ During a zone-wide outage, the customer should expect a brief degradation of per
 
 ### Cross-region disaster recovery in multi-region geography
 
+[!INCLUDE [introduction to disaster recovery](includes/reliability-disaster-recovery-description-include.md)]
+
 Azure Bot Service runs in active-active mode for both global and regional services. When an outage occurs, you don't need to detect errors or manage the service. Azure Bot Service automatically performs autofailover and auto recovery in a multi-region geographical architecture. For the EU bot regional service, Azure Bot Service provides two full regions inside Europe with active/active replication to ensure redundancy. For the global bot service, all available regions/geographies can be served as the global footprint.
 
 ## Next steps
 
 > [!div class="nextstepaction"]
-> [Reliability in Azure](/azure/availability-zones/overview)
+> [Reliability in Azure](/azure/reliability/overview)

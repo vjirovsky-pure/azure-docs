@@ -1,18 +1,20 @@
 ---
-title: Configure access control lists with Azure NetApp Files | Microsoft Docs
-description: This article shows you how to configure access control lists (ACLs) on NFSv4.1 with Azure NetApp Files.
+title: Configure access control lists with Azure NetApp Files
+description: Learn how to configure access control lists (ACLs) on NFSv4.1 with Azure NetApp Files.
 author: b-ahibbard
 ms.service: azure-netapp-files
-ms.workload: storage
 ms.topic: how-to
-ms.date: 12/20/2022
+ms.date: 07/14/2025
 ms.author: anfdocs
+# Customer intent: "As a system administrator, I want to configure access control lists on NFSv4.1 volumes in Azure NetApp Files, so that I can manage fine-grained file permissions for users and groups to enhance security and control over shared resources."
 ---
 # Configure access control lists on NFSv4.1 volumes for Azure NetApp Files
 
 Azure NetApp Files supports access control lists (ACLs) on NFSv4.1 volumes. ACLs provide granular file security via NFSv4.1.
 
 ACLs contain access control entities (ACEs), which specify the permissions (read, write, etc.) of individual users or groups. When assigning user roles, provide the user email address if you're using a Linux VM joined to an Active Directory Domain. Otherwise, provide user IDs to set permissions. 
+
+To learn more about ACLs in Azure NetApp Files, see [Understand NFSv4.x ACLs](nfs-access-control-lists.md).
 
 ## Requirements
 
@@ -22,7 +24,7 @@ ACLs contain access control entities (ACEs), which specify the permissions (read
     1.  `nfs-utils` to mount NFS volumes 
     1. `nfs-acl-tools` to view and modify NFSv4 ACLs. 
     If you do not have either, install them:
-        - On a Red Hat Enterprise Linux or SuSE Linux instance:
+        - On a Red Hat Enterprise Linux or SUSE Linux instance:
         ```bash
         sudo yum install -y nfs-utils
         sudo yum install -y nfs4-acl-tools
@@ -35,7 +37,7 @@ ACLs contain access control entities (ACEs), which specify the permissions (read
 
 ## Configure ACLs
 
-1. If you want to configure ACLs for a Linux VM joined to Active Directory, complete the steps in [Join a Linux VM to an Azure Active Directory Domain](join-active-directory-domain.md).
+1. If you want to configure ACLs for a Linux VM joined to Active Directory, complete the steps in [Join a Linux VM to a Microsoft Entra Domain](join-active-directory-domain.md).
 
 1. [Mount the volume](azure-netapp-files-mount-unmount-volumes-for-virtual-machines.md).
 
@@ -46,16 +48,21 @@ ACLs contain access control entities (ACEs), which specify the permissions (read
     - `A:g:GROUP@:rwaDxtTnNcy` - group has full (RWX) access
     - `A::EVERYONE@:tcy` - everyone else has no access
 
-1. To modify an ACE for a user, use the `nfs4_setfacl` command: `nfs4_setfacl -a|x A|D::<user|group>:<permissions_alias> <file>`
+1. To modify an ACE for a user, use the `nfs4_setfacl` command: `nfs4_setfacl -a|x A|D|U::<user|group>:<permissions_alias> <file>`
+
     - Use `-a` to add permission. Use `-x` to remove permission.
-    - `A` creates access; `D` denies access.
+    - `A` creates access; `D` denies access. `U:` is used for audit ACEs to log access attempts. 
     - In an Active Directory-joined set up, enter an email address for the user. Otherwise, enter the numerical user ID.
-    - Permission aliases include read, write, append, execute, etc.
+    - Permission aliases include read, write, append, execute, and others. For a full list of permissions, see: [NFSv4.x permissions](nfs-access-control-lists.md#nfsv4x-permissions). 
     In the following Active Directory-joined example, user regan@contoso.com is given read, write, and execute access to `/nfsldap/engineering`:
     ```bash
     nfs4_setfacl -a A::regan@contoso.com:RWX /nfsldap/engineering
     ```
+    - If you're configuring an ACE for [file access logs](manage-file-access-logs.md), you must use the `U:` prefix to denote the ACE is an audit ACE. The following example configures an audit log for everyone for successful and failed access attempts:
+    `nfs4_setfacl -a U:fdiSF:EVERYONE@:rwaDdxtTnNcCoy /<mount_point>`.
+    - To apply ACLs recursively on a directory and its contents, use the `-R` option with the `nfs4_setfacl` command. This option ensures the ACL changes are applied to all files and subdirectories within the specified directory.
 
 ## Next steps
 
 * [Configure NFS clients](configure-nfs-clients.md)
+* [Understand NFSv4.x ACLs](nfs-access-control-lists.md)

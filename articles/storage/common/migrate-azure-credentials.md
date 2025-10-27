@@ -1,15 +1,25 @@
 ---
 title: Migrate applications to use passwordless authentication with Azure Blob Storage
 titleSuffix: Azure Storage
-description: Learn to migrate existing applications away from Shared Key authorization with the account key to instead use Azure AD and Azure RBAC for enhanced security.
-author: alexwolfmsft
-ms.author: alexwolf
+description: Learn to migrate existing applications away from Shared Key authorization with the account key to instead use Microsoft Entra ID and Azure RBAC for enhanced security.
+author: stevenmatthew
+ms.author: shaas
 ms.reviewer: randolphwest
-ms.date: 05/09/2023
+ms.date: 07/28/2025
 ms.service: azure-storage
 ms.subservice: storage-common-concepts
 ms.topic: how-to
-ms.custom: devx-track-csharp, passwordless-java, passwordless-js, passwordless-python, passwordless-dotnet, passwordless-go, devx-track-azurecli, devx-track-azurepowershell
+ms.custom:
+  - devx-track-csharp
+  - passwordless-java
+  - passwordless-js
+  - passwordless-python
+  - passwordless-dotnet
+  - passwordless-go
+  - devx-track-azurecli
+  - devx-track-azurepowershell
+  - sfi-image-nochange
+# Customer intent: "As a developer, I want to migrate my application to use passwordless authentication with Azure Blob Storage, so that I can enhance security and eliminate the need to manage application secrets."
 ---
 
 # Migrate an application to use passwordless connections with Azure Blob Storage
@@ -22,7 +32,7 @@ ms.custom: devx-track-csharp, passwordless-java, passwordless-js, passwordless-p
 
 ## Sign-in and migrate the app code to use passwordless connections
 
-[!INCLUDE [default-azure-credential-sign-in](../../../includes/passwordless/default-azure-credential-sign-in.md)]
+[!INCLUDE [default-azure-credential-sign-in](~/reusable-content/ce-skilling/azure/includes/passwordless/default-azure-credential-sign-in.md)]
 
 Next, update your code to use passwordless connections.
 
@@ -173,7 +183,7 @@ Once your application is configured to use passwordless connections and runs loc
 
 ### Create the managed identity
 
-[!INCLUDE [create-managed-identity](../../../includes/passwordless/migration-guide/create-user-assigned-managed-identity.md)]
+[!INCLUDE [create-managed-identity](~/reusable-content/ce-skilling/azure/includes/passwordless/migration-guide/create-user-assigned-managed-identity.md)]
 
 #### Associate the managed identity with your web app
 
@@ -196,11 +206,11 @@ Complete the following steps in the Azure portal to associate an identity with y
 1. Search for the **MigrationIdentity** by name and select it from the search results.
 1. Select **Add** to associate the identity with your app.
 
-   :::image type="content" source="../../../articles/storage/common/media/create-user-assigned-identity-small.png" alt-text="Screenshot showing how to create a user assigned identity." lightbox="../../../articles/storage/common/media/create-user-assigned-identity.png":::
+   :::image type="content" source="~/reusable-content/ce-skilling/azure/media/storage/create-user-assigned-identity-small.png" alt-text="Screenshot showing how to create a user assigned identity." lightbox="~/reusable-content/ce-skilling/azure/media/storage/create-user-assigned-identity.png":::
 
 # [Azure CLI](#tab/azure-cli-associate)
 
-[!INCLUDE [associate-managed-identity-cli](../../../includes/passwordless/migration-guide/associate-managed-identity-cli.md)]
+[!INCLUDE [associate-managed-identity-cli](~/reusable-content/ce-skilling/azure/includes/passwordless/migration-guide/associate-managed-identity-cli.md)]
 
 # [Service Connector](#tab/service-connector-associate)
 
@@ -256,7 +266,7 @@ If you connected your services using Service Connector you don't need to complet
 
 ---
 
-[!INCLUDE [Code changes to use user-assigned managed identity](../../../includes/passwordless/migration-guide/passwordless-user-assigned-managed-identity.md)]
+[!INCLUDE [Code changes to use user-assigned managed identity](~/reusable-content/ce-skilling/azure/includes/passwordless/migration-guide/passwordless-user-assigned-managed-identity.md)]
 
 ### Test the app
 
@@ -268,5 +278,5 @@ In this tutorial, you learned how to migrate an application to passwordless conn
 
 You can read the following resources to explore the concepts discussed in this article in more depth:
 
-* [Authorize access to blobs using Azure Active Directory](../blobs/authorize-access-azure-active-directory.md)
+* [Authorize access to blobs using Microsoft Entra ID](../blobs/authorize-access-azure-active-directory.md)
 * To learn more about .NET Core, see [Get started with .NET in 10 minutes](https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/intro).

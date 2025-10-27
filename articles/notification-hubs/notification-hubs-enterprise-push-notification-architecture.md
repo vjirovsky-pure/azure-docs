@@ -2,14 +2,12 @@
 title: Notification Hubs enterprise push architecture
 description: Learn about using Azure Notification Hubs in an enterprise environment
 services: notification-hubs
-documentationcenter: ''
 author: sethmanheim
-manager: femila
+manager: lizross
 editor: jwargo
 
 ms.assetid: 903023e9-9347-442a-924b-663af85e05c6
-ms.service: notification-hubs
-ms.workload: mobile
+ms.service: azure-notification-hubs
 ms.tgt_pltfrm: mobile-windows
 ms.devlang: csharp
 ms.topic: article
@@ -17,7 +15,10 @@ ms.date: 01/04/2019
 ms.author: sethm
 ms.reviewer: jowargo
 ms.lastreviewed: 01/04/2019
-ms.custom: devx-track-csharp
+ms.custom:
+  - devx-track-csharp
+  - sfi-image-nochange
+  - sfi-ropc-nochange
 ---
 
 # Enterprise push architectural guidance

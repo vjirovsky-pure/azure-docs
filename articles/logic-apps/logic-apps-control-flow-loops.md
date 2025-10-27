@@ -1,98 +1,120 @@
 ---
-title: Add loops to repeat actions
-description: Create loops that repeat workflow actions or process arrays in Azure Logic Apps.
+title: Repeat Actions with Loops in Workflows
+description: Learn how to repeat actions by using loops in workflows for Azure Logic Apps. You can repeat actions on array items or until a condition is met.
 services: logic-apps
 ms.suite: integration
 ms.reviewer: estfan, azla
 ms.topic: how-to
-ms.date: 09/01/2022
+ms.date: 08/20/2025
+#Customer intent: As an integration solution developer, I want to repeat an action on arrays and collections or until a condition is met by using a loop with my workflow in Azure Logic Apps.
 ---
 
-# Create loops that repeat workflow actions or process arrays in Azure Logic Apps
+# Add loops to repeat actions in workflows for Azure Logic Apps
 
-[!INCLUDE [logic-apps-sku-consumption](../../includes/logic-apps-sku-consumption.md)]
+[!INCLUDE [logic-apps-sku-consumption-standard](../../includes/logic-apps-sku-consumption-standard.md)]
 
-To process an array in your logic app workflow, you can create a [For each loop](#foreach-loop). This loop repeats one or more actions on each item in the array. For the limit on the number of array items that a "For each" loop can process, see [Concurrency, looping, and debatching limits](../logic-apps/logic-apps-limits-and-config.md#looping-debatching-limits).
+To repeat actions in a logic app workflow, you can add the **For each** loop or **Until** loop to your workflow, based on the needs for your scenario.
 
-To repeat actions until a condition gets met or a state changes, you can create an [Until loop](#until-loop). Your workflow first runs all the actions inside the loop, and then checks the condition or state. If the condition is met, the loop stops. Otherwise, the loop repeats. For the default and maximum limits on the number of "Until" loops that a workflow can have, see [Concurrency, looping, and debatching limits](../logic-apps/logic-apps-limits-and-config.md#looping-debatching-limits).
+> [!NOTE]
+>
+> Looking for Power Automate documentation about loops? See [Use loops](/power-automate/desktop-flows/use-loops).
 
-> [!TIP]
-> If you have a trigger that receives an array and want to run a workflow for each array item, you can *debatch* that array 
-> with the [**SplitOn** trigger property](../logic-apps/logic-apps-workflow-actions-triggers.md#split-on-debatch).
+Based on your use case, you can choose from the following types of loop actions:
+
+- To repeat one or more actions on items in an array or collection, add the [**For each** action](#foreach-loop) to your workflow.
+
+  Alternatively, if you have a trigger that can handle arrays and want to run a workflow instance for each array item, you can *debatch* the array by setting the [**Split on** trigger property](logic-apps-workflow-actions-triggers.md#split-on-debatch).
+
+- To repeat one or more actions until a condition is met or a specific state changes, add the [**Until** action](#until-loop) to your workflow.
+
+  Your workflow first runs all the actions inside the loop, and then checks the condition or state. If the condition is met, the loop stops. Otherwise, the loop repeats. For the default and maximum limits on the number of **Until** loops that a workflow can have, see [Concurrency, looping, and debatching limits](logic-apps-limits-and-config.md#looping-debatching-limits).
 
 ## Prerequisites
 
-* An Azure account and subscription. If you don't have a subscription, [sign up for a free Azure account](https://azure.microsoft.com/free/). 
+- An Azure account and subscription. If you don't have a subscription, [sign up for a free Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn). 
 
-* Basic knowledge about [logic app workflows](../logic-apps/logic-apps-overview.md)
+- A logic app resource where you can create and edit a workflow. See [What is Azure Logic Apps](../logic-apps/logic-apps-overview.md).
+
+- The logic app resource and workflow where you want to repeat an action in a loop and a trigger that starts the workflow.
+
+  Before you can add a loop action, your workflow must start with a trigger as the first step. For more information, see [Add a trigger or action to build a workflow](create-workflow-with-trigger-or-action.md).
+
+The following steps use the Azure portal, but with the appropriate Azure Logic Apps extension, you can also use the following tools to build logic app workflows:
+
+- Consumption workflows: [Visual Studio Code](quickstart-create-logic-apps-visual-studio-code.md)
+- Standard workflows: [Visual Studio Code](create-single-tenant-workflows-visual-studio-code.md)
+
+Some steps differ slightly based on whether you have a Consumption or Standard workflow.
 
 <a name="foreach-loop"></a>
 
-## "For each" loop
+## For each
 
-A "For each" loop repeats one or more actions on each array item and works only on arrays. Here are some considerations when you use "For each" loops:
+The **For each** action works only on arrays. This loop repeats one or more actions on each item in an array. Review the following considerations for the **For each** action:
 
-* The "For each" loop can process a limited number of array items. For this limit, see [Concurrency, looping, and debatching limits](../logic-apps/logic-apps-limits-and-config.md#looping-debatching-limits).
+- The **For each** action can process a limited number of array items. For this limit, see [Concurrency, looping, and debatching limits](logic-apps-limits-and-config.md#looping-debatching-limits).
 
-* By default, iterations in a "For each" loop run at the same time, or in parallel. This behavior differs from [Power Automate's **Apply to each** loop](/power-automate/apply-to-each) where iterations run one at a time, or sequentially. However, you can [set up sequential "For each" loop iterations](#sequential-foreach-loop). For example, if you want to pause the next iteration in a "Foreach" loop by using the [Delay action](../connectors/connectors-native-delay.md), you need to set the loop to run sequentially.
+- By default, the cycles or iterations in a **For each** action run at the same time in parallel.
 
-  The exception to the default behavior are nested loops where iterations always run sequentially, not in parallel. To run operations in parallel for items in a nested loop, create and [call a child logic app workflow](../logic-apps/logic-apps-http-endpoint.md).
+  This behavior differs from [Power Automate's **Apply to each** loop](/power-automate/apply-to-each) where iterations run one at a time, or sequentially. If your use case requires sequential processing, you can [set up **For each** iterations to run one at a time](#sequential-foreach-loop). For example, if you want to pause the next iteration in a **For each** action by using the [Delay action](../connectors/connectors-native-delay.md), you need to set up each iteration to run sequentially.
 
-* To get predictable results from operations on variables during each loop iteration, run those loops sequentially. For example, when a concurrently running loop ends, the increment, decrement, and append to variable operations return predictable results. However, during each iteration in the concurrently running loop, these operations might return unpredictable results. 
+  As an exception to the default behavior, a nested **For each** action's iterations always run sequentially, not in parallel. To run actions concurrently on array items in a nested **For each** action, [create and call a child workflow](logic-apps-http-endpoint.md).
 
-* Actions in a "For each" loop use the [`@item()`](../logic-apps/workflow-definition-language-functions-reference.md#item) expression to reference and process each item in the array. If you specify data that's not in an array, 
-the logic app workflow fails.
+- To get predictable results from operations on variables during each iteration, run the iterations sequentially. For example, when a concurrently running iteration ends, the **Increment variable**, **Decrement variable**, and **Append to variable** operations return predictable results. However, during each iteration in the concurrently running loop, these operations might return unpredictable results.
 
-This example logic app workflow sends a daily summary for a website RSS feed. The workflow uses a "For each" loop that sends an email for each new item.
+- Actions in a **For each** loop use the [`item()` function](expression-functions-reference.md#item) to reference and process each item in the array. If you specify data that's not in an array, the workflow fails.
 
-1. [Create this example Consumption logic app workflow](../logic-apps/quickstart-create-example-consumption-workflow.md) with an Outlook.com account or a work or school account.
+The following example workflow sends a daily summary for a website RSS feed. The workflow uses a **For each** action that sends an email for each new item.
 
-2. Between the RSS trigger and send email action, add a "For each" loop.
+1. In the [Azure portal](https://portal.azure.com), create a logic app workflow with the following steps in the specified order:
 
-   1. To add a loop between steps, move your pointer over the arrow between those steps. Select the **plus sign** (**+**) that appears, then select **Add an action**.
+   - The **RSS** trigger named **When a feed item is published**
 
-      ![Select "Add an action"](media/logic-apps-control-flow-loops/add-for-each-loop.png)
+     Follow these general steps to add a trigger to a [Consumption](create-workflow-with-trigger-or-action.md?tabs=consumption#add-trigger) or [Standard](create-workflow-with-trigger-or-action.md?tabs=standard#add-trigger) logic app workflow.
 
-   1. Under the search box, select **All**. In the search box, enter **for each**. From the actions list, 
-   select the Control action named **For each**.
+   - The **Outlook.com** or **Office 365 Outlook** action named **Send an email**
 
-      ![Add "For each" loop](media/logic-apps-control-flow-loops/select-for-each.png)
+     Follow these general steps to add an action to a [Consumption](create-workflow-with-trigger-or-action.md?tabs=consumption#add-action) or [Standard](create-workflow-with-trigger-or-action.md?tabs=standard#add-action) logic app workflow.
 
-3. Now build the loop. Under **Select an output from previous steps** 
-after the **Add dynamic content** list appears, 
-select the **Feed links** array, which is output from the RSS trigger. 
+1. Follow the same general steps to add the **For each** action between the RSS trigger and **Send an email** action in your workflow.
 
-   ![Select from dynamic content list](media/logic-apps-control-flow-loops/for-each-loop-dynamic-content-list.png)
+1. Now build the loop:
 
-   > [!NOTE] 
-   > You can select *only* array outputs from the previous step.
+   1. In the **For each** item, select inside the **Select An Output From Previous Steps** box, and then select the lightning icon.
 
-   The selected array now appears here:
+   1. From the dynamic content list that opens, under **When a feed item is published**, select **Feed links**, which is an array output from the RSS trigger.
 
-   ![Select array](media/logic-apps-control-flow-loops/for-each-loop-select-array.png)
+      > [!NOTE]
+      >
+      > If the **Feed links** output doesn't appear, next to the trigger section label, select **See more**. From the dynamic content list, you can select *only* outputs from previous steps.
 
-4. To run an action on each array item, drag the **Send an email** action into the loop.
+      :::image type="content" source="media/logic-apps-control-flow-loops/for-each-select-feed-link.png" alt-text="Screenshot shows the Azure portal and workflow designer with an action named For each and the open dynamic content list." lightbox="media/logic-apps-control-flow-loops/for-each-select-feed-link.png":::
 
-   Your workflow might look something like this example:
+      When you're done, the selected array output appears as in the following example:
 
-   ![Add steps to "Foreach" loop](media/logic-apps-control-flow-loops/for-each-loop-with-step.png)
+      :::image type="content" source="media/logic-apps-control-flow-loops/for-each-selected-array.png" alt-text="Screenshot shows the workflow designer and the action named For each with selected array output.":::
 
-5. Save your workflow. To manually test your logic app, on the designer toolbar, select **Run Trigger** > **Run**.
+   1. To run an existing action on each array item, drag the **Send an email** action into the **For each** loop.
+
+      Now, your workflow looks like the following example:
+
+      :::image type="content" source="media/logic-apps-control-flow-loops/for-each-with-last-action.png" alt-text="Screenshot shows the workflow designer, action named For each, and action named Send an email, now inside the For each action.":::
+
+1. When you're done, save your workflow.
+
+1. To manually test your workflow, on the designer toolbar, select **Run** **>** **Run**.
 
 <a name="for-each-json"></a>
 
-## "Foreach" loop definition (JSON)
+## For each action definition (JSON)
 
-If you're working in code view for your logic app, 
-you can define the `Foreach` loop in your 
-logic app's JSON definition instead, for example:
+If you're working in code view, you can define the `For_each` action in your workflow's JSON definition, for example:
 
 ``` json
 "actions": {
-   "myForEachLoopName": {
-      "type": "Foreach",
+   "For_each": {
       "actions": {
-         "Send_an_email": {
+         "Send_an_email_(V2)": {
             "type": "ApiConnection",
             "inputs": {
                "body": {
@@ -101,58 +123,50 @@ logic app's JSON definition instead, for example:
                   "To": "me@contoso.com"
                },
                "host": {
-                  "api": {
-                     "runtimeUrl": "https://logic-apis-westus.azure-apim.net/apim/office365"
-                  },
                   "connection": {
                      "name": "@parameters('$connections')['office365']['connectionId']"
                   }
                },
                "method": "post",
-               "path": "/Mail"
+               "path": "/v2/Mail"
             },
             "runAfter": {}
          }
       },
       "foreach": "@triggerBody()?['links']",
-      "runAfter": {}
+      "runAfter": {},
+      "type": "Foreach"
    }
-}
+},
 ```
 
 <a name="sequential-foreach-loop"></a>
 
-## "Foreach" loop: Sequential
+## For each: Run sequentially
 
-By default, cycles in a "Foreach" loop run in parallel. 
-To run each cycle sequentially, set the loop's **Sequential** option. 
-"Foreach" loops must run sequentially when you have nested 
-loops or variables inside loops where you expect predictable results. 
+By default, the iterations in a **For each** action run at the same time in parallel. However, if you have nested loops or have variables inside loops where you expect predictable results, you must run those loops one at a time sequentially.
 
-1. In the loop's upper right corner, choose **ellipses** (**...**) > **Settings**.
+1. On the designer, select the **For each** action to open the information pane, and then select **Settings**.
 
-   ![On "Foreach" loop, choose "..." > "Settings"](media/logic-apps-control-flow-loops/for-each-loop-settings.png)
+1. Under **Concurrency control**, change the setting from **Off** to **On**.
 
-1. Under **Concurrency Control**, turn the 
-**Concurrency Control** setting to **On**. 
-Move the **Degree of Parallelism** slider to **1**, 
-and choose **Done**.
+1. Move the **Degree of parallelism** slider to **1**.
 
-   ![Turn on concurrency control](media/logic-apps-control-flow-loops/for-each-loop-sequential-setting.png)
+   :::image type="content" source="media/logic-apps-control-flow-loops/for-each-sequential.png" alt-text="Screenshot shows the For each action, Settings tab, and the Concurrency control setting turned on with the degree of parallelism slider set to 1.":::
 
-If you're working with your logic app's JSON definition, 
-you can use the `Sequential` option by adding the 
-`operationOptions` parameter, for example:
+## For each action definition (JSON): Run sequentially
+
+If you're working in code view with the `For_each` action in your workflow's JSON definition, add the `operationOptions` parameter and set the parameter value to `Sequential`:
 
 ``` json
 "actions": {
-   "myForEachLoopName": {
-      "type": "Foreach",
+   "For_each": {
       "actions": {
-         "Send_an_email": { }
+         "Send_an_email_(V2)": { }
       },
       "foreach": "@triggerBody()?['links']",
       "runAfter": {},
+      "type": "Foreach",
       "operationOptions": "Sequential"
    }
 }
@@ -160,137 +174,152 @@ you can use the `Sequential` option by adding the
 
 <a name="until-loop"></a>
 
-## "Until" loop
-  
-To run and repeat actions until a condition gets met or a state changes, put those actions in an "Until" loop. Your logic app first runs any and all actions inside the loop, and then checks the condition or state. If the condition is met, the loop stops. Otherwise, the loop repeats. For the default and maximum limits on the number of "Until" loops that a logic app run can have, see [Concurrency, looping, and debatching limits](../logic-apps/logic-apps-limits-and-config.md#looping-debatching-limits).
+## Until
 
-Here are some common scenarios where you can use an "Until" loop:
+The **Until** action runs and repeats one or more actions until the required specified condition is met. If the condition is met, the loop stops. Otherwise, the loop repeats. For the default and maximum limits on the number of **Until** actions or iterations, see [Concurrency, looping, and debatching limits](logic-apps-limits-and-config.md#looping-debatching-limits).
 
-* Call an endpoint until you get the response you want.
+The following list contains some common scenarios where you can use an **Until** action:
 
-* Create a record in a database. Wait until a specific field in that record gets approved. Continue processing. 
+- Call an endpoint until you get the response you want.
 
-Starting at 8:00 AM each day, this example logic app increments a variable until the variable's value equals 10. The logic app then sends an email that confirms the current value. 
+- Create a record in a database. Wait until a specific field in that record gets approved. Continue processing.
 
-> [!NOTE]
-> These steps use Office 365 Outlook, but you can 
-> use any email provider that Logic Apps supports. 
-> [Check the connectors list here](/connectors/). 
-> If you use another email account, the general steps stay the same, 
-> but your UI might look slightly different. 
+By default, the **Until** action succeeds or fails in the following ways:
 
-1. Create a blank logic app. In Logic App Designer, 
-   under the search box, choose **All**. Search for "recurrence". 
-   From the triggers list, select this trigger: **Recurrence - Schedule**
+- The **Until** loop succeeds if all the actions inside the loop succeed, and if the loop limit is reached, based on the run after behavior.
 
-   ![Add "Recurrence - Schedule" trigger](./media/logic-apps-control-flow-loops/do-until-loop-add-trigger.png)
+- If all actions in last iteration of the **Until** loop succeed, the entire **Until** loop is marked as **Succeeded**.
 
-1. Specify when the trigger fires by setting the interval, frequency, 
-   and hour of the day. To set the hour, choose **Show advanced options**.
+- If any action fails in the last iteration of the **Until** loop, the entire **Until** loop is marked as **Failed**.
 
-   ![Set up recurrence schedule](./media/logic-apps-control-flow-loops/do-until-loop-set-trigger-properties.png)
+- If any action fails in an iteration other than the last iteration, the next iteration continues to run, and the entire **Until** action isn't marked as **Failed**.
 
-   | Property | Value |
-   | -------- | ----- |
-   | **Interval** | 1 | 
-   | **Frequency** | Day |
-   | **At these hours** | 8 |
-   ||| 
+  To make the action fail instead, change the default behavior in the loop's JSON definition by adding the parameter named `operationOptions`, and setting the value to `FailWhenLimitsReached`, for example:
 
-1. Under the trigger, choose **New step**. 
-   Search for "variables", and select this action: 
-   **Initialize variable - Variables**
+  ```json
+  "Until": {
+     "actions": {
+       "Execute_stored_procedure": {
+         <...>
+         }
+       },
+       "expression": "@equals(variables('myUntilStop'), true)",
+       "limit": {
+         "count": 5,
+         "timeout": "PT1H"
+       },
+       "operationOptions": "FailWhenLimitsReached",
+       "runAfter": {
+       "Initialize_variable_8": [
+         "Succeeded"
+       ]
+     },
+  "type": "Until"
+  }
+  ```
 
-   ![Add "Initialize variable - Variables" action](./media/logic-apps-control-flow-loops/do-until-loop-add-variable.png)
+In the following example workflow, starting at 8:00 AM each day, the **Until** action increments a variable until the variable's value equals 10. The workflow then sends an email that confirms the current value. The example uses Office 365 Outlook, but you can use [any email provider that Azure Logic Apps supports](/connectors/). If you use another email account, the general steps stay the same, but look slightly different.
 
-1. Set up your variable with these values:
+1. In the [Azure portal](https://portal.azure.com), create a logic app resource with a blank workflow. Refer to the earlier procedure.
 
-   ![Set variable properties](./media/logic-apps-control-flow-loops/do-until-loop-set-variable-properties.png)
+1. In the designer, follow the general steps to add the **Schedule** built-in trigger named **Recurrence** to your [Consumption](create-workflow-with-trigger-or-action.md?tabs=consumption#add-trigger) or [Standard](create-workflow-with-trigger-or-action.md?tabs=standard#add-trigger) workflow.
 
-   | Property | Value | Description |
-   | -------- | ----- | ----------- |
-   | **Name** | Limit | Your variable's name | 
-   | **Type** | Integer | Your variable's data type | 
-   | **Value** | 0 | Your variable's starting value | 
-   |||| 
+1. In the **Recurrence** trigger, specify the interval, frequency, and time for the trigger to fire.
 
-1. Under the **Initialize variable** action, choose **New step**. 
+   | Parameter | Value |
+   |-----------|-------|
+   | **Interval** | **1** |
+   | **Frequency** | **Day** |
+   | **At these hours** | **8** |
+   | **At these minutes** | **00** |
 
-1. Under the search box, choose **All**. Search for "until", 
-   and select this action: **Until - Control**
+   **At these hours** and **At these minutes** appear after you set **Frequency** to **Day**.
 
-   ![Add "Until" loop](./media/logic-apps-control-flow-loops/do-until-loop-add-until-loop.png)
+   When you're done, the **Recurrence** trigger looks like the following example:
 
-1. Build the loop's exit condition by selecting 
-   the **Limit** variable and the **is equal** operator. 
-   Enter **10** as the comparison value.
+   :::image type="content" source="./media/logic-apps-control-flow-loops/do-until-trigger-complete.png" alt-text="Screenshot shows the Azure portal and workflow designer with Recurrence trigger parameters set up.":::
 
-   ![Build exit condition for stopping loop](./media/logic-apps-control-flow-loops/do-until-loop-settings.png)
+1. Under the trigger, follow these general steps to add the **Variables** built-in action named **Initialize variables** to your [Consumption](create-workflow-with-trigger-or-action.md?tabs=consumption#add-action) or [Standard](create-workflow-with-trigger-or-action.md?tabs=standard#add-action) logic app workflow.
 
-1. Inside the loop, choose **Add an action**. 
+1. In the **Initialize variables** action, provide the following values:
 
-1. Under the search box, choose **All**. Search for "variables", 
-   and select this action: **Increment variable - Variables**
+   | Parameter | Value | Description |
+   |-----------|-------|-------------|
+   | **Name** | **Limit** | Your variable's name |
+   | **Type** | **Integer** | Your variable's data type |
+   | **Value** | **0** | Your variable's starting value |
 
-   ![Add action for incrementing variable](./media/logic-apps-control-flow-loops/do-until-loop-increment-variable.png)
+   :::image type="content" source="./media/logic-apps-control-flow-loops/do-until-loop-variable-property.png" alt-text="Screenshot shows the Azure portal, workflow designer, and built-in action named Initialize variable with parameters." lightbox="./media/logic-apps-control-flow-loops/do-until-loop-variable-property.png":::
 
-1. For **Name**, select the **Limit** variable. For **Value**, 
-     enter "1". 
+1. Under the **Initialize variables** action, follow these general steps to add the **Control** built-in action named **Until** to your [Consumption](create-workflow-with-trigger-or-action.md?tabs=consumption#add-action) or [Standard](create-workflow-with-trigger-or-action.md?tabs=standard#add-action) logic app workflow.
 
-     ![Increment "Limit" by 1](./media/logic-apps-control-flow-loops/do-until-loop-increment-variable-settings.png)
+1. In the **Until** action, provide the following values to set up the stop condition for the loop.
 
-1. Outside and under the loop, choose **New step**. 
+   1. Select inside the **Loop Until** box, and select the lightning icon to open the dynamic content list.
 
-1. Under the search box, choose **All**. 
-     Find and add an action that sends email, 
-     for example: 
+   1. From the list, under **Variables**, select the variable named **Limit**.
 
-     ![Add action that sends email](media/logic-apps-control-flow-loops/do-until-loop-send-email.png)
+   1. Under **Count**, enter **10** as the comparison value.
 
-1. If prompted, sign in to your email account.
+   :::image type="content" source="./media/logic-apps-control-flow-loops/do-until-loop-setting.png" alt-text="Screenshot shows a workflow and built-in action named Until with the values described." lightbox="./media/logic-apps-control-flow-loops/do-until-loop-setting.png":::
 
-1. Set the email action's properties. Add the **Limit** 
-     variable to the subject. That way, you can confirm the 
-     variable's current value meets your specified condition, 
-     for example:
+1. Inside the **Until** action, select **+** > **Add an action**.
 
-      ![Set up email properties](./media/logic-apps-control-flow-loops/do-until-loop-send-email-settings.png)
+1. Follow these general steps to add the **Variables** built-in action named **Increment variable** to the **Until** action in your [Consumption](create-workflow-with-trigger-or-action.md?tabs=consumption#add-action) or [Standard](create-workflow-with-trigger-or-action.md?tabs=standard#add-action) logic app workflow.
 
-      | Property | Value | Description |
-      | -------- | ----- | ----------- | 
-      | **To** | *\<email-address\@domain>* | The recipient's email address. For testing, use your own email address. | 
-      | **Subject** | Current value for "Limit" is **Limit** | Specify the email subject. For this example, make sure that you include the **Limit** variable. | 
-      | **Body** | <*email-content*> | Specify the email message content you want to send. For this example, enter whatever text you like. | 
-      |||| 
+1. In the **Increment variable** action, provide the following values to increment the **Limit** variable's value by 1:
 
-1. Save your logic app. To manually test your logic app, 
-     on the designer toolbar, choose **Run**.
+   | Parameter | Value |
+   |-----------|-------|
+   | **Limit** | Select the **Limit** variable. |
+   | **Value** | **1** |
 
-      After your logic starts running, you get an email with the content that you specified:
+   :::image type="content" source="./media/logic-apps-control-flow-loops/do-until-loop-increment-variable.png" alt-text="Screenshot shows a workflow and built-in action named Until with Limit set to Limit variable and Value set to 1." lightbox="./media/logic-apps-control-flow-loops/do-until-loop-increment-variable.png":::
 
-      ![Received email](./media/logic-apps-control-flow-loops/do-until-loop-sent-email.png)
+1. Outside and under the **Until** action, follow these general steps to add an action that sends email in your [Consumption](create-workflow-with-trigger-or-action.md?tabs=consumption#add-action) or [Standard](create-workflow-with-trigger-or-action.md?tabs=standard#add-action) logic app workflow.
+
+   This example continues with the **Office 365 Outlook** action named **Send an email**.
+
+1. In the email action, provide the following values:
+
+   | Parameter | Value | Description |
+   |-----------|-------|-------------|
+   | **To** | <*email-address\@domain*> | The recipient's email address. For testing, use your own email address. | 
+   | **Subject** | **Current value for "Limit" variable is:** **Limit** | The email subject. For this example, make sure that you include the **Limit** variable to confirm that the current value meets your specified condition: <br><br>1. Select inside the **Subject** box, and then select the lightning icon. <br><br>2. From the dynamic content list that opens, next to the **Variables** section header, select **See more**. <br><br>3. Select **Limit**. |
+   | **Body** | <*email-content*> | The email message content that you want to send. For this example, enter whatever text you want. |
+
+   When you're done, your email action looks similar to the following example:
+
+   :::image type="content" source="./media/logic-apps-control-flow-loops/do-until-loop-send-email.png" alt-text="Screenshot shows a workflow and action named Send an email with property values." lightbox="./media/logic-apps-control-flow-loops/do-until-loop-send-email.png":::
+
+1. Save your workflow.
+
+### Test your workflow
+
+To manually test your logic app workflow:
+
+- On the designer toolbar, from the **Run** option, select **Run**.
+
+After your workflow starts running, you get an email with the content that you specified:
+
+:::image type="content" source="./media/logic-apps-control-flow-loops/do-until-loop-sent-email.png" alt-text="Screenshot shows sample email received from example workflow.":::
 
 <a name="prevent-endless-loops"></a>
 
-## Prevent endless loops
+### Prevent endless loops
 
-The "Until" loop stops execution based on these properties, so make sure that you set their values accordingly:
+The **Until** action stops execution based on the optional **Count** and **Timeout** parameters. Make sure that you set these parameter values accordingly:
 
-* **Count**: This value is the highest number of loops that run before the loop exits. For the default and maximum limits on the number of "Until" loops that a logic app run can have, see [Concurrency, looping, and debatching limits](../logic-apps/logic-apps-limits-and-config.md#looping-debatching-limits).
-
-* **Timeout**: This value is the most amount of time that the "Until" action, including all the loops, runs before exiting and is specified in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601). For the default and maximum limits on the **Timeout** value, see [Concurrency, looping, and debatching limits](../logic-apps/logic-apps-limits-and-config.md#looping-debatching-limits).
-
-  The timeout value is evaluated for each loop cycle. If any action in the loop takes longer than the timeout limit, the current cycle doesn't stop. However, the next cycle doesn't start because the limit condition isn't met.
-
-To change these limits, in the loop action, select **Change limits**.
+| Parameter | Description |
+|-----------|-------------|
+| **Count** | The maximum number of iterations that run before the loop exits. <br><br>For the default and maximum limits on the number of **Until** actions that a workflow can have, see [Concurrency, looping, and debatching limits](logic-apps-limits-and-config.md#looping-debatching-limits). |
+| **Timeout** | The maximum amount of time that the **Until** action, including all iterations, runs before the loop exits. This value is specified in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) and is evaluated for each iteration. <br><br>If any action in the loop takes longer than the timeout limit, the current iteration doesn't stop. However, the next iteration doesn't start because the timeout limit condition is met. <br><br>For the default and maximum limits on the **Timeout** value, see [Concurrency, looping, and debatching limits](logic-apps-limits-and-config.md#looping-debatching-limits). |
 
 <a name="until-json"></a>
 
 ## "Until" definition (JSON)
 
-If you're working in code view for your logic app, 
-you can define an `Until` loop in your logic app's 
-JSON definition instead, for example:
+If you're working in code view, you can define an `Until` action in your workflow's JSON definition, for example:
 
 ``` json
 "actions": {
@@ -328,18 +357,12 @@ JSON definition instead, for example:
 }
 ```
 
-This example "Until" loop calls an HTTP endpoint, 
-which creates a resource. The loop stops when the 
-HTTP response body returns with `Completed` status. 
-To prevent endless loops, the loop also stops 
-if any of these conditions happen:
+This example **Until** loop calls an HTTP endpoint, which creates a resource. The loop stops when the HTTP response body returns with `Completed` status. To prevent endless loops, the loop also stops if any of the following conditions happen:
 
-* The loop ran 10 times as specified by the `count` attribute. 
-The default is 60 times. 
+- The loop ran 10 times as specified by the `count` attribute. The default is 60 times.
 
-* The loop ran for two hours as specified by the `timeout` attribute in ISO 8601 format. 
-The default is one hour.
-  
+- The loop ran for two hours as specified by the `timeout` attribute in ISO 8601 format. The default is one hour.
+
 ``` json
 "actions": {
    "myUntilLoopName": {
@@ -351,16 +374,13 @@ The default is one hour.
                "body": {
                   "resourceId": "@triggerBody()"
                },
-               "url": "https://domain.com/provisionResource/create-resource",
-               "body": {
-                  "resourceId": "@triggerBody()"
-               }
+               "url": "https://domain.com/provisionResource/create-resource"
             },
             "runAfter": {},
             "type": "ApiConnection"
          }
       },
-      "expression": "@equals(triggerBody(), 'Completed')",
+      "expression": "@equals(body('Create_new_resource'), 'Completed')",
       "limit": {
          "count": 10,
          "timeout": "PT2H"
@@ -370,16 +390,9 @@ The default is one hour.
 }
 ```
 
-## Get support
+## Related content
 
-* For questions, visit the 
-[Microsoft Q&A question page for Azure Logic Apps](/answers/topics/azure-logic-apps.html).
-* To submit or vote on features and suggestions, 
-[Azure Logic Apps user feedback site](https://aka.ms/logicapps-wish).
-
-## Next steps
-
-* [Run steps based on a condition (condition action)](../logic-apps/logic-apps-control-flow-conditional-statement.md)
-* [Run steps based on different values (switch action)](../logic-apps/logic-apps-control-flow-switch-statement.md)
-* [Run or merge parallel steps (branches)](../logic-apps/logic-apps-control-flow-branches.md)
-* [Run steps based on grouped action status (scopes)](../logic-apps/logic-apps-control-flow-run-steps-group-scopes.md)
+- [Run steps based on a condition (condition action)](logic-apps-control-flow-conditional-statement.md)
+- [Run steps based on different values (switch action)](logic-apps-control-flow-switch-statement.md)
+- [Run or merge parallel steps (branches)](logic-apps-control-flow-branches.md)
+- [Run steps based on grouped action status (scopes)](logic-apps-control-flow-run-steps-group-scopes.md)

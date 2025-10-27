@@ -2,11 +2,12 @@
 title: Show search results on a map
 titleSuffix: Microsoft Azure Maps
 description: This article demonstrates how to perform a search request using Microsoft Azure Maps Web SDK and display the results on the map.
-author: dubiety
-ms.author: yuchungchen
+author: sinnypan
+ms.author: sipa
 ms.date: 07/01/2023
 ms.topic: how-to
 ms.service: azure-maps
+ms.subservice: web-sdk
 ---
 
 # Show search results on the map
@@ -30,9 +31,9 @@ const onload = () => {
     authOptions: {
       // Use Azure Active Directory authentication.
       authType: "aad",
-      clientId: "<Your Azure Maps Client Id>",
-      aadAppId: "<Your Azure Active Directory Client Id>",
-      aadTenant: "<Your Azure Active Directory Tenant Id>"
+      clientId: "<Your Azure Maps Client ID>",
+      aadAppId: "<Your Azure Active Directory Client ID>",
+      aadTenant: "<Your Azure Active Directory Tenant ID>"
     }
   });
 
@@ -47,7 +48,7 @@ const onload = () => {
     };
 
     // Create a Search client.
-    const client = MapsSearch(credential, "<Your Azure Maps Client Id>");
+    const client = MapsSearch(credential, "<Your Azure Maps Client ID>");
 
     // Create a data source and add it to the map.
     const datasource = new atlas.source.DataSource();
@@ -96,13 +97,13 @@ document.body.onload = onload;
 > [!VIDEO //codepen.io/azuremaps/embed/zLdYEB/?height=265&theme-id=0&default-tab=js,result&embed-version=2&editable=true]
 --------------------------------------------------------->
 
-In the previous code example, the first block constructs a map object and sets the authentication mechanism to use Azure Active Directory. For more information, see [Create a map].
+In the previous code example, the first block constructs a map object and sets the authentication mechanism to use Microsoft Entra ID. For more information, see [Create a map].
 
 The second block of code creates an object that implements the [TokenCredential] interface to authenticate HTTP requests to Azure Maps with the access token. It then passes the credential object to [MapsSearch] and creates an instance of the client.
 
 The third block of code creates a data source object using the [DataSource] class and add search results to it. A [symbol layer] uses text or icons to render point-based data wrapped in the [DataSource] as symbols on the map.  A symbol layer is then created. The data source is added to the symbol layer, which is then added to the map.
 
-The fourth code block makes a GET request in the [MapsSearch] client. It allows you to perform a free form text search via the [Get Search Fuzzy rest API] to search for point of interest. Get requests to the Search Fuzzy API can handle any combination of fuzzy inputs. The response is then converted to [Feature] objects and added to the data source, which automatically results in the data being rendered on the map via the symbol layer.
+The fourth code block makes a GET request in the [MapsSearch] client. It allows you to perform a free form text search via the [Get Search Fuzzy REST API] to search for point of interest. Get requests to the Search Fuzzy API can handle any combination of fuzzy inputs. The response is then converted to [Feature] objects and added to the data source, which automatically results in the data being rendered on the map via the symbol layer.
 
 The last block of code adjusts the camera bounds for the map using the Map's [setCamera] property.
 
@@ -123,9 +124,9 @@ const onload = () => {
     authOptions: {
       // Use Azure Active Directory authentication.
       authType: "aad",
-      clientId: "<Your Azure Maps Client Id>",
-      aadAppId: "<Your Azure Active Directory Client Id>",
-      aadTenant: "<Your Azure Active Directory Tenant Id>"
+      clientId: "<Your Azure Maps Client ID>",
+      aadAppId: "<Your Azure Active Directory Client ID>",
+      aadTenant: "<Your Azure Active Directory Tenant ID>"
     }
   });
 
@@ -138,7 +139,7 @@ const onload = () => {
     const resultLayer = new atlas.layer.SymbolLayer(datasource);
     map.layers.add(resultLayer);
 
-    // Send a request to Azure Maps search API
+    // Send a request to Azure Maps Search API
     let url = "https://atlas.microsoft.com/search/fuzzy/json?";
     url += "&api-version=1";
     url += "&query=gasoline%20station";
@@ -150,7 +151,7 @@ const onload = () => {
     fetch(url, {
       headers: {
         Authorization: "Bearer " + map.authentication.getToken(),
-        "x-ms-client-id": "<Your Azure Maps Client Id>"
+        "x-ms-client-id": "<Your Azure Maps Client ID>"
       }
     })
       .then((response) => response.json())
@@ -186,7 +187,7 @@ document.body.onload = onload;
 > [!VIDEO //codepen.io/azuremaps/embed/KQbaeM/?height=265&theme-id=0&default-tab=js,result&embed-version=2&editable=true]
 --------------------------------------------------------->
 
-In the previous code example, the first block of code constructs a map object. It sets the authentication mechanism to use Azure Active Directory. For more information, see [Create a map].
+In the previous code example, the first block of code constructs a map object. It sets the authentication mechanism to use Microsoft Entra ID. For more information, see [Create a map].
 
 The second block of code creates a data source object using the [DataSource] class and add search results to it. A [symbol layer] uses text or icons to render point-based data wrapped in the [DataSource] as symbols on the map.  A symbol layer is then created. The data source is added to the symbol layer, which is then added to the map.
 
@@ -210,7 +211,7 @@ The following image is a screenshot showing the results of the two code samples.
 Learn more about **Fuzzy Search**:
 
 > [!div class="nextstepaction"]
-> [Azure Maps Fuzzy Search API](/rest/api/maps/search/getsearchfuzzy)
+> [Azure Maps Fuzzy Search API](/rest/api/maps/search/getsearchfuzzy?view=rest-maps-1.0&preserve-view=true)
 
 Learn more about the classes and methods used in this article:
 
@@ -225,12 +226,12 @@ See the following articles for full code examples:
 > [!div class="nextstepaction"]
 > [Show directions from A to B](map-route.md)
 
-[Fuzzy search API]: /rest/api/maps/search/getsearchfuzzy
+[Fuzzy search API]: /rest/api/maps/search/getsearchfuzzy?view=rest-maps-1.0&preserve-view=true
 [Fetch API]: https://fetch.spec.whatwg.org/
 [DataSource]: /javascript/api/azure-maps-control/atlas.source.datasource
 [symbol layer]: /javascript/api/azure-maps-control/atlas.layer.symbollayer
 [Create a map]: map-create.md
-[Get Search Fuzzy rest API]: /rest/api/maps/search/getsearchfuzzy
+[Get Search Fuzzy REST API]: /rest/api/maps/search/getsearchfuzzy?view=rest-maps-1.0&preserve-view=true
 [setCamera]: /javascript/api/azure-maps-control/atlas.map#setcamera-cameraoptions---cameraboundsoptions---animationoptions-
 [event listener]: /javascript/api/azure-maps-control/atlas.map#events
 [BoundingBox]: /javascript/api/azure-maps-control/atlas.data.boundingbox

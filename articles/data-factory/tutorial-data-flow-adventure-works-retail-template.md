@@ -3,10 +3,9 @@ title: ETL template for retail industry data model
 description: This tutorial provides steps for using the industry data model template for retail using the Adventure Works sample data
 author: kromerm
 ms.author: aamerril
-ms.service: synapse-analytics
+ms.service: azure-synapse-analytics
 ms.topic: conceptual
-ms.custom: seo-lt-2021
-ms.date: 08/10/2023
+ms.date: 05/15/2024
 ---
 
 # AdventureWorks template documentation
@@ -18,7 +17,7 @@ AdventureWorks is a fictional sports equipment retailer that is used to demo Mic
 
 ## Prerequisites
 
-* **Azure subscription**. If you don't have an Azure subscription, create a [free Azure account](https://azure.microsoft.com/free/) before you begin.
+* **Azure subscription**. If you don't have an Azure subscription, create a [free Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 * **Azure Synapse workspace**. [Create an Azure Synapse Workspace](../synapse-analytics/get-started-create-workspace.md) if you don't have one already.
 
 ## Find the template
@@ -50,11 +49,11 @@ With the databases created, ensure the dataflows are pointing to the correct tab
 ## Troubleshoot the pipelines
 If the pipeline fails to run successfully, there's a few main things to check for errors.
 
-* Dataset schema. Make sure the data settings for the CSV files are accurate. If you included row headers, make sure the how headers option is checked on the database table.
+* Dataset schema. Make sure the data settings for the CSV files are accurate. If you included row headers, make sure the row headers option is checked on the database table.
 * Data flow sources. If you used different column or table names than what were provided in the example schema, you'll need to step through the data flows to verify that the columns are mapped correctly.
 * Data flow sink. The schema and data format configurations on the target database will need to match the data flow template. Like above, if any changes were made you those items will need to be aligned.
 
-## Next steps
+## Related content
 
 * Learn more about [mapping data flows](concepts-data-flow-overview.md).
 * Learn more about [pipeline templates](solution-templates-introduction.md)

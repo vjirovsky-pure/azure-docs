@@ -3,9 +3,17 @@ title: Develop Azure Functions locally using Core Tools
 description: Learn how to code and test Azure Functions from the command prompt or terminal on your local computer before you deploy them to run them on Azure Functions.
 ms.assetid: 242736be-ec66-4114-924b-31795fd18884
 ms.topic: conceptual
-ms.date: 08/21/2023
-ms.custom: devx-track-csharp, 80e4ff38-5174-43, devx-track-extended-java, devx-track-js, devx-track-python
+ms.date: 02/23/2025
 zone_pivot_groups: programming-languages-set-functions
+ms.custom:
+  - devx-track-csharp
+  - 80e4ff38-5174-43
+  - devx-track-extended-java
+  - devx-track-js
+  - devx-track-python
+  - devx-track-ts
+  - sfi-ropc-nochange
+#customer intent: As an Azure Functions developer, I want to run and test Functions locally using Core Tools so that I can validate behavior before deploying to Azure.
 ---
 
 # Develop Azure Functions locally using Core Tools
@@ -13,123 +21,117 @@ zone_pivot_groups: programming-languages-set-functions
 Azure Functions Core Tools lets you develop and test your functions on your local computer. When you're ready, you can also use Core Tools to deploy your code project to Azure and work with application settings.
 
 ::: zone pivot="programming-language-csharp"
-You're viewing the C# version of this article. Make sure to select your preferred Functions programming language at the top of the article.
+>You're viewing the C# version of this article. Make sure to select your preferred Functions programming language at the top of the article.
  
-If you want to get started right away, complete the [Core Tools quickstart article](create-first-function-cli-csharp.md).
+If you want to get started right away, complete the [Core Tools quickstart article](how-to-create-function-azure-cli.md?pivots=programming-language-csharp).
 ::: zone-end
 ::: zone pivot="programming-language-java"
-You're viewing the Java version of this article. Make sure to select your preferred Functions programming language at the top of the article.
+>You're viewing the Java version of this article. Make sure to select your preferred Functions programming language at the top of the article.
 
-If you want to get started right away, complete the [Core Tools quickstart article](create-first-function-cli-java.md).
+If you want to get started right away, complete the [Core Tools quickstart article](how-to-create-function-azure-cli.md?pivots=programming-language-java).
 ::: zone-end
 ::: zone pivot="programming-language-javascript"
-You're viewing the JavaScript version of this article. Make sure to select your preferred Functions programming language at the top of the article.
+>You're viewing the JavaScript version of this article. Make sure to select your preferred Functions programming language at the top of the article.
  
-If you want to get started right away, complete the [Core Tools quickstart article](create-first-function-cli-node.md).
+If you want to get started right away, complete the [Core Tools quickstart article](how-to-create-function-azure-cli.md?pivots=programming-language-javascript).
 ::: zone-end
 ::: zone pivot="programming-language-powershell"
-You're viewing the PowerShell version of this article. Make sure to select your preferred Functions programming language at the top of the article.
+>You're viewing the PowerShell version of this article. Make sure to select your preferred Functions programming language at the top of the article.
  
-If you want to get started right away, complete the [Core Tools quickstart article](create-first-function-cli-powershell.md).
+If you want to get started right away, complete the [Core Tools quickstart article](how-to-create-function-azure-cli.md?pivots=programming-language-powershell).
 ::: zone-end
 ::: zone pivot="programming-language-python"
-You're viewing the Python version of this article. Make sure to select your preferred Functions programming language at the top of the article.
+>You're viewing the Python version of this article. Make sure to select your preferred Functions programming language at the top of the article.
  
-If you want to get started right away, complete the [Core Tools quickstart article](create-first-function-cli-python.md).
+If you want to get started right away, complete the [Core Tools quickstart article](how-to-create-function-azure-cli.md?pivots=programming-language-python).
 ::: zone-end
 ::: zone pivot="programming-language-typescript"
-You're viewing the TypeScript version of this article. Make sure to select your preferred Functions programming language at the top of the article.
+>You're viewing the TypeScript version of this article. Make sure to select your preferred Functions programming language at the top of the article.
  
-If you want to get started right away, complete the [Core Tools quickstart article](create-first-function-cli-typescript.md).
+If you want to get started right away, complete the [Core Tools quickstart article](how-to-create-function-azure-cli.md?pivots=programming-language-typescript).
 ::: zone-end
 
-[!INCLUDE [functions-install-core-tools](../../includes/functions-install-core-tools.md)]
+[!INCLUDE [functions-install-core-tools](../../includes/functions-install-core-tools.md)] 
 
-When upgrading to the latest version of Core Tools, you should use the same package manager as the original installation to perform the upgrade. For more information, see [Core Tools versions](#v2). 
+For help with version-related issues, see [Core Tools versions](#v2).
 
 ## Create your local project
 ::: zone pivot="programming-language-python"  
 > [!IMPORTANT]
-> For Python, you must run Core Tools commands in a virtual environment. For more information, see [Quickstart: Create a Python function in Azure from the command line](create-first-function-cli-python.md#create-venv).
+> For Python, you must run Core Tools commands in a virtual environment. For more information, see [Quickstart: Create a Python function in Azure from the command line](how-to-create-function-azure-cli.md?pivots=programming-language-python#create-venv).
 ::: zone-end
-In the terminal window or from a command prompt, run the following command to create a project in the current folder:
+In the terminal window or from a command prompt, run the following command to create a project in the `MyProjFolder` folder:
 
 ::: zone pivot="programming-language-csharp"
-### [Isolated process](#tab/isolated-process)
+### [Isolated worker model](#tab/isolated-process)
 
 ```console
-func init --worker-runtime dotnet-isolated 
+func init MyProjFolder --worker-runtime dotnet-isolated 
 ```
 
-You can use the `--target-framework` option to target a specific version of .NET. For for information, see the [`func init`](functions-core-tools-reference.md#func-init) reference.
+By default this command creates a project that runs in-process with the Functions host on the current [Long-Term Support (LTS) version of .NET Core]. You can use the `--target-framework` option to target a specific supported version of .NET, including .NET Framework. For more information, see the [`func init`](functions-core-tools-reference.md#func-init) reference.
 
-### [In-process](#tab/in-process)
+### [In-process model](#tab/in-process)
 
 ```console
-func init --worker-runtime dotnet 
+func init MyProjFolder --worker-runtime dotnet 
 ```
+
+This command creates a project that runs on the current [Long-Term Support (LTS) version of .NET Core]. For other .NET version, create an app that runs in an isolated worker process from the Functions host. 
 
 ---
 
-This command creates a project that runs on the current Long-Term Support (LTS) version of .NET Core in the chosen [process mode](./dotnet-isolated-in-process-differences.md).
+For a comparison between the two .NET process models, see the [process mode comparison article](./dotnet-isolated-in-process-differences.md).
 ::: zone-end
 ::: zone pivot="programming-language-java"
-Java uses a Maven archetype to create the local project, along with your first HTTP triggered function. Rather than using `func init` and `func new`, you should instead follow the steps in the [Command line quickstart](./create-first-function-cli-java.md).  
+Java uses a Maven archetype to create the local project, along with your first HTTP triggered function. Rather than using `func init` and `func new`, you should instead follow the steps in the [Command line quickstart](./how-to-create-function-azure-cli.md?pivots=programming-language-java).  
 ::: zone-end
 ::: zone pivot="programming-language-javascript"  
 ### [v4](#tab/node-v4)
 ```console
-func init --worker-runtime javascript --model V4
+func init MyProjFolder --worker-runtime javascript --model V4
 ```
 ### [v3](#tab/node-v3)
 ```console
-func init --worker-runtime javascript --model V3
+func init MyProjFolder --worker-runtime javascript --model V3
 ```
 ---
 
-This command creates a JavaScript project that uses the desired programming model version. For more information, see the [Node.js developer guide](functions-reference-node.md).
+This command creates a JavaScript project that uses the desired [programming model version](functions-reference-node.md).
 ::: zone-end  
 ::: zone pivot="programming-language-typescript"   
 ### [v4](#tab/node-v4)
 ```console
-func init --worker-runtime typescript --model V4
+func init MyProjFolder --worker-runtime typescript --model V4
 ```
 ### [v3](#tab/node-v3)
 ```console
-func init --worker-runtime typescript --model V3
+func init MyProjFolder --worker-runtime typescript --model V3
 ```
 ---
 
-This command creates a TypeScript project that uses the desired programming model version. For more information, see the [Node.js developer guide](functions-reference-node.md).
+This command creates a TypeScript project that uses the desired [programming model version](functions-reference-node.md).
 ::: zone-end  
 ::: zone pivot="programming-language-powershell"
 ```console
-func init --worker-runtime powershell
+func init MyProjFolder --worker-runtime powershell
 ```
 ::: zone-end
 ::: zone pivot="programming-language-python"
 ### [v2](#tab/python-v2)
 ```console
-func init --worker-runtime python --model V2
+func init MyProjFolder --worker-runtime python --model V2
 ```
 ### [v1](#tab/python-v1)
 ```console
-func init --worker-runtime python --model V1
+func init MyProjFolder --worker-runtime python
 ```
 ---
 
-This command creates a Python project that uses the desired programming model version. For more information, see the [Python developer guide](functions-reference-python.md#programming-model).
+This command creates a Python project that uses the desired [programming model version](functions-reference-python.md#programming-model).
 ::: zone-end
 
-The following considerations apply to project initialization:
-
-+ If you don't provide the `--worker-runtime` option in the command, you're prompted to choose your language. 
-
-+ The command `func init MyProjFolder` creates the project in a subfolder named `MyProjFolder`. The folder is created when it doesn't already exist. 
-
-+ Use the `--docker` option to generate a Dockerfile that you can use to containerize your project. For more information, see [Create a function app in a local container](functions-create-container-registry.md#create-and-test-the-local-functions-project). 
-
-For more information, see the [`func init`](functions-core-tools-reference.md#func-init) reference.
+When you run `func init` without the `--worker-runtime` option, you're prompted to choose your project language. To learn more about the available options for the `func init` command, see the [`func init`](functions-core-tools-reference.md#func-init) reference.
 
 ## <a name="create-func"></a>Create a function
 
@@ -156,11 +158,13 @@ The following considerations apply when adding functions:
 + Core Tools also adds a reference to the specific binding extension to your C# project.
 ::: zone-end
 
-To learn more, see the [`func new`](functions-core-tools-reference.md#func-new) command.
+To learn more about the available options for the `func new` command, see the [`func new`](functions-core-tools-reference.md#func-new) reference.
 
 ## Add a binding to your function
 
-Adding input or output bindings to an existing function requires you to manually update the function definition. 
+Functions provides a set of service-specific input and output bindings, which make it easier for your function to connection to other Azure services without having to use the service-specific client SDKs. For more information, see [Azure Functions triggers and bindings concepts](functions-triggers-bindings.md). 
+  
+To add an input or output binding to an existing function, you must manually update the function definition. 
 [!INCLUDE [functions-add-output-binding-example-all-langs](../../includes/functions-add-output-binding-example-all-languages.md)]
 The following considerations apply when adding bindings to a function:
 ::: zone pivot="programming-language-javascript,programming-language-typescript,programming-language-python,programming-language-powershell"
@@ -168,7 +172,7 @@ The following considerations apply when adding bindings to a function:
 ::: zone-end 
 + When you add bindings that connect to a service, you must also add an application setting that references a connection string or managed identity to the local.settings.json file. For more information, see [Work with app settings locally](#local-settings).  
 ::: zone pivot="programming-language-java,programming-language-javascript,programming-language-typescript,programming-language-powershell"
-+ When you add a supported binding, the extension should already be installed when your app uses extension bundle. For more information, see [extension bundles](functions-bindings-register.md#extension-bundles).
++ When you add a supported binding, the extension should already be installed when your app uses extension bundle. For more information, see [extension bundles](extension-bundles.md).
 ::: zone-end  
 ::: zone pivot="programming-language-csharp"  
 + When you add a binding that requires a new binding extension, you must also add a reference to that specific binding extension in your C# project. 
@@ -193,9 +197,9 @@ For more information, including links to example binding code that you can refer
 ::: zone-end 
 
 
-## <a name="start"></a>Run functions locally
+## <a name="start"></a>Start the Functions runtime
 
-To run your project, you run the Functions host from the root directory of your project. The host enables triggers for all functions in the project. Use this command to run your functions locally:
+Before you can run or debug the functions in your project, you need to start the Functions host from the root directory of your project. The host enables triggers for all functions in the project. Use this command to start the local runtime:
 
 ::: zone pivot="programming-language-java"  
 ```
@@ -203,34 +207,43 @@ mvn clean package
 mvn azure-functions:run
 ```
 ::: zone-end  
-::: zone pivot="programming-language-powershell,programming-language-python"  
+::: zone pivot="programming-language-csharp"  
+
+### [Isolated worker model](#tab/isolated-process)
+
+```
+func start
+```
+
+### [In-process model](#tab/in-process)
+
+```
+func start
+```
+
+> [!IMPORTANT]
+> Starting with version 4.0.6517 of the Core Tools, in-process model projects must reference [version 4.5.0 or later of `Microsoft.NET.Sdk.Functions`](https://www.nuget.org/packages/Microsoft.NET.Sdk.Functions/4.5.0). If an earlier version is used, the `func start` command will error.
+
+---
+
+::: zone-end  
+::: zone pivot="programming-language-javascript,programming-language-powershell,programming-language-python"  
 ```
 func start
 ```
 ::: zone-end  
-::: zone pivot="programming-language-csharp,programming-language-javascript" 
-The way you start the host depends on your runtime version:
-### [v4.x](#tab/v2)
-```
-func start
-```
-### [v1.x](#tab/v1)
-```
-func host start
-```
----
-::: zone-end 
 ::: zone pivot="programming-language-typescript"  
 ```
 npm install
 npm start     
 ```
+
 ::: zone-end
 ::: zone pivot="programming-language-python" 
-This command must be [run in a virtual environment](./create-first-function-cli-python.md).
+This command must be [run in a virtual environment](./how-to-create-function-azure-cli.md?pivots=programming-language-python).
 ::: zone-end  
 
-When the Functions host starts, it outputs the URL of HTTP-triggered functions, like in this example:
+When the Functions host starts, it outputs a list of functions in the project, including the URLs of any HTTP-triggered functions, like in this example:
 
 <pre>
 Found the following functions:
@@ -240,26 +253,35 @@ Job host started
 Http Function MyHttpTrigger: http://localhost:7071/api/MyHttpTrigger
 </pre>
 
+::: zone pivot="programming-language-typescript,programming-language-javascript"
+How your functions are loaded depends on your project configuration. To learn more, see [Registering a function](functions-reference-node.md#registering-a-function). 
+::: zone-end
+
 Keep in mind the following considerations when running your functions locally:
 
-+ By default, authorization isn't enforced locally for HTTP endpoints. This means that all local HTTP requests are handled as `authLevel = "anonymous"`. For more information, see the [HTTP binding article](functions-bindings-http-webhook-trigger.md#authorization-keys). You can use the `--enableAuth` option to require authorization when running locally. For more information, see [`func start`](./functions-core-tools-reference.md?tabs=v2#func-start)
++ By default, authorization isn't enforced locally for HTTP endpoints. This means that all local HTTP requests are handled as `authLevel = "anonymous"`. For more information, see [Authorization level](functions-bindings-http-webhook-trigger.md#http-auth). You can use the `--enableAuth` option to require authorization when running locally. For more information, see [`func start`](./functions-core-tools-reference.md?tabs=v2#func-start)
 
-+ While there's local storage emulation available, it's often best to validate your triggers and bindings against live services in Azure. You can maintain the connections to these services in the local.settings.json project file. For more information, see [Local settings file](functions-develop-local.md#local-settings-file). Make sure to keep test and production data separate when testing against live Azure services. 
-
-+ You can trigger non-HTTP functions locally without connecting to a live service. For more information, see [Pass data to local functions](./functions-run-local.md?tabs=non-http-trigger#pass-data-to-local-functions).
++ You can use the local Azurite emulator when locally running functions that require access to Azure Storage services (Queue Storage, Blob Storage, and Table Storage) without having to connect to these services in Azure. When using local emulation, make sure to start Azurite before starting the local host (func.exe). For more information, see [Local storage emulation](functions-develop-local.md#local-storage-emulator).
+::: zone pivot="programming-language-python"
++ You can use local Azurite emulation to meet the storage requirement of the Python v2 worker. 
+::: zone-end
++ You can trigger non-HTTP functions locally without connecting to a live service. For more information, see [Run a local function](./functions-run-local.md?tabs=non-http-trigger#run-a-local-function).
 
 + When you include your Application Insights connection information in the local.settings.json file, local log data is written to the specific Application Insights instance. To keep local telemetry data separate from production data, consider using a separate Application Insights instance for development and testing.
+::: zone pivot="programming-language-csharp,programming-language-javascript"
++ When using version 1.x of the Core Tools, instead use the `func host start` command to start the local runtime.
+::: zone-end 
 
-## Pass data to local functions
+## Run a local function
 
-To test your functions locally, you [start the Functions host](#start) and call endpoints on the local server using HTTP requests. The endpoint you call depends on your type of function trigger.
+With your local Functions host (func.exe) running, you can now trigger individual functions to run and debug your function code. The way in which you execute an individual function depends on its trigger type.
 
 > [!NOTE]  
 > Examples in this topic use the cURL tool to send HTTP requests from the terminal or a command prompt. You can use a tool of your choice to send HTTP requests to the local server. The cURL tool is available by default on Linux-based systems and Windows 10 build 17063 and later. On older Windows, you must first download and install the [cURL tool](https://curl.haxx.se/).
 
 ### [HTTP trigger](#tab/http-trigger)
 
-You call this endpoint to start an HTTP triggered function:
+HTTP triggers are started by sending an HTTP request to the local endpoint and port as displayed in the func.exe output, which has this general format: 
 
 ```
 http://localhost:<PORT>/api/<FUNCTION_NAME>
@@ -285,13 +307,17 @@ curl --request POST http://localhost:7071/api/MyHttpTrigger --data "{'name':'Azu
 
 The following considerations apply when calling HTTP endpoints locally:
 
-+ You can make GET requests from a browser passing data in the query string. For all other HTTP methods, you must use cURL, Fiddler, Postman, or a similar HTTP testing tool that supports POST requests.
++ You can make GET requests from a browser passing data in the query string. For all other HTTP methods, you must use an HTTP testing tool that also keeps your data secure. For more information, see [HTTP test tools](functions-develop-local.md#http-test-tools). 
 
 + Make sure to use the same server name and port that the Functions host is listening on. You see an endpoint like this in the output generated when starting the Function host. You can call this URL using any HTTP method supported by the trigger.
 
 ### [Non-HTTP trigger](#tab/non-http-trigger)
 
-For all functions other than HTTP and Event Grid triggers, you can test your functions locally using REST by calling a special endpoint called an _administration endpoint_. Use this format to call the `admin` endpoint and trigger a specific non-HTTP function:
+There are two ways to execute non-HTTP triggers locally. First, you can connect to live Azure services, such as Azure Storage and Azure Service Bus. This directly mirrors the behavior of your function when running in Azure. When using live services, make sure to include the required named connection strings in the [local settings file](#local-settings). You may consider using a different service connection during development than you do in production by using a different connection string in the local.settings.json file than you use in the function app settings in Azure.
+
+Event Grid triggers require extra configuration to run locally.
+
+You can also run a non-HTTP function locally using REST by calling a special endpoint called an _administrator endpoint_. Use this format to call the `admin` endpoint and trigger a specific non-HTTP function:
 
 ```
 http://localhost:<PORT>/admin/functions/<FUNCTION_NAME>
@@ -323,12 +349,15 @@ The following considerations apply when using the administrator endpoint for loc
 
 + You can call the `functions` administrator endpoint (`http://localhost:{port}/admin/functions/`) to return a list of administrator URLs for all available functions, both HTTP triggered and non-HTTP triggered.
 
-+ Authentication and authorization are bypassed when running locally. The same APIs exist in Azure, but when you try to call the same administrator endpoints in Azure, you must provide an access key. To learn more, see [Function access keys](functions-bindings-http-webhook-trigger.md#authorization-keys). 
++ Authentication and authorization are bypassed when running locally. The same APIs exist in Azure, but when you try to call the same administrator endpoints in Azure, you must provide an access key. To learn more, see [Work with access keys](function-keys-how-to.md). 
 
 + Access keys are valuable shared secrets. When used locally, they must be securely stored outside of source control. Because authentication and authorization aren't required by Functions when running locally, you should avoid using and storing access keys unless your scenarios require it.
 
 + Calling an administrator endpoint and passing test data is similar to using the **Test** tab in the Azure portal.
 
++ If the input is a complex JSON object, additional formatting is needed. The data must be properly escaped and include a `SystemProperties` object. 
+This example shows a properly escaped JSON string with both a `testData` object and `SystemProperties`:   
+`'{"input": "{\"SystemProperties\":{},\"testData\":{\"testid\":\"123\"}"}'`
 ### [Event Grid trigger](#tab/event-grid-trigger)
 
 Event Grid triggers have specific requirements to enable local testing. For more information, see [Local testing with viewer web app](event-grid-how-tos.md#local-testing-with-viewer-web-app).
@@ -352,7 +381,7 @@ If you don't have these tools installed, you need to instead [get a valid access
 ## <a name="project-file-deployment"></a>Deploy project files
 
 ::: zone pivot="programming-language-csharp,programming-language-javascript,programming-language-powershell,programming-language-python,programming-language-typescript"
-To publish your local code to a function app in Azure, use the [`func azure functionapp publish publish`](./functions-core-tools-reference.md#func-azure-functionapp-publish) command, as in the following example:
+To publish your local code to a function app in Azure, use the [`func azure functionapp publish`](./functions-core-tools-reference.md#func-azure-functionapp-publish) command, as in the following example:
 
 ```
 func azure functionapp publish <FunctionAppName>
@@ -367,7 +396,7 @@ Java uses Maven to publish your local project to Azure instead of Core Tools. Us
 mvn azure-functions:deploy
 ```
 
-When you run this command, Azure resources are created during the initial deployment based on the settings in your _pom.xml_ file. For more information, see [Deploy the function project to Azure](create-first-function-cli-java.md#deploy-the-function-project-to-azure).
+When you run this command, Azure resources are created during the initial deployment based on the settings in your _pom.xml_ file. For more information, see [Deploy the function project to Azure](how-to-create-function-azure-cli.md?pivots=programming-language-java#deploy-the-function-project-to-azure).
 ::: zone-end  
 ::: zone pivot="programming-language-csharp,programming-language-javascript,programming-language-powershell,programming-language-python,programming-language-typescript"  
 The following considerations apply to this kind of deployment:
@@ -408,7 +437,7 @@ When you deploy to an Azure Container Apps environment, the following considerat
 
 + Storage connection strings and other service credentials are important secrets. Make sure to securely store any script files using `func azurecontainerapps deploy` and don't store them in any publicly accessible source control systems. You can [encrypt the local.settings.json file](#encrypt-the-local-settings-file) for added security.
 
-For more information, see [Azure Container Apps hosting of Azure Functions](functions-container-apps-hosting.md). 
+For more information, see [Azure Container Apps hosting of Azure Functions](../azure-functions/functions-container-apps-hosting.md). 
 
 ### [Kubernetes cluster](#tab/kubernetes)
 
@@ -504,14 +533,14 @@ When the settings file is encrypted and decrypted, the file's `IsEncrypted` sett
 [Functions triggers and bindings](functions-triggers-bindings.md) are implemented as .NET extension (NuGet) packages. To be able to use a specific binding extension, that extension must be installed in the project.
 
 ::: zone pivot="programming-language-javascript,programming-language-csharp"
-This section doesn't apply to version 1.x of the Functions runtime. In version 1.x, supported binding were included in the core product extension.
+This section doesn't apply to version 1.x of the Functions runtime. In version 1.x, supported bindings were included in the core product extension.
 ::: zone-end
 
 ::: zone pivot="programming-language-csharp"
-For C# class library projects, add references to the specific NuGet packages for the binding extensions required by your functions. C# script (.csx) project must use [extension bundles](functions-bindings-register.md#extension-bundles).
+For C# class library projects, add references to the specific NuGet packages for the binding extensions required by your functions. C# script (.csx) project must use [extension bundles](extension-bundles.md).
 ::: zone-end
 ::: zone pivot="programming-language-java,programming-language-javascript,programming-language-powershell,programming-language-python,programming-language-typescript"
-Functions provides _extension bundles_ to make is easy to work with binding extensions in your project. Extension bundles, which are versioned and defined in the host.json file, install a complete set of compatible binding extension packages for your app. Your host.json should already have extension bundles enabled. If for some reason you need to add or update the extension bundle in the host.json file, see [Extension bundles](functions-bindings-register.md#extension-bundles).
+Functions provides _extension bundles_ to make is easy to work with binding extensions in your project. Extension bundles, which are versioned and defined in the host.json file, install a complete set of compatible binding extension packages for your app. Your host.json should already have extension bundles enabled. If for some reason you need to add or update the extension bundle in the host.json file, see [Extension bundles](extension-bundles.md).
 
 If you must use a binding extension or an extension version not in a supported bundle, you need to manually install extensions. For such rare scenarios, see the [`func extensions install`](./functions-core-tools-reference.md#func-extensions-install) command.
 ::: zone-end
@@ -519,6 +548,11 @@ If you must use a binding extension or an extension version not in a supported b
 ## <a name="v2"></a>Core Tools versions
 
 Major versions of Azure Functions Core Tools are linked to specific major versions of the Azure Functions runtime. For example, version 4.x of Core Tools supports version 4.x of the Functions runtime. This version is the recommended major version of both the Functions runtime and Core Tools. You can determine the latest release version of Core Tools in the [Azure Functions Core Tools repository](https://github.com/Azure/azure-functions-core-tools/releases/latest).
+
+::: zone pivot="programming-language-csharp"
+<a name="in-process-minimum-version"></a> 
+Starting with version 4.0.6517 of the Core Tools, in-process model projects must reference [version 4.5.0 or later of `Microsoft.NET.Sdk.Functions`](https://www.nuget.org/packages/Microsoft.NET.Sdk.Functions/4.5.0). If an earlier version is used, the `func start` command will error.
+::: zone-end
 
 Run the following command to determine the version of your current Core Tools installation:
 
@@ -532,14 +566,12 @@ The following considerations apply to Core Tools installations:
 
 + You can only install one version of Core Tools on a given computer. 
 
-+ Version 2.x and 3.x of Core Tools were used with versions 2.x and 3.x of the Functions runtime, which have reached their end of life (EOL). For more information, see [Azure Functions runtime versions overview](functions-versions.md).  
++ When upgrading to the latest version of Core Tools, you should use the same method that you used for original installation to perform the upgrade. For example, if you used an MSI on Windows, uninstall the current MSI and install the latest one. Or if you used npm, rerun the `npm  install command`.  
+
++ Version 2.x and 3.x of Core Tools were used with versions 2.x and 3.x of the Functions runtime, which have reached their end of support. For more information, see [Azure Functions runtime versions overview](functions-versions.md).  
 ::: zone pivot="programming-language-csharp,programming-language-javascript"  
 + Version 1.x of Core Tools is required when using version 1.x of the Functions Runtime, which is still supported. This version of Core Tools can only be run locally on Windows computers. If you're currently running on version 1.x, you should consider [migrating your app to version 4.x](migrate-version-1-version-4.md) today.
 ::: zone-end  
-
-[!INCLUDE [functions-x86-emulation-on-arm64](../../includes/functions-x86-emulation-on-arm64.md)]
-
-If you're using Visual Studio Code, you can integrate Rosetta with the built-in Terminal. For more information, see [Enable emulation in Visual Studio Code](./functions-develop-vs-code.md#enable-emulation-in-visual-studio-code). 
 
 ## Next steps
 
@@ -547,6 +579,8 @@ Learn how to [develop, test, and publish Azure functions by using Azure Function
 
 <!-- LINKS -->
 
-[extension bundles]: functions-bindings-register.md#extension-bundles
+[extension bundles]: extension-bundles.md
 [func azure functionapp publish]: functions-core-tools-reference.md?tabs=v2#func-azure-functionapp-publish
 
+
+[Long-Term Support (LTS) version of .NET Core]: https://dotnet.microsoft.com/platform/support/policy/dotnet-core#lifecycle

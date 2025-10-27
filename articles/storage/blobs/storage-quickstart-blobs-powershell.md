@@ -4,11 +4,12 @@ titleSuffix: Azure Storage
 description: In this quickstart, you use Azure PowerShell in object (Blob) storage. Then you use PowerShell to upload a blob to Azure Storage, download a blob, and list the blobs in a container.
 services: storage
 author: stevenmatthew
-ms.service: azure-storage
+ms.service: azure-blob-storage
 ms.topic: quickstart
-ms.date: 03/31/2022
+ms.date: 06/26/2023
 ms.author: shaas
 ms.custom: devx-track-azurepowershell, mode-api
+# Customer intent: As a cloud user, I want to upload, download, and manage blobs using PowerShell, so that I can efficiently transfer and organize files in Azure Blob storage.
 ---
 
 # Quickstart: Upload, download, and list blobs with PowerShell
@@ -17,11 +18,11 @@ Use the Azure PowerShell module to create and manage Azure resources. You can cr
 
 ## Prerequisites
 
-To access Azure Storage, you'll need an Azure subscription. If you don't already have a subscription, then create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+To access Azure Storage, you'll need an Azure subscription. If you don't already have a subscription, then create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 You will also need the Storage Blob Data Contributor role to read, write, and delete Azure Storage containers and blobs.
 
-[!INCLUDE [updated-for-az](../../../includes/updated-for-az.md)]
+[!INCLUDE [updated-for-az](~/reusable-content/ce-skilling/azure/includes/updated-for-az.md)]
 
 This quickstart requires the Azure PowerShell module Az version 0.7 or later. Run `Get-InstalledModule -Name Az -AllVersions | select Name,Version` to find the version. If you need to install or upgrade, see [Install Azure PowerShell module](/powershell/azure/install-azure-powershell).
 
@@ -31,11 +32,11 @@ This quickstart requires the Azure PowerShell module Az version 0.7 or later. Ru
 
 Blobs are always uploaded into a container. You can organize groups of blobs like the way you organize your files on your computer in folders.
 
-Set the container name, then create the container by using [New-AzStorageContainer](/powershell/module/az.storage/new-azstoragecontainer). Set the permissions to `blob` to allow public access of the files. The container name in this example is *quickstartblobs*.
+Set the container name, then create the container by using [New-AzStorageContainer](/powershell/module/az.storage/new-azstoragecontainer). The container name in this example is *quickstartblobs*.
 
 ```azurepowershell-interactive
 $ContainerName = 'quickstartblobs'
-New-AzStorageContainer -Name $ContainerName -Context $Context -Permission Blob
+New-AzStorageContainer -Name $ContainerName -Context $Context
 ```
 
 ## Upload blobs to the container
@@ -84,9 +85,9 @@ Upload as many files as you like before continuing.
 
 ## List the blobs in a container
 
-Get a list of blobs in the container by using [Get-AzStorageBlob](/powershell/module/az.storage/get-azstorageblob). This example shows just the names of the blobs uploaded.
+Get a list of blobs in the container by using [Get-AzStorageBlob](/powershell/module/az.storage/get-azstorageblob). This example lists the names of the blobs uploaded.
 
-```azurepowershell-intereactive
+```azurepowershell-interactive
 Get-AzStorageBlob -Container $ContainerName -Context $Context |
   Select-Object -Property Name
 ```

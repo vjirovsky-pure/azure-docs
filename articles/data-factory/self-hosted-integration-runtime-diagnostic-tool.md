@@ -3,11 +3,12 @@ title: Self-hosted integration runtime diagnostic tool
 description: Diagnostic tool for self-hosted integration runtime
 ms.author: lle
 author: lrtoyou1223
-ms.service: data-factory
 ms.subservice: integration-runtime
 ms.topic: conceptual
-ms.custom: seo-lt-2019, references_regions
-ms.date: 07/20/2023
+ms.date: 05/15/2024
+ms.custom:
+  - references_regions
+  - sfi-image-nochange
 ---
 
 # Diagnostic tool for self-hosted integration runtime
@@ -35,7 +36,7 @@ The execution result and detail log messages are generated as a HTML report. You
 
 :::image type="content" source="./media/self-hosted-integration-runtime-diagnostic-tool/diagnostic-report.png" alt-text="Screenshot that shows the diagnostic result report.":::
 
-## Next steps
+## Related content
 
 - Review [integration runtime concepts in Azure Data Factory](./concepts-integration-runtime.md).
 

@@ -2,11 +2,12 @@
 title: How an application gateway works
 description: This article provides information about how an application gateway accepts incoming requests and routes them to the backend.
 services: application-gateway
-author: greg-lindsay
-ms.service: application-gateway
-ms.topic: conceptual
-ms.date: 8/22/2023
-ms.author: greglin
+author: mbender-ms
+ms.service: azure-application-gateway
+ms.topic: concept-article
+ms.date: 05/01/2024
+ms.author: mbender
+# Customer intent: As a network engineer, I want to understand how an application gateway processes and routes requests, so that I can effectively configure and optimize it for load balancing and security in my network architecture.
 ---
 
 # How an application gateway works
@@ -58,8 +59,8 @@ When a backend pool's server is configured with a Fully Qualified Domain Name (F
 The Application Gateway retains this cached information for the period equivalent to that DNS record's TTL (time to live) and performs a fresh DNS lookup once the TTL expires. If a gateway detects a change in IP address for its subsequent DNS query, it will start routing the traffic to this updated destination. In case of problems such as the DNS lookup failing to receive a response or the record no longer exists, the gateway continues to use the last-known-good IP address(es). This ensures minimal impact on the data path.
 
 > [!IMPORTANT]
->  * When using custom DNS servers with Application Gateway's Virtual Network, it is crucial that all servers are identical and respond consistently with the same DNS values.
->  * Users of on-premises custom DNS servers must ensure connectivity to Azure DNS through [Azure DNS Private Resolver](../dns/private-resolver-hybrid-dns.md) (recommended) or DNS forwarder VM when using a Private DNS zone for Private endpoint.
+>  * When using custom DNS servers with Application Gateway's Virtual Network, it is important that all servers respond consistently with the same DNS values. When an instance of your Application Gateway issues a DNS query, it uses the value from the server that responds first.
+>  * Users of on-premises custom DNS servers must ensure connectivity to Azure DNS through [Azure DNS Private Resolver](../dns/private-resolver-hybrid-dns.md) (recommended) or a DNS forwarder VM when using a Private DNS zone for Private endpoint.
 
 ### Modifications to the request
 

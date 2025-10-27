@@ -1,11 +1,12 @@
 ---
 title: Working with VMs and NSGs in Azure Bastion
 description: Learn about using network security groups with Azure Bastion.
-author: cherylmc
-ms.service: bastion
-ms.topic: conceptual
-ms.date: 06/23/2023
-ms.author: cherylmc
+author: abell
+ms.service: azure-bastion
+ms.topic: concept-article
+ms.date: 03/31/2025
+ms.author: abell
+# Customer intent: "As a network administrator, I want to configure network security groups for Azure Bastion, so that I can manage secure ingress and egress traffic to virtual machines while maintaining compliance and security practices."
 ---
 # Working with NSG access and Azure Bastion
 
@@ -45,7 +46,7 @@ Azure Bastion is deployed specifically to ***AzureBastionSubnet***.
 
 * **Egress Traffic:**
 
-   * **Egress Traffic to target VMs:** Azure Bastion will reach the target VMs over private IP. The NSGs need to allow egress traffic to other target VM subnets for port 3389 and 22. If you are using the custom port feature as part of Standard SKU, the NSGs will instead need to allow egress traffic to other target VM subnets for the custom value(s) you have opened on your target VMs.
+   * **Egress Traffic to target VMs:** Azure Bastion will reach the target VMs over private IP. The NSGs need to allow egress traffic to other target VM subnets for port 3389 and 22. If you're utilizing the custom port functionality within the Standard SKU, ensure that NSGs allow outbound traffic to the service tag VirtualNetwork as the destination.
    * **Egress Traffic to Azure Bastion data plane:** For data plane communication between the underlying components of Azure Bastion, enable ports 8080, 5701 outbound from the **VirtualNetwork** service tag to the **VirtualNetwork** service tag. This enables the components of Azure Bastion to talk to each other.
    * **Egress Traffic to other public endpoints in Azure:** Azure Bastion needs to be able to connect to various public endpoints within Azure (for example, for storing diagnostics logs and metering logs). For this reason, Azure Bastion needs outbound to 443 to **AzureCloud** service tag.
    * **Egress Traffic to Internet:** Azure Bastion needs to be able to communicate with the Internet for session, Bastion Shareable Link, and certificate validation. For this reason, we recommend enabling port 80 outbound to the **Internet.**
@@ -53,10 +54,125 @@ Azure Bastion is deployed specifically to ***AzureBastionSubnet***.
 
    :::image type="content" source="./media/bastion-nsg/outbound.png" alt-text="Screenshot shows outbound security rules for Azure Bastion connectivity." lightbox="./media/bastion-nsg/outbound.png":::
 
+### Powershell Script to create the above mentioned Ingress and Egress traffic rules ###
+```
+# Connect to Azure Account
+Connect-AzAccount
+# Get the Network Security Group details
+$resourceGroupName = Read-Host ("Enter the name of the Resource Group")
+$nsgName = Read-Host ("Enter the name of the Network Security Group")
+# Ingress and Egress rules
+$rules = @(
+    @{
+        Name = "AllowHttpsInbound"
+        Priority = 120
+        Direction = "Inbound"
+        Access = "Allow"
+        SourceAddressPrefix = "Internet"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "*"
+        DestinationPortRange = "443"
+        Protocol = "TCP"
+    },
+    @{
+        Name = "AllowGatewayManagerInbound"
+        Priority = 130
+        Direction = "Inbound"
+        Access = "Allow"
+        SourceAddressPrefix = "GatewayManager"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "*"
+        DestinationPortRange = "443"
+        Protocol = "TCP"
+    },
+    @{
+        Name = "AllowAzureLoadBalancerInbound"
+        Priority = 140
+        Direction = "Inbound"
+        Access = "Allow"
+        SourceAddressPrefix = "AzureLoadBalancer"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "*"
+        DestinationPortRange = "443"
+        Protocol = "TCP"
+    },
+    @{
+        Name = "AllowBastionHostCommunication"
+        Priority = 150
+        Direction = "Inbound"
+        Access = "Allow"
+        SourceAddressPrefix = "VirtualNetwork"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "VirtualNetwork"
+        DestinationPortRange = 8080,5701
+        Protocol = "Ah"
+    }
+    @{
+        Name = "AllowSshRdpOutbound"
+        Priority = 100
+        Direction = "Outbound"
+        Access = "Allow"
+        SourceAddressPrefix = "*"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "VirtualNetwork"
+        DestinationPortRange = 22,3389
+        Protocol = "Ah"
+    },
+    @{
+        Name = "AllowAzureCloudOutbound"
+        Priority = 110
+        Direction = "Outbound"
+        Access = "Allow"
+        SourceAddressPrefix = "*"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "AzureCloud"
+        DestinationPortRange = "443"
+        Protocol = "TCP"
+    },
+    @{
+        Name = "AllowBastionCommunication"
+        Priority = 120
+        Direction = "Outbound"
+        Access = "Allow"
+        SourceAddressPrefix = "VirtualNetwork"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "VirtualNetwork"
+        DestinationPortRange = 8080,5701
+        Protocol = "Ah"
+    },
+    @{
+        Name = "AllowHttpOutbound"
+        Priority = 130
+        Direction = "Outbound"
+        Access = "Allow"
+        SourceAddressPrefix = "*"
+        SourcePortRange = "*"
+        DestinationAddressPrefix = "Internet"
+        DestinationPortRange = "80"
+        Protocol = "Ah"
+    }
+ )
+foreach ($rule in $rules) {
+    $nsgRule = New-AzNetworkSecurityRuleConfig -Name $rule.Name `
+        -Priority $rule.Priority `
+        -Direction $rule.Direction `
+        -Access $rule.Access `
+        -SourceAddressPrefix $rule.SourceAddressPrefix `
+        -SourcePortRange $rule.SourcePortRange `
+        -DestinationAddressPrefix $rule.DestinationAddressPrefix `
+        -DestinationPortRange $rule.DestinationPortRange `
+        -Protocol $rule.Protocol
+ # Get the details of the Network Security Group and Add rules to the group
+    $nsg = Get-AzNetworkSecurityGroup -ResourceGroupName $resourceGroupName -Name $nsgName
+    $nsg.SecurityRules.Add($nsgRule)
+    Set-AzNetworkSecurityGroup -NetworkSecurityGroup $nsg
+}
+```
+
 ### Target VM Subnet
 This is the subnet that contains the target virtual machine that you want to RDP/SSH to.
 
-   * **Ingress Traffic from Azure Bastion:** Azure Bastion will reach to the target VM over private IP. RDP/SSH ports (ports 3389/22 respectively, or custom port values if you are using the custom port feature as a part of Standard SKU) need to be opened on the target VM side over private IP. As a best practice, you can add the Azure Bastion Subnet IP address range in this rule to allow only Bastion to be able to open these ports on the target VMs in your target VM subnet.
+   * **Ingress Traffic from Azure Bastion:** Azure Bastion will reach to the target VM over private IP. RDP/SSH ports (ports 3389/22 respectively, or custom port values if you're using the custom port feature as a part of Standard or Premium SKU) need to be opened on the target VM side over private IP. As a best practice, you can add the Azure Bastion Subnet IP address range in this rule to allow only Bastion to be able to open these ports on the target VMs in your target VM subnet.
 
 
 ## Next steps

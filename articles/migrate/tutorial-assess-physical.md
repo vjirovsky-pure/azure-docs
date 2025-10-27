@@ -1,14 +1,13 @@
 ---
 title: Assess physical servers for migration to Azure with Azure Migrate
 description: Describes how to assess on-premises physical servers for migration to Azure using Azure Migrate.
-author: rashi-ms
-ms.author: rajosh
-ms.manager: abhemraj
 ms.topic: tutorial
-ms.date: 06/29/2023
+ms.date: 02/06/2025
 ms.service: azure-migrate
-ms.custom: MVC, engagement-fy23
-#Customer intent: As a server admin, I want to assess my on-premises physical servers in preparation for migration to Azure.
+ms.reviewer: v-uhabiba
+ms.custom: MVC, engagement-fy25
+monikerRange:
+# Customer intent: As a server administrator, I want to assess my on-premises physical servers for their cloud readiness and migration costs, so that I can effectively plan and execute their migration to a cloud infrastructure.
 ---
 
 # Tutorial: Assess physical servers for migration to Azure
@@ -56,9 +55,6 @@ Run an assessment as follows:
    ![Location of Assess and migrate servers button.](./media/tutorial-assess-vmware-azure-vm/assess.png)
 
 2. In **Azure Migrate: Discovery and assessment**, select **Assess** > **Azure VM**.
-
-    ![Location of the Assess button](./media/tutorial-assess-vmware-azure-vm/assess-servers.png)
-
 3. In **Assess servers** > **Assessment type**, select **Azure VM**.
 4. In **Discovery source**:
 
@@ -72,7 +68,7 @@ Run an assessment as follows:
 1. In **Assessment properties** > **Target Properties**:
    - In **Target location**, specify the Azure region to which you want to migrate.
    - Size and cost recommendations are based on the location that you specify. Once you change the target location from default, you will be prompted to specify **Reserved Instances** and **VM series**.
-   - In Azure Government, you can target assessments in [these regions](migrate-support-matrix.md#azure-government).
+   - In Azure Government, you can target assessments in [these regions](supported-geographies.md#azure-government).
    - In **Storage type**,
      - If you want to use performance-based data in the assessment, select **Automatic** for Azure Migrate to recommend a storage type, based on disk IOPS and throughput.
      - Alternatively, select the storage type you want to use for VM when you migrate it.
@@ -104,7 +100,7 @@ Run an assessment as follows:
      - Cost estimates are based on the duration specified.
     - Default is 31 days per month/24 hours per day.
    - In **EA Subscription**, specify whether to take an Enterprise Agreement (EA) subscription discount into account for cost estimation. 
-   - In **Azure Hybrid Benefit**, specify whether you already have a Windows Server license. If you do and they're covered with active Software Assurance of Windows Server Subscriptions, you can apply for the [Azure Hybrid Benefit](https://azure.microsoft.com/pricing/hybrid-use-benefit/) when you bring licenses to Azure.
+   - In **Azure Hybrid Benefit**, specify whether you already have a Windows Server license or Enterprise Linux subscription (RHEL and SLES). If you do and they're covered with active Software Assurance of Windows Server or Enterprise Linux Subscriptions (RHEL and SLES), you can apply for the [Azure Hybrid Benefit](https://azure.microsoft.com/pricing/hybrid-use-benefit/) when you bring licenses to Azure.
 
 1. Select **Save** if you make changes.
 
@@ -119,7 +115,7 @@ Run an assessment as follows:
 
 1. In **Review + create assessment**, review the assessment details, and select **Create Assessment** to create the group and run the assessment.
 
-1. After the assessment is created, view it in **Servers** > **Azure Migrate: Discovery and assessment** > **Assessments**.
+1. After the assessment is created, view it in **Servers, databases and web apps** > **Azure Migrate: Discovery and assessment** > **Assessments**.
 
 1. Select **Export assessment**, to download it as an Excel file.
     
@@ -189,9 +185,10 @@ Confidence ratings are as follows.
 61%-80% | 4 stars
 81%-100% | 5 stars
 
-[Learn more](concepts-assessment-calculation.md#confidence-ratings-performance-based) about confidence ratings.
+[Learn more](assessment-report.md#confidence-ratings-performance-based) about confidence ratings.
 
 ## Next steps
 
 - Find server dependencies using [dependency mapping](concepts-dependency-visualization.md).
 - Set up [agent-based](how-to-create-group-machine-dependencies.md) dependency mapping.
+- Migrate [physical servers](tutorial-migrate-physical-virtual-machines.md).

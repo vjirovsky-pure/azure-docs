@@ -2,10 +2,10 @@
 title: 'Create an ExpressRoute association to Azure Virtual WAN - PowerShell'
 description: Learn how to create an ExpressRoute association from your branch site to Azure Virtual WAN using PowerShell.
 author: cherylmc
-ms.service: virtual-wan
+ms.service: azure-virtual-wan
 ms.custom: devx-track-azurepowershell
 ms.topic: how-to
-ms.date: 08/05/2022
+ms.date: 08/13/2024
 ms.author: cherylmc
 ---
 
@@ -25,7 +25,7 @@ Verify that you've met the following criteria before beginning your configuratio
 
 * The following ExpressRoute circuit SKUs can be connected to the hub gateway: Local, Standard, and Premium.
 
-* If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+* If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 
 ### Azure PowerShell
 

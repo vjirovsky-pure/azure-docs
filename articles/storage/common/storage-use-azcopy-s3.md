@@ -8,6 +8,10 @@ ms.topic: how-to
 ms.date: 04/02/2021
 ms.author: normesta
 ms.subservice: storage-common-concepts
+ms.collection:
+ - migration
+ - aws-to-azure
+# Customer intent: "As a data engineer, I want to transfer data from Amazon S3 to Azure Blob Storage using a command-line tool, so that I can efficiently manage storage resources and assets across cloud platforms."
 ---
 
 # Copy data from Amazon S3 to Azure Storage by using AzCopy
@@ -19,7 +23,7 @@ AzCopy is a command-line utility that you can use to copy blobs or files to or f
 
 ## Choose how you'll provide authorization credentials
 
-- To authorize with the Azure Storage, use Azure Active Directory (AD) or a Shared Access Signature (SAS) token.
+- To authorize with the Azure Storage, use Microsoft Entra ID or a Shared Access Signature (SAS) token.
 
 - To authorize with AWS S3, use an AWS access key and a secret access key.
 
@@ -28,7 +32,7 @@ AzCopy is a command-line utility that you can use to copy blobs or files to or f
 See the [Get started with AzCopy](storage-use-azcopy-v10.md) article to download AzCopy, and choose how you'll provide authorization credentials to the storage service.
 
 > [!NOTE]
-> The examples in this article assume that you've authenticated your identity by using the `AzCopy login` command. AzCopy then uses your Azure AD account to authorize access to data in Blob storage.
+> The examples in this article assume that you've authenticated your identity by using the `AzCopy login` command. AzCopy then uses your Microsoft Entra account to authorize access to data in Blob storage.
 >
 > If you'd rather use a SAS token to authorize access to blob data, then you can append that token to the resource URL in each AzCopy command.
 >
@@ -40,9 +44,11 @@ Gather your AWS access key and secret access key, and then set these environment
 
 | Operating system | Command  |
 |--------|-----------|
-| **Windows** | `set AWS_ACCESS_KEY_ID=<access-key>`<br>`set AWS_SECRET_ACCESS_KEY=<secret-access-key>` |
-| **Linux** | `export AWS_ACCESS_KEY_ID=<access-key>`<br>`export AWS_SECRET_ACCESS_KEY=<secret-access-key>` |
+| **Windows** | PowerShell:`$env:AWS_ACCESS_KEY_ID=<access-key>`<br>`$env:AWS_SECRET_ACCESS_KEY=<secret-access-key>` <br> In a command prompt use: `set AWS_ACCESS_KEY_ID=<access-key>`<br>`set AWS_SECRET_ACCESS_KEY=<secret-access-key>` |
+| **Linux** | `export AWS_ACCESS_KEY_ID=<access-key>`<br>`export AWS_SECRET_ACCESS_KEY=<secret-access-key>`|
 | **macOS** | `export AWS_ACCESS_KEY_ID=<access-key>`<br>`export AWS_SECRET_ACCESS_KEY=<secret-access-key>`|
+
+These credentials are used to generate pre-signed URLs that are used to copy objects.
 
 ## Copy objects, directories, and buckets
 
@@ -200,4 +206,3 @@ See these articles to configure settings, optimize performance, and troubleshoot
 - [AzCopy configuration settings](storage-ref-azcopy-configuration-settings.md)
 - [Optimize the performance of AzCopy](storage-use-azcopy-optimize.md)
 - [Troubleshoot AzCopy V10 issues in Azure Storage by using log files](storage-use-azcopy-configure.md)
-

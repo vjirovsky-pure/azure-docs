@@ -2,19 +2,22 @@
 title: Build a global identity solution with region-based approach
 titleSuffix: Azure AD B2C
 description: Learn the region-based design consideration for Azure AD B2C to provide customer identity management for global customers.
-services: active-directory-b2c
 author: gargi-sinha
 manager: martinco
-
-ms.service: active-directory
-ms.workload: identity
-ms.topic: conceptual
-ms.date: 12/15/2022
+ms.service: azure-active-directory
+ms.topic: concept-article
+ms.date: 01/26/2024
 ms.author: gasinh
-ms.subservice: B2C
+ms.subservice: b2c
+ms.custom:
+  - sfi-image-nochange
+  - sfi-ropc-nochange
+
+# Customer intent: I'm a developer implementing a global identity solution. I need to understand the different scenarios and workflows for region-based design approach in Azure AD B2C. My goal is to design and implement the authentication and sign-up processes effectively for users from different regions.
 ---
 
 # Build a global identity solution with region-based approach
+[!INCLUDE [active-directory-b2c-end-of-sale-notice-b](../../includes/active-directory-b2c-end-of-sale-notice-b.md)]
 
 In this article, we describe the scenarios for region-based design approach. Before starting to design, it's recommended that you review the [capabilities](b2c-global-identity-solutions.md#capabilities-and-considerations), and [performance](b2c-global-identity-solutions.md#performance) of both funnel and region-based design approach.
 
@@ -95,7 +98,7 @@ This use case demonstrates how a user can travel across regions and maintain the
 
 1. The user's email is located to have been signed up in NOAM Azure AD B2C tenant.
 
-1. The EMEA Azure AD B2C tenant performs an Azure AD ROPC flow against the NOAM Azure AD B2C tenant to verify credentials.
+1. The EMEA Azure AD B2C tenant performs a Microsoft Entra ROPC flow against the NOAM Azure AD B2C tenant to verify credentials.
    >[!NOTE]
    >This call will also fetch a token for the user to perform a Graph API call.
    The EMEA Azure AD B2C tenant performs a Graph API call to the NOAM Azure AD B2C tenant to fetch the user's profile. This call is authenticated by the access token for Graph API acquired in the last step.
@@ -282,7 +285,7 @@ This scenario demonstrates how users will be able to perform  account linking wh
 
 - [Azure AD B2C global identity solutions](b2c-global-identity-solutions.md)
 
-- [Build a global identity solution with funnel-based approach](azure-ad-b2c-global-identity-funnel-based-design.md)
+- [Build a global identity solution with funnel-based approach](./b2c-global-identity-funnel-based-design.md)
 
 - [Azure AD B2C global identity proof of concept regional-based configuration](b2c-global-identity-proof-of-concept-regional.md)
 

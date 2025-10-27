@@ -1,15 +1,16 @@
 ---
-online version: https://github.com/Azure/sap-hana
+online version: https://github.com/Azure/SAP-automation
 schema: 2.0.0
 author: kimforss
 ms.author: kimforss
 ms.reviewer: kimforss
-ms.date: 10/21/2021
+ms.date: 09/19/2023
 ms.topic: reference
 ms.service: sap-on-azure
 ms.subservice: sap-automation
 title: install_workloadzone.sh
 description: Deploy a new SAP Workload Zone using a shell script.
+# Customer intent: As a cloud engineer, I want to use the install_workloadzone.sh script to deploy a new SAP workload zone, so that I can efficiently manage shared resources for SAP virtual machines in my environment.
 ---
 
 # install_workloadzone.sh
@@ -28,7 +29,7 @@ install_workloadzone.sh [ -p or --parameterfile ] <String>
 ```
 
 ## Description
-The  `install_workloadzone.sh` command deploys a new SAP workload zone. The workload zone contains the shared resources for all VMs.
+The  `install_workloadzone.sh` script deploys a new SAP workload zone. The workload zone contains the shared resources for all SAP VMs.
 
 ## Examples
 
@@ -48,13 +49,15 @@ This example deploys the workload zone, as defined by the parameter files. The p
 ```bash
 cd ~/Azure_SAP_Automated_Deployment/WORKSPACES/LANDSCAPE/DEV-WEEU-SAP01-INFRASTRUCTURE
 
-export subscriptionId=<subscriptionID>
-export appId=<appID>
-export spnSecret="<password>"
-export tenantId=<tenantID>
-export keyvault=<keyvaultName>
-export storageAccount=<storageaccountName>
+export        subscriptionId=<subscriptionID>
+export                 appId=<appID>
+export             spnSecret="<password>"
+export              tenantId=<tenantID>
+export              keyvault=<keyvaultName>
+export        storageAccount=<storageaccountName>
 export statefileSubscription=<statefile_subscription>
+
+export DEPLOYMENT_REPO_PATH=~/Azure_SAP_Automated_Deployment/sap-automation
 
 ${DEPLOYMENT_REPO_PATH}/deploy/scripts/install_workloadzone.sh \
         --parameter_file DEV-WEEU-SAP01-INFRASTRUCTURE.tfvars  \

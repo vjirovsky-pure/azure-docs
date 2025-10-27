@@ -3,68 +3,31 @@ title: 'Quickstart - Create a Private Link service - Azure portal'
 titleSuffix: Azure Private Link
 description: Learn how to create a Private Link service using the Azure portal in this quickstart.
 services: private-link
-author: asudbring
-ms.service: private-link
+author: abell
+ms.service: azure-private-link
 ms.topic: quickstart
-ms.date: 06/22/2023
-ms.author: allensu
+ms.date: 04/10/2025
+ms.author: abell
 ms.custom: mode-ui, template-quickstart
 #Customer intent: As someone with a basic network background who's new to Azure, I want to create an Azure Private Link service by using the Azure portal
+# Customer intent: "As a network engineer new to Azure, I want to create a Private Link service using the Azure portal, so that I can provide secure private access to services deployed behind an Azure Load Balancer."
 ---
 
 # Quickstart: Create a Private Link service by using the Azure portal
 
 Get started creating a Private Link service that refers to your service. Give Private Link access to your service or resource deployed behind an Azure Standard Load Balancer. Users of your service have private access from their virtual network.
 
-:::image type="content" source="./media/create-private-link-service-portal/private-link-service-qs-resources.png" alt-text="Diagram of resources created in private endpoint quickstart.":::
+:::image type="content" source="./media/create-private-link-service-portal/private-link-service-qs-resources.png" alt-text="Diagram of resources created in private endpoint quickstart." lightbox="./media/create-private-link-service-portal/private-link-service-qs-resources.png":::
 
 ## Prerequisites
 
-* An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+* An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 
-## Create an internal load balancer
+## <a name="create-a-virtual-network"></a> Sign in to Azure
 
-In this section, you create a virtual network and an internal Azure Load Balancer.
+Sign in to the [Azure portal](https://portal.azure.com) with your Azure account.
 
-### Load balancer virtual network
-
-Create a virtual network and subnet to host the load balancer that accesses your Private Link service.
-
-1. Sign-in to the [Azure portal](https://portal.azure.com).
-
-1. In the search box at the top of the portal, enter **Virtual network**. Select **Virtual networks** in the search results.
-
-1. Select **+ Create**. 
-
-1. In **Create virtual network**, enter or select this information in the **Basics** tab:
-
-    | **Setting**          | **Value**                                                           |
-    |------------------|-----------------------------------------------------------------|
-    | **Project Details**  |                                                                 |
-    | Subscription     | Select your Azure subscription                                  |
-    | Resource Group   | Select **Create new**. Enter **test-rg**. </br> Select **OK**. |
-    | **Instance details** |                                                                 |
-    | Name             | Enter **vnet-1**                                    |
-    | Region           | Select **East US 2** |
-
-1. Select the **IP Addresses** tab or select the **Next: IP Addresses** button at the bottom of the page.
-
-1. In the **IP Addresses** tab, under **IPv4 address space**, select the garbage deletion icon to remove any address space that already appears, and then enter **10.0.0.0/16**.
-
-1. Select **+ Add subnet**.
-
-1. In **Add subnet**, enter the following information:
-
-    | Setting            | Value                      |
-    |--------------------|----------------------------|
-    | Subnet name | Enter **subnet-1** |
-    | Subnet address range | Enter **10.0.0.0/24** |
-
-1. Select **Add**.
-
-1. Select the **Review + create** tab or select the **Review + create** button.
-
-1. Select **Create**.
+[!INCLUDE [virtual-network-create.md](~/reusable-content/ce-skilling/azure/includes/virtual-network-create.md)]
 
 ### Create load balancer
 
@@ -111,7 +74,7 @@ During the creation of the load balancer, you configure:
     | Availability zone | Leave the default of **Zone-redundant**. |
 
     > [!NOTE]
-    > In regions with [Availability Zones](../availability-zones/az-overview.md?toc=%2fazure%2fvirtual-network%2ftoc.json#availability-zones), you have the option to select no-zone (default option), a specific zone, or zone-redundant. The choice will depend on your specific domain failure requirements. In regions without Availability Zones, this field won't appear. </br> For more information on availability zones, see [Availability zones overview](../availability-zones/az-overview.md).
+    > In regions with [Availability Zones](../reliability/availability-zones-overview.md?toc=%2fazure%2fvirtual-network%2ftoc.json), you have the option to select no-zone (default option), a specific zone, or zone-redundant. The choice will depend on your specific domain failure requirements. In regions without Availability Zones, this field won't appear. </br> For more information on availability zones, see [Availability zones overview](../reliability/availability-zones-overview.md).
 
 1. Select **Add**.
 
@@ -121,7 +84,10 @@ During the creation of the load balancer, you configure:
 
 1. Enter **backend-pool** for **Name**.
 
-1. Select **NIC** or **IP Address** for **Backend Pool Configuration**.
+1. Select **NIC** for **Backend Pool Configuration**.
+
+    > [!NOTE]
+    > Private Link service is supported on Standard Load Balancers with backend pools configured by NICs. It is not supported when backend pools are configured using IP addresses. For more information, see [Private Link service limitations](private-link-service-overview.md#limitations).
 
 1. Select **Save**.
 
@@ -202,39 +168,15 @@ In this section, you map the private link service to a private endpoint. A virtu
 
 ### Create private endpoint virtual network
 
-1. In the search box at the top of the portal, enter **Virtual network**. Select **Virtual networks** in the search results.
+Repeat steps in [Create a virtual network](#create-a-virtual-network) to create a virtual network with the following settings:
 
-1. Select **+ Create**. 
-
-1. In the **Basics** tab, enter or select the following information:
-
-    | **Setting**          | **Value**                                                           |
-    |------------------|-----------------------------------------------------------------|
-    | **Project Details**  |                                                                 |
-    | Subscription     | Select your Azure subscription                                  |
-    | Resource Group   | Select **test-rg** |
-    | **Instance details** |                                                                 |
-    | Name             | Enter **vnet-pe**                                    |
-    | Region           | Select **East US 2** |
-
-1. Select **Next: IP Addresses** or the **IP Addresses** tab.
-
-1. In the **IP Addresses** tab, under **IPv4 address space**, select the garbage deletion icon to remove any address space that already appears, and then enter **10.1.0.0/16**.
-
-1. Select **+ Add subnet**.
-
-1. In **Add subnet**, enter the following information:
-
-    | Setting            | Value                      |
-    |--------------------|----------------------------|
-    | Subnet name | Enter **subnet-pe** |
-    | Subnet address range | Enter **10.1.0.0/24** |
-
-1. Select **Add**.
-
-1. Select **Review + create**.
-
-1. Select **Create**.
+| Setting | Value |
+| ------- | ----- |
+| Name | **vnet-pe** |
+| Location | **East US 2** |
+| Address space | **10.1.0.0/16** |
+| Subnet name | **subnet-pe** |
+| Subnet address range | **10.1.0.0/24** |
 
 ### Create private endpoint
 
@@ -316,7 +258,7 @@ In this section, you find the IP address of the private endpoint that correspond
 
 1. In the **Overview** page of the private endpoint nic, the IP address of the endpoint is displayed in **Private IP address**.
 
-[!INCLUDE [portal-clean-up.md](../../includes/portal-clean-up.md)]
+[!INCLUDE [portal-clean-up.md](~/reusable-content/ce-skilling/azure/includes/portal-clean-up.md)]
 
 ## Next steps
 

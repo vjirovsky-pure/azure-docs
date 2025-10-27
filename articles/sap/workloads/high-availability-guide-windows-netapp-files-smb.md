@@ -2,21 +2,16 @@
 title: Azure VMs HA for SAP NW on Windows with Azure NetApp Files (SMB)| Microsoft Docs
 description: High availability for SAP NetWeaver on Azure VMs on Windows with Azure NetApp Files (SMB) for SAP applications
 services: virtual-machines-windows,virtual-network,storage
-documentationcenter: saponazure
 author: rdeltcheva
 manager: juergent
-editor: ''
-tags: azure-resource-manager
-keywords: ''
 ms.assetid: 5e514964-c907-4324-b659-16dd825f6f87
 ms.service: sap-on-azure
 ms.subservice: sap-vm-workloads
 ms.topic: article
 ms.tgt_pltfrm: vm-windows
-ms.workload: infrastructure-services
-ms.date: 12/16/2022
+ms.date: 10/24/2025
 ms.author: radeltch
-
+# Customer intent: As an SAP administrator, I want to deploy a highly available SAP NetWeaver system on Azure using Azure NetApp Files for shared storage, so that I can ensure optimal performance and reliability for SAP applications.
 ---
 
 # High availability for SAP NetWeaver on Azure VMs on Windows with Azure NetApp Files(SMB) for SAP applications
@@ -27,32 +22,14 @@ ms.author: radeltch
 [dfs-n-reference]:high-availability-guide-windows-dfs.md
 
 [anf-azure-doc]:../../azure-netapp-files/azure-netapp-files-introduction.md
-[anf-avail-matrix]:https://azure.microsoft.com/global-infrastructure/services/?products=storage&regions=all
-[anf-sap-applications-azure]:https://www.netapp.com/us/media/tr-4746.pdf
+[anf-sap-applications-azure]:https://bluexp.netapp.com/hubfs/tr-4757-SAP-Applications-on-microsoft-azure.pdf?hsCtaTracking=56ea8e69-35a3-4d14-be0e-6d4830fa73c6%7C0a903be2-4b96-4acb-92fb-153c47e88afe
 
-[2205917]:https://launchpad.support.sap.com/#/notes/2205917
-[1944799]:https://launchpad.support.sap.com/#/notes/1944799
 [1928533]:https://launchpad.support.sap.com/#/notes/1928533
 [2015553]:https://launchpad.support.sap.com/#/notes/2015553
 [2178632]:https://launchpad.support.sap.com/#/notes/2178632
-[2191498]:https://launchpad.support.sap.com/#/notes/2191498
-[2243692]:https://launchpad.support.sap.com/#/notes/2243692
-[1984787]:https://launchpad.support.sap.com/#/notes/1984787
 [1999351]:https://launchpad.support.sap.com/#/notes/1999351
-[1410736]:https://launchpad.support.sap.com/#/notes/1410736
-
-[sap-swcenter]:https://support.sap.com/en/my-support/software-downloads.html
-
-[suse-ha-guide]:https://www.suse.com/products/sles-for-sap/resource-library/sap-best-practices/
-[suse-drbd-guide]:https://www.suse.com/documentation/sle-ha-12/singlehtml/book_sleha_techguides/book_sleha_techguides.html
-[suse-ha-12sp3-relnotes]:https://www.suse.com/releasenotes/x86_64/SLE-HA/12-SP3/
-
-[template-multisid-xscs]:https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fapplication-workloads%2Fsap%2Fsap-3-tier-marketplace-image-multi-sid-xscs-md%2Fazuredeploy.json
-[template-converged]:https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fapplication-workloads%2Fsap%2Fsap-3-tier-marketplace-image-converged-md%2Fazuredeploy.json
-[template-file-server]:https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fapplication-workloads%2Fsap%2Fsap-file-server-md%2Fazuredeploy.json
 
 [sap-hana-ha]:sap-hana-high-availability.md
-[nfs-ha]:high-availability-guide-suse-nfs.md
 
 This article describes how to deploy, configure the virtual machines, install the cluster framework, and install a highly available SAP NetWeaver 7.50 system  on Windows VMs, using [SMB](/windows/win32/fileio/microsoft-smb-protocol-and-cifs-protocol-overview) on [Azure NetApp Files](../../azure-netapp-files/azure-netapp-files-introduction.md).  
 
@@ -76,14 +53,14 @@ Read the following SAP Notes and papers first:
 * [Install SAP NetWeaver high availability on a Windows failover cluster and file share for SAP ASCS/SCS instances on Azure](./sap-high-availability-installation-wsfc-file-share.md) 
 * [Azure Virtual Machines high-availability architecture and scenarios for SAP NetWeaver](./sap-high-availability-architecture-scenarios.md)
 * [Add probe port in ASCS cluster configuration](sap-high-availability-installation-wsfc-file-share.md)
-* [Create an SMB volume for Azure NetApp Files](../../azure-netapp-files/create-active-directory-connections.md#requirements-for-active-directory-connections)
+* [Requirements and considerations for Active Directory connections](../../azure-netapp-files/create-active-directory-connections.md#requirements-for-active-directory-connections)
 * [NetApp SAP Applications on Microsoft Azure using Azure NetApp Files][anf-sap-applications-azure] 
 
 ## Overview
 
-SAP developed a new approach, and an alternative to cluster shared disks, for clustering an SAP ASCS/SCS instance on a Windows failover cluster. Instead of using cluster shared disks, one can use an SMB file share to deploy SAP global host files. Azure NetApp Files supports SMBv3 (along with NFS) with NTFS ACL using Active Directory. Azure NetApp Files is automatically highly available (as it is a PaaS service). These features make Azure NetApp Files great option for hosting the SMB file share for SAP global.  
-Both [Azure Active Directory (AD) Domain Services](../../active-directory-domain-services/overview.md) and [Active Directory Domain Services (AD DS)](/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview) are supported. You can use existing Active Directory domain controllers with Azure NetApp Files. Domain controllers can be in Azure as virtual machines, or on premises via ExpressRoute or S2S VPN. In this article, we will use Domain controller in an Azure VM.  
-High availability(HA) for SAP Netweaver central services requires shared storage. To achieve that on Windows, so far it was necessary to build either SOFS cluster or use cluster shared disk s/w like SIOS. Now it is possible to achieve SAP Netweaver HA by using shared storage, deployed on Azure NetApp Files. Using Azure NetApp Files for the shared storage eliminates the need for either SOFS or SIOS.  
+SAP developed a new approach, and an alternative to cluster shared disks, for clustering an SAP ASCS/SCS instance on a Windows failover cluster. Instead of using cluster shared disks, one can use an SMB file share to deploy SAP global host files. Azure NetApp Files supports SMBv3 (along with NFS) with NTFS ACL using Active Directory. Azure NetApp Files is highly available (as it's a PaaS service). These features make Azure NetApp Files great option for hosting the SMB file share for SAP global.  
+Both [Microsoft Entra Domain Services](../../active-directory-domain-services/overview.md) and [Active Directory Domain Services (AD DS)](/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview) are supported. You can use existing Active Directory domain controllers with Azure NetApp Files. Domain controllers can be in Azure as virtual machines, or on premises via ExpressRoute or S2S VPN. In this article, we use Domain controller in an Azure VM.  
+High availability(HA) for SAP Netweaver central services requires shared storage. To achieve that on Windows, so far it was necessary to build either SOFS cluster or use cluster shared disk s/w like SIOS. Now it's possible to achieve SAP Netweaver HA by using shared storage, deployed on Azure NetApp Files. Using Azure NetApp Files for the shared storage eliminates the need for either SOFS or SIOS.  
 
 > [!NOTE]
 > Clustering SAP ASCS/SCS instances by using a file share is supported for SAP systems with SAP Kernel 7.22 (and later). For details see SAP note [2698948](https://launchpad.support.sap.com/#/notes/2698948)    
@@ -110,7 +87,7 @@ Perform the following steps, as preparation for using Azure NetApp Files.
    > [!IMPORTANT]
    > You need to create Active Directory connections before creating an SMB volume. Review the [requirements for Active Directory connections](../../azure-netapp-files/create-active-directory-connections.md#requirements-for-active-directory-connections).  
    >   
-   > When creating the Active Directory connection, make sure to enter SMB Server (Computer Account) Prefix no longer than 8 characters to avoid the 13 characters hostname limitation for SAP Applications (a suffix is automatically added to the SMB Computer Account name).     
+   > When creating the Active Directory connection, make sure to enter SMB Server (Computer Account) Prefix no longer than 8 characters. That avoids the 13 characters hostname limitation for SAP Applications (a suffix is automatically added to the SMB Computer Account name).     
    > The hostname limitations for SAP applications are described in [2718300 - Physical and Virtual hostname length limitations](https://launchpad.support.sap.com/#/notes/2718300) and [611361 - Hostnames of SAP ABAP Platform servers](https://launchpad.support.sap.com/#/notes/611361).  
 
 4. Create Active Directory connection, as described in [Create an Active Directory connection](../../azure-netapp-files/create-active-directory-connections.md#create-an-active-directory-connection). Make sure to add the user that will run SWPM to install the SAP system, as `Administrators privilege user` in the Active Directory connection. If you don't add the SAP installation user as `Administrators privilege user` in the Active Directory connection, SWPM will fail with permission errors, unless you run SWPM as user with elevated Domain Admin rights.  
@@ -124,19 +101,18 @@ Perform the following steps, as preparation for using Azure NetApp Files.
 
 When considering Azure NetApp Files for the SAP Netweaver architecture, be aware of the following important considerations:
 
-- The minimum capacity pool is 4 TiB. The capacity pool size can be increased in 1 TiB increments.
-- The minimum volume is 100 GiB
+- For sizing requirements of Azure NetApp Files volumes and capacity pools, see [Azure NetApp Files resource limits](../../azure-netapp-files/azure-netapp-files-resource-limits.md) and [Create a capacity pool for Azure NetApp Files](../../azure-netapp-files/azure-netapp-files-set-up-capacity-pool.md).
 - The selected virtual network must have a subnet, delegated to Azure NetApp Files.
 - The throughput and performance characteristics of an Azure NetApp Files volume is a function of the volume quota and service level, as documented in [Service level for Azure NetApp Files](../../azure-netapp-files/azure-netapp-files-service-levels.md). While sizing the SAP Azure NetApp volumes, make sure that the resulting throughput meets the application requirements.  
  
 
 ## Prepare the infrastructure for SAP HA by using a Windows failover cluster 
 
-1. [Set the ASCS/SCS load balancing rules for the Azure internal load balancer](./sap-high-availability-infrastructure-wsfc-shared-disk.md#fe0bd8b5-2b43-45e3-8295-80bee5415716).
-2. [Add Windows virtual machines to the domain](./sap-high-availability-infrastructure-wsfc-shared-disk.md#e69e9a34-4601-47a3-a41c-d2e11c626c0c).
-3. [Add registry entries on both cluster nodes of the SAP ASCS/SCS instance](./sap-high-availability-infrastructure-wsfc-shared-disk.md#661035b2-4d0f-4d31-86f8-dc0a50d78158)
-4. [Set up a Windows Server failover cluster for an SAP ASCS/SCS instance](./sap-high-availability-infrastructure-wsfc-shared-disk.md#0d67f090-7928-43e0-8772-5ccbf8f59aab)
-5. If you are using Windows Server 2016, we recommend that you configure [Azure Cloud Witness](/windows-server/failover-clustering/deploy-cloud-witness).
+1. [Set the ASCS/SCS load balancing rules for the Azure internal load balancer](./sap-high-availability-infrastructure-wsfc-shared-disk.md#create-azure-internal-load-balancer).
+2. [Add Windows virtual machines to the domain](./sap-high-availability-infrastructure-wsfc-shared-disk.md#add-the-windows-vms-to-the-domain).
+3. [Add registry entries on both cluster nodes of the SAP ASCS/SCS instance](./sap-high-availability-infrastructure-wsfc-shared-disk.md#add-registry-entries-on-both-cluster-nodes-of-the-ascsscs-instance)
+4. [Set up a Windows Server failover cluster for an SAP ASCS/SCS instance](./sap-high-availability-infrastructure-wsfc-shared-disk.md#install-and-configure-windows-failover-cluster)
+ Witness](/windows-server/failover-clustering/deploy-cloud-witness).
 
 
 ## Install SAP ASCS instance on both nodes
@@ -174,12 +150,12 @@ Update parameters in the SAP ASCS/SCS instance profile \<SID>_ASCS/SCS\<Nr>_\<Ho
 | Parameter name | Parameter value |
 | --- | --- |
 | gw/netstat_once | **0** |
-| enque/encni/set_so_keepalive  | **true** |
+| enque/encni/set_so_keepalive  | **TRUE** |
 | service/ha_check_node | **1** |
 
 Parameter `enque/encni/set_so_keepalive` is only needed if using ENSA1.  
 Restart the SAP ASCS/SCS instance. 
-Set `KeepAlive` parameters on both SAP ASCS/SCS cluster nodes follow the instructions to [Set registry entries on the cluster nodes of the SAP ASCS/SCS instance](./sap-high-availability-infrastructure-wsfc-shared-disk.md#661035b2-4d0f-4d31-86f8-dc0a50d78158). 
+Set `KeepAlive` parameters on both SAP ASCS/SCS cluster nodes follow the instructions to [Set registry entries on the cluster nodes of the SAP ASCS/SCS instance](./sap-high-availability-infrastructure-wsfc-shared-disk.md#add-registry-entries-on-both-cluster-nodes-of-the-ascsscs-instance). 
 
 
 ### Install a DBMS instance and SAP application servers
@@ -221,7 +197,7 @@ The following diagrams show multiple SAP instances on Azure VMs running Microsof
 This can either be local SAP Application Servers on a SAP ASCS/SCS cluster or a SAP ASCS/SCS Cluster Role on Microsoft SQL Server Always On nodes.
 
 > [!IMPORTANT]
-> Installing a local SAP Application Server on a SQL Server Always On node is not supported.
+> Installing a local SAP Application Server on a SQL Server Always On node isn't supported.
 >
 
 Both, SAP ASCS/SCS and the Microsoft SQL Server database, are single points of failure (SPOF). To protect these SPOFs in a Windows environment Azure NetApp Files SMB is used.
@@ -233,18 +209,18 @@ While the resource consumption of the SAP ASCS/SCS is fairly small, a reduction 
 ![Figure 4: Windows Server failover clustering configuration in Azure with Windows NetApp Files SMB and locally installed SAP Application Server][sap-ha-guide-figure-8007A]
 
 > [!NOTE]
-> The picture shows the use of additional local disks. This is optional for customers who will not install application software on the OS drive (C:\)
+> The picture shows the use of additional local disks. This is optional for customers who won't install application software on the OS drive (C:\)
 >
 ### <a name="01541cf2-0a03-48e3-971e-e03575fa7b4f"></a> SAP ASCS/SCS on SQL Server Always On nodes using Azure NetApp Files SMB
 
 > [!IMPORTANT]
-> Using Azure NetApp Files SMB for any SQL Server volume is not supported.
+> Using Azure NetApp Files SMB for any SQL Server volume isn't supported.
 > 
 
 ![Figure : SAP ASCS/SCS on SQL Server Always On nodes using Azure NetApp Files SMB][sap-ha-guide-figure-8007B]
 
 > [!NOTE]
-> The picture shows the use of additional local disks. This is optional for customers who will not install application software on the OS drive (C:\)
+> The picture shows the use of additional local disks. This is optional for customers who won't install application software on the OS drive (C:\)
 >
 ### Using Windows DFS-N to support flexible SAPMNT share creation for SMB based file share
 Using DFS-N allows you to utilize individual sapmnt volumes for SAP systems deployed within the same Azure region and subscription. [Using Windows DFS-N to support flexible SAPMNT share creation for SMB-based file share][dfs-n-reference] shows how to set this up.
@@ -255,7 +231,7 @@ Using DFS-N allows you to utilize individual sapmnt volumes for SAP systems depl
 * [Azure Virtual Machines deployment for SAP][deployment-guide]
 * [Azure Virtual Machines DBMS deployment for SAP][dbms-guide]
 * To learn how to establish high availability and plan for disaster recovery of SAP 
-* HANA on Azure (large instances), see [SAP HANA (large instances) high availability and disaster recovery on Azure](../../virtual-machines/workloads/sap/hana-overview-high-availability-disaster-recovery.md).
+* HANA on Azure (large instances), see [SAP HANA (large instances) high availability and disaster recovery on Azure](/azure/virtual-machines/workloads/sap/hana-overview-high-availability-disaster-recovery).
 * To learn how to establish high availability and plan for disaster recovery of SAP HANA on Azure VMs, see [High Availability of SAP HANA on Azure Virtual Machines (VMs)][sap-hana-ha]
 
 [sap-ha-guide-figure-8007A]:./media/virtual-machines-shared-sap-high-availability-guide/ha-smb-as.png

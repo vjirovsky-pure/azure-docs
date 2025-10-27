@@ -1,13 +1,12 @@
 ---
 title: Best practices for Azure Web Application Firewall in Azure Front Door
 description: In this article, you learn about the best practices for using Azure Web Application Firewall in Azure Front Door.
-services: web-application-firewall
 author: johndowns
-ms.service: web-application-firewall
-ms.topic: conceptual
-ms.date: 09/06/2022
 ms.author: jodowns
-
+ms.service: azure-web-application-firewall
+ms.topic: concept-article
+ms.date: 10/12/2023
+# Customer intent: As a cloud security administrator, I want to implement best practices for the web application firewall within Azure Front Door, so that I can effectively protect my internet-facing applications from cyber threats while minimizing false positives and maintaining legitimate traffic flow.
 ---
 
 # Best practices for Azure Web Application Firewall in Azure Front Door
@@ -74,13 +73,13 @@ For more information, see the following resources:
 
 - [What is rate limiting for Azure Front Door?](waf-front-door-rate-limit.md).
 - [Configure an Azure Web Application Firewall rate limit rule by using Azure PowerShell](waf-front-door-rate-limit-configure.md).
-- [Why do additional requests above the threshold configured for my rate limit rule get passed to my back-end server?](waf-faq.yml#why-do-additional-requests-above-the-threshold-configured-for-my-rate-limit-rule-get-passed-to-my-backend-server-)
+- [Why do additional requests above the threshold configured for my rate limit rule get passed to my back-end server?](waf-faq.yml#why-do-additional-requests-above-the-threshold-configured-for-my-rate-limit-rule-get-passed-to-my-back-end-server-)
 
 ### Use a high threshold for rate limits
 
-Usually it's good practice to set your rate limit threshold to be quite high. For example, if you know that a single client IP address might send around 10 requests to your server each minute, consider specifying a threshold of 20 requests per minute.
+Usually it's good practice to set your rate limit threshold to be high. For example, if you know that a single client IP address might send around 10 requests to your server each minute, consider specifying a threshold of 20 requests per minute.
 
-High rate-limit thresholds avoid blocking legitimate traffic. These thresholds still provide protection against extremely high numbers of requests that might overwhelm your infrastructure.
+High rate-limit thresholds avoid blocking legitimate traffic. These thresholds still provide protection against very high numbers of requests that might overwhelm your infrastructure.
 
 ## Geo-filtering best practices
 

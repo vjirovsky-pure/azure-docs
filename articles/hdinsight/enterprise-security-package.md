@@ -1,18 +1,26 @@
 ---
 title: Enterprise Security Package for Azure HDInsight
 description: Learn the Enterprise Security Package components and versions in Azure HDInsight.
-ms.service: hdinsight
+ms.service: azure-hdinsight
 ms.topic: conceptual
-ms.date: 08/12/2022
+author: hareshg
+ms.author: hgowrisankar
+ms.reviewer: nijelsf
+ms.date: 09/06/2024
 ---
 
 # Enterprise Security Package for Azure HDInsight
 
-Enterprise Security is an optional package that you can add on your HDInsight cluster as part of create cluster workflow. The Enterprise Security Package supports:
+Enterprise Security is an optional package that you can add on your HDInsight cluster as part of create cluster workflow. 
+
+> [!NOTE]
+> Enterprise Security Package for HDInsight is retiring, and will reach end of support by July 31, 2026.
+
+The Enterprise Security Package supports:
 
 * Integration with Active Directory for authentication.
 
-    In the past, you created HDInsight clusters with local admin user and local SSH user. The local admin user can access all the files, folders, tables, and columns.  With  Enterprise Security Package, you enable Azure role-based access control by integrating HDInsight with your Azure Active Directory Domain Services.
+    In the past, you created HDInsight clusters with local admin user and local SSH user. The local admin user can access all the files, folders, tables, and columns.  With  Enterprise Security Package, you enable Azure role-based access control by integrating HDInsight with your Microsoft Entra Domain Services.
 
     For more information, see:
 
@@ -22,7 +30,7 @@ Enterprise Security is an optional package that you can add on your HDInsight cl
 
     * [Configure domain-joined sandbox environment](./domain-joined/apache-domain-joined-configure-using-azure-adds.md)
 
-    * [Configure Domain-joined HDInsight clusters using Azure Active Directory Domain Services](./domain-joined/apache-domain-joined-configure-using-azure-adds.md)
+    * [Configure Domain-joined HDInsight clusters using Microsoft Entra Domain Services](./domain-joined/apache-domain-joined-configure-using-azure-adds.md)
 
 * Authorization for data
 

@@ -1,11 +1,12 @@
 ---
 title: Create an accessible map application with Azure Maps | Microsoft Azure Maps
 description: Learn about accessibility considerations in Azure Maps. See what features are available for making map applications accessible, and view accessibility tips.
-author: dubiety
-ms.author: yuchungchen
+author: sinnypan
+ms.author: sipa
 ms.date: 05/15/2023
-ms.topic: conceptual
+ms.topic: how-to
 ms.service: azure-maps
+ms.subservice: web-sdk
 ---
 
 # Building an accessible application

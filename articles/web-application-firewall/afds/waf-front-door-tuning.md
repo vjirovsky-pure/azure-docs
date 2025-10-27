@@ -1,14 +1,15 @@
 ---
 title: Tune Azure Web Application Firewall for Azure Front Door
 description: In this article, you learn how to tune Azure Web Application Firewall for Azure Front Door.
-services: web-application-firewall
 author: mohitkusecurity
-ms.service: web-application-firewall
-ms.topic: conceptual
-ms.date: 08/28/2022
 ms.author: mohitku
-ms.reviewer: victorh 
+ms.reviewer: halkazwini 
+ms.service: azure-web-application-firewall
+ms.topic: concept-article
+ms.date: 08/28/2022
 zone_pivot_groups: front-door-tiers
+ms.custom: sfi-image-nochange
+# Customer intent: As a web application security administrator, I want to tune the web application firewall rules for Azure Front Door, so that I can prevent unauthorized access while allowing legitimate traffic to flow without interruption.
 ---
 
 # Tune Azure Web Application Firewall for Azure Front Door
@@ -239,7 +240,7 @@ With this information, and the knowledge that rule 942110 is the one that matche
 
 ### Use exclusion lists
 
-One benefit of using an exclusion list is that only the match variable you select to exclude will be no longer inspected for that given request. That is, you can choose between specific request headers, request cookies, query string arguments, or request body post arguments to be excluded if a certain condition is met, as opposed to excluding the whole request from being inspected. The other nonspecified variables of the request are inspected normally.
+One benefit of using an exclusion list is that only the match variable you select to exclude will no longer be inspected for that given request. That is, you can choose between specific request headers, request cookies, query string arguments, or request body post arguments to be excluded if a certain condition is met, as opposed to excluding the whole request from being inspected. The other nonspecified variables of the request are inspected normally.
 
 Exclusions are a global setting. The configured exclusion applies to all traffic that passes through your WAF, not just a specific web app or URI. For example, this could be a concern if `1=1` is a valid request in the body for a certain web app, but not for others under the same WAF policy.
 
@@ -263,9 +264,9 @@ In this example, you perform an exclusion at the most granular level by applying
 
 ![Screenshot that shows rule exclusion for a specific rule.](../media/waf-front-door-tuning/exclusion-rule.png)
 
-Occasionally, there are cases where specific parameters get passed into the WAF in a manner that might not be intuitive. For example, a token gets passed when you authenticate by using Azure Active Directory (Azure AD). The token `__RequestVerificationToken` usually gets passed in as a request cookie.
+Occasionally, there are cases where specific parameters get passed into the WAF in a manner that might not be intuitive. For example, a token gets passed when you authenticate by using Microsoft Entra ID. The token `__RequestVerificationToken` usually gets passed in as a request cookie.
 
-In some cases where cookies are disabled, this token is also passed in as a request post argument. For this reason, to address Azure AD token false positives, you must ensure that `__RequestVerificationToken` is added to the exclusion list for both `RequestCookieNames` and `RequestBodyPostArgsNames`.
+In some cases where cookies are disabled, this token is also passed in as a request post argument. For this reason, to address Microsoft Entra token false positives, you must ensure that `__RequestVerificationToken` is added to the exclusion list for both `RequestCookieNames` and `RequestBodyPostArgsNames`.
 
 Exclusions on a field name (**Selector**) means that the value will no longer be evaluated by the WAF. The field name itself continues to be evaluated and in rare cases it might match a WAF rule and trigger an action.
 
@@ -313,8 +314,6 @@ Disabling a rule is a benefit when you're sure that all requests meeting that sp
 Disabling a rule is a global setting that applies to all front-end hosts associated to the WAF policy. When you choose to disable a rule, you might be leaving vulnerabilities exposed without protection or detection for any other front-end hosts associated to the WAF policy.
 
 If you want to use Azure PowerShell to disable a managed rule, see the [`PSAzureManagedRuleOverride`](/powershell/module/az.frontdoor/new-azfrontdoorwafmanagedruleoverrideobject) object documentation. If you want to use the Azure CLI, see the [`az network front-door waf-policy managed-rules override`](/cli/azure/network/front-door/waf-policy/managed-rules/override) documentation.
-
-![Screenshot that shows WAF rules.](../media/waf-front-door-tuning/waf-rules.png)
 
 > [!TIP]
 > Document any changes you make to your WAF policy. Include example requests to illustrate the false positive detection. Explain why you added a custom rule, disabled a rule or rule set, or added an exception. If you redesign your application in the future, you might need to verify that your changes are still valid. Or you might be audited or need to justify why you reconfigured the WAF policy from its default settings.
@@ -440,6 +439,9 @@ If the request contains cookies, select the **Cookies** tab to view them in Fidd
 If you see rule ID 949110 during the process of tuning your WAF, its presence indicates that the request was blocked by the [anomaly scoring](waf-front-door-drs.md#anomaly-scoring-mode) process.
 
 Review the other WAF log entries for the same request by searching for the log entries with the same tracking reference. Look at each of the rules that were triggered. Tune each rule by following the guidance in this article.
+
+   > [!WARNING]
+   > When assigning a new managed ruleset to a WAF policy, all the previous customizations from the existing managed rulesets such as rule state, rule actions and rule level exclusions will be reset to the new managed ruleset's defaults. However, any custom rules and policy settings will remain unaffected during the new ruleset assignment.
 
 ## Next steps
 

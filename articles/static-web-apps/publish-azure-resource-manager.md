@@ -2,12 +2,12 @@
 title: "Tutorial: Publish Azure Static Web Apps using an ARM template"
 description: Create and deploy an ARM Template for Static Web Apps
 services: static-web-apps
-author: petender
-ms.service: static-web-apps
+author: v1212
+ms.service: azure-static-web-apps
 ms.custom: devx-track-arm-template
 ms.topic:  tutorial
 ms.date: 07/13/2021
-ms.author: petender
+ms.author: wujia
 ---
 
 # Tutorial: Publish Azure Static Web Apps using an ARM Template
@@ -22,7 +22,7 @@ In this tutorial, you learn to:
 
 ## Prerequisites
 
-- **Active Azure account:** If you don't have one, you can [create an account for free](https://azure.microsoft.com/free/).
+- **Active Azure account:** If you don't have one, you can [create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 - **GitHub Account:** If you don't have one, you can [create a GitHub Account for free](https://github.com)
 - **Editor for ARM Templates:** Reviewing and editing templates requires a JSON editor. Visual Studio Code with the [Azure Resource Manager Tools extension](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools) is well suited for editing ARM Templates. For instructions on how to install and configure Visual Studio Code, see [Quickstart: Create ARM templates with Visual Studio Code](../azure-resource-manager/templates/quickstart-create-templates-use-visual-studio-code.md).
 
@@ -44,7 +44,9 @@ One of the parameters in the ARM template is `repositoryToken`, which allows the
 
 1. Select **Generate New Token**.
 
-1. Provide a name for this token in the _Note_ field, for example *myfirstswadeployment*.
+1. Provide a name for this token in the _Name_ field, for example *myfirstswadeployment*.
+
+1. Select an _Expiration_ for the token, the default is 30 days.
 
 1. Specify the following *scopes*: **repo, workflow, write:packages**
 

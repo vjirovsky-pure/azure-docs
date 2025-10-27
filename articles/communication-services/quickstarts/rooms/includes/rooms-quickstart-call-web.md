@@ -4,39 +4,45 @@ description: include file
 services: azure-communication-services
 author: mrayyan
 manager: alexokun
-
 ms.service: azure-communication-services
-ms.date: 07/20/2023
+ms.date: 06/02/2025
 ms.topic: include
 ms.custom: include file
 ms.author: t-siddiquim
 ---
 
-
 > [!NOTE] 
-> Rooms can be accessed using the [Azure Communication Services UI Library](https://azure.github.io/communication-ui-library/?path=/docs/rooms--page). The UI Library enables developers to add a call client that is Rooms enabled into their application with only a couple lines of code.
+> You can access rooms using the [Azure Communication Services UI Library](https://azure.github.io/communication-ui-library/?path=/docs/concepts-rooms--docs). The UI Library enables developers to add a call client that is Rooms enabled into their application with only a couple lines of code.
+
+## Implement the sample app
+
+To implement the code needed to join participants to a rooms call, download from GitHub the [Room Call sample app](https://github.com/Azure-Samples/communication-services-javascript-quickstarts/tree/main/calling-rooms-quickstart).
 
 
-## Join a room call
+## Web Prerequisites
 
-To follow along with this quickstart, you can download the Room Call quickstart on [GitHub](https://github.com/Azure-Samples/communication-services-javascript-quickstarts/tree/main/calling-rooms-quickstart).
+- You need to have [Node.js 18](https://nodejs.org/dist/v18.18.0/). You can use the Microsoft Installer (MSI) to install it.
 
-
-## Pre-requisites
-- [Node.js v16](https://nodejs.org/en/) Active LTS and Maintenance LTS versions
-
-## Setting up
+## Set up the project
 
 ### Create a new Node.js application
 
 Open your terminal or command window create a new directory for your app, and navigate to it.
+
 ```console
 mkdir calling-rooms-quickstart && cd calling-rooms-quickstart
+```
+
+Run `npm init -y` to create a **package.json** file with default settings.
+
+```console
+npm init -y
 ```
 
 ### Install the package
 
 Use the `npm install` command to install the Azure Communication Services Calling SDK for JavaScript.
+
 > [!IMPORTANT]
 > This quickstart uses the Azure Communication Services Calling SDK version `1.14.1`. The ability to join a room call and display the roles of call participants is available in the Calling JavaScript SDK for web browsers [version 1.13.1](https://www.npmjs.com/package/@azure/communication-calling/v/1.13.1) and above.
 
@@ -47,15 +53,15 @@ npm install @azure/communication-calling@1.14.1 --save
 
 ### Set up the app framework
 
-This quickstart uses Webpack to bundle the application assets. Run the following command to install the `webpack`, `webpack-cli` and `webpack-dev-server` npm packages and list them as development dependencies in your `package.json`:
+This article uses webpack to bundle the application assets. Run the following command to install the `webpack`, `webpack-cli`, and `webpack-dev-server` npm packages and list them as development dependencies in your `package.json`:
 
 ```console
-npm install webpack@4.42.0 webpack-cli@3.3.11 webpack-dev-server@3.10.3 --save-dev
+npm install copy-webpack-plugin@^11.0.0 webpack@^5.88.2 webpack-cli@^5.1.4 webpack-dev-server@^4.15.1 --save-dev
 ```
 
 Here's the code:
 
-Create an `index.html` file in the root directory of your project. We use this file to configure a basic layout that allows the user to join a rooms call.
+Create an `index.html` file in the root directory of your project. Use this file to configure a basic layout that enables the user to join a rooms call.
 
 ```html
 <!-- index.html-->
@@ -90,12 +96,12 @@ Create an `index.html` file in the root directory of your project. We use this f
         <br>
         <div id="localVideoContainer" style="width: 30%;" hidden>Local video stream:</div>
         <!-- points to the bundle generated from client.js -->
-        <script src="./bundle.js"></script>
+        <script src="./main.js"></script>
     </body>
 </html>
 ```
 
-Create a file in the root directory of your project called `client.js` to contain the application logic for this quickstart. Add the following code to client.js:
+Create a file in the root directory of your project called `index.js` for the application logic. Add the following code to `index.js`:
 
 ```JavaScript
 // Make sure to install the necessary dependencies
@@ -147,7 +153,6 @@ initializeCallAgentButton.onclick = async () => {
     }
 }
 
-
 startCallButton.onclick = async () => {
     try {
         const localVideoStream = await createLocalVideoStream();
@@ -198,7 +203,10 @@ subscribeToCall = (call) => {
                 console.log(`Call ended, call end reason={code=${call.callEndReason.code}, subCode=${call.callEndReason.subCode}}`);
             }   
         });
-
+        call.on('isLocalVideoStartedChanged', () => {
+            console.log(`isLocalVideoStarted changed: ${call.isLocalVideoStarted}`);
+        });
+        console.log(`isLocalVideoStarted: ${call.isLocalVideoStarted}`);
         call.localVideoStreams.forEach(async (lvs) => {
             localVideoStream = lvs;
             await displayLocalVideoStream();
@@ -236,7 +244,7 @@ subscribeToCall = (call) => {
 
 /**
  * Subscribe to a remote participant obj.
- * Listen for property changes and collection udpates.
+ * Listen for property changes and collection updates.
  */
 subscribeToRemoteParticipant = (remoteParticipant) => {
     try {
@@ -252,7 +260,7 @@ subscribeToRemoteParticipant = (remoteParticipant) => {
             subscribeToRemoteVideoStream(remoteVideoStream)
         });
         // Subscribe to the remoteParticipant's 'videoStreamsUpdated' event to be
-        // notified when the remoteParticiapant adds new videoStreams and removes video streams.
+        // notified when the remoteParticipant adds new videoStreams and removes video streams.
         remoteParticipant.on('videoStreamsUpdated', e => {
             // Subscribe to new remote participant's video streams that were added.
             e.added.forEach(remoteVideoStream => {
@@ -385,28 +393,56 @@ hangUpCallButton.addEventListener("click", async () => {
 });
 ```
 
+## Add the webpack local server code
+
+Create a file in the root directory of your project called **webpack.config.js** to contain the local server logic for this quickstart. Add the following code to **webpack.config.js**:
+
+```javascript
+const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
+
+module.exports = {
+    mode: 'development',
+    entry: './index.js',
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        static: {
+            directory: path.join(__dirname, './')
+        },
+    },
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                './index.html'
+            ]
+        }),
+    ]
+};
+```
+
 ## Run the code
 
 Use the `webpack-dev-server` to build and run your app. Run the following command to bundle the application host in a local webserver:
 
 ```console
-npx webpack-dev-server --entry ./client.js --output bundle.js --debug --devtool inline-source-map
+`npx webpack serve --config webpack.config.js`
 ```
 
 1. Open your browser navigate to http://localhost:8080/.
 2. On the first input field, enter a valid user access token.
 3. Click on the "Initialize Call Agent" and enter your Room ID. 
-4. Click "Join Room Call"
+4. Click **Join Room Call**.
 
-You have now successfully joined a Rooms call!
-
-
+You successfully joined a Rooms call!
 
 ## Understanding joining a Room call
 
-All the code that you have added in your QuickStart app allowed you to successfully start and join a room call. Here is more information about what more methods/handlers you can access for Rooms to extend functionality in your application.
+All the code that you added to the sample app enabled you to successfully start and join a room call. Here's more information about what more methods/handlers you can access for Rooms to extend functionality in your application.
 
-To display the role of the local or remote call participants, subscribe to the handler below.
+To display the role of the local or remote call participants, subscribe to the handler as follows.
 
 ```js
 // Subscribe to changes for your role in a call
@@ -424,5 +460,4 @@ To display the role of the local or remote call participants, subscribe to the h
  }
 ```
 
-
-You can learn more about roles of room call participants in the [rooms concept documentation](../../../concepts/rooms/room-concept.md#predefined-participant-roles-and-permissions).
+For more information about roles of room call participants, see [Rooms API for structured meetings](../../../concepts/rooms/room-concept.md#predefined-participant-roles-and-permissions).

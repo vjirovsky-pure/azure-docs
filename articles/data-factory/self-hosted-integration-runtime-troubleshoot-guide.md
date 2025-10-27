@@ -3,12 +3,13 @@ title: Troubleshoot self-hosted integration runtime
 titleSuffix: Azure Data Factory & Azure Synapse
 description: Learn how to troubleshoot self-hosted integration runtime issues in Azure Data Factory and Azure Synapse Analytics pipelines. 
 author: lrtoyou1223
-ms.service: data-factory
 ms.subservice: integration-runtime
-ms.custom: synapse
 ms.topic: troubleshooting
-ms.date: 05/18/2023
+ms.date: 02/13/2025
 ms.author: lle
+ms.custom:
+  - synapse
+  - sfi-image-nochange
 ---
 
 # Troubleshoot self-hosted integration runtime
@@ -218,7 +219,7 @@ To generate the error report ID for Microsoft Support, follow these instructions
     > [!TIP] 
     > In Process Monitor, you can set filters as shown in following screenshot.
     >
-    > The preceding error message says that the DLL System.ValueTuple is not located in the related *Global Assembly Cache* (GAC) folder, in the *C:\Program Files\Microsoft Integration Runtime\4.0\Gateway* folder, or in the *C:\Program Files\Microsoft Integration Runtime\4.0\Shared* folder.
+    > The preceding error message says that the DLL System.ValueTuple is not located in the related *Global Assembly Cache (GAC)* folder, in the *C:\Program Files\Microsoft Integration Runtime\4.0\Gateway* folder, or in the *C:\Program Files\Microsoft Integration Runtime\4.0\Shared* folder.
     >
     > Basically, the process loads the DLL first from the *GAC* folder, then from the *Shared* folder, and finally from the *Gateway* folder. Therefore, you can load the DLL from any path that's helpful.
     
@@ -315,9 +316,7 @@ To generate the error report ID for Microsoft Support, follow these instructions
     * You've imported a PFX file to the certificate store.
     * When you selected the certificate through the IR Configuration Manager UI, you received the following error message:
     
-       "Failed to change intranet communication encryption mode. It is likely that certificate '\<*certificate name*>' may not have a private key that is capable of key exchange or the process may not have access rights for the private key. Please see inner exception for detail."
-    
-        :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/private-key-missing.png" alt-text="Screenshot of the Integration Runtime Configuration Manager Settings pane, displaying a &quot;private key missing&quot; error message.":::
+      "Failed to change intranet communication encryption mode. It is likely that certificate '\<*certificate name*>' may not have a private key that is capable of key exchange or the process may not have access rights for the private key. Please see inner exception for detail.""
 
 - **Cause**  
 
@@ -417,7 +416,7 @@ To generate the error report ID for Microsoft Support, follow these instructions
             > [!NOTE]
             > The folder is not `C:\Program Files (x86)\Java\`
         
-        - JRE 7 and JRE 8 are both compatible for this copy activity. JRE 6 and versions that are earlier than JRE 6 have not been validated for this use.
+        - Java Runtime (JRE) is version 11 or greater, from a JRE provider such as [Microsoft OpenJDK 11](https://aka.ms/download-jdk/microsoft-jdk-11.0.19-windows-x64.msi) or [Eclipse Temurin 11](https://adoptium.net/temurin/releases/?version=11). Ensure that the JAVA_HOME system environment variable is set to the JDK folder (not just the JRE folder) you may also need to add the bin folder to your system's PATH environment variable.
     
     2. Check the registry for the appropriate settings. To do this, follow these steps:
     
@@ -587,10 +586,8 @@ To generate the error report ID for Microsoft Support, follow these instructions
 - **Symptoms**  
 
     When you install a self-hosted IR via Microsoft Integration Runtime Configuration Manager, a certificate with a trusted certificate authority (CA) is generated. The certificate couldn't be applied to encrypt communication between two nodes, and the following error message is displayed: 
-    
+
     "Failed to change Intranet communication encryption mode: Failed to grant Integration Runtime service account the access of to the certificate '\<*certificate name*>'. Error code 103"
-    
-    :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/integration-runtime-service-account-certificate-error.png" alt-text="Screenshot displaying the error message &quot;... Failed to grant Integration Runtime service account certificate access&quot;.":::
 
 - **Cause**  
 
@@ -631,13 +628,6 @@ For Azure Data Factory v2 and Azure Synapse customers:
 - If automatic update is off and you've already upgraded your .NET Framework Runtime to 4.7.2 or later, you can manually download the latest 5.x and install it on your machine.
 - If automatic update is off and you haven't upgraded your .NET Framework Runtime to 4.7.2 or later. When you try to manually install self-hosted integration runtime 5.x and register the key, you will be required to upgrade your .NET Framework Runtime version first.
 
-
-For Azure Data Factory v1 customers:
-- Self-hosted integration runtime 5.X doesn't support Azure Data Factory v1.
-- The self-hosted integration runtime will be automatically upgraded to the latest version of 4.x. And the latest version of 4.x won't expire. 
-- If you try to manually install self-hosted integration runtime 5.x and register the key, you'll be notified that self-hosted integration runtime 5.x doesn't support Azure Data Factory v1.
-    
-    
 ## Self-hosted IR connectivity issues
 
 ### Self-hosted integration runtime can't connect to the cloud service
@@ -676,7 +666,7 @@ For Azure Data Factory v1 customers:
     1. If you don't receive the response you had expected, use one of the following methods, as appropriate:
                 
         * If you receive a "Remote name could not be resolved" message, there's a Domain Name System (DNS) issue. Contact your network team to fix the issue.
-        * If you receive an "ssl/tls cert is not trusted" message, [check the certificate](https://wu2.frontend.clouddatahub.net/) to see whether it's trusted on the machine, and then install the public certificate by using Certificate Manager. This action should mitigate the issue.
+        * If you receive an "ssl/tls cert is not trusted" message, check the certificate (```https://wu2.frontend.clouddatahub.net/```) to see whether it's trusted on the machine, and then install the public certificate by using Certificate Manager. This action should mitigate the issue.
         * Go to **Windows** > **Event viewer (logs)** > **Applications and Services Logs** > **Integration Runtime**, and check for any failure that's caused by DNS, a firewall rule, or company network settings. If you find such a failure, forcibly close the connection. Because every company has its own customized network settings, contact your network team to troubleshoot these issues.
     
     1. If "proxy" has been configured on the self-hosted integration runtime, verify that your proxy server can access the service endpoint. For a sample command, see [PowerShell, web requests, and proxies](https://stackoverflow.com/questions/571429/powershell-web-requests-and-proxies).    
@@ -705,7 +695,7 @@ For Azure Data Factory v1 customers:
     > [!NOTE] 
     > Proxy considerations:
     > * Check to see whether the proxy server needs to be put on the Safe Recipients list. If so, make sure [these domains](./data-movement-security-considerations.md#firewall-requirements-for-on-premisesprivate-network) are on the Safe Recipients list.
-    > * Check to see whether SSL/TLS certificate "wu2.frontend.clouddatahub.net/" is trusted on the proxy server.
+    > * Check to see whether SSL/TLS certificate `wu2.frontend.clouddatahub.net/` is trusted on the proxy server.
     > * If you're using Active Directory authentication on the proxy, change the service account to the user account that can access the proxy as "Integration Runtime Service."
 
 ### Error message: Self-hosted integration runtime node/logical self-hosted IR is in Inactive/ "Running (Limited)" state
@@ -784,9 +774,7 @@ how to collect the network trace, understand how to use it, and [analyze the Mic
     
             :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/find-conversation.png" alt-text="Screenshot of the TCP conversation.":::
     
-        1. Get the conversation between the client and the Data Factory server below by removing the filter.
-    
-            :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/get-conversation.png" alt-text="Screenshot of conversation details.":::
+        1. Get the conversation between the client and the Data Factory server by removing the filter.
     
     - An analysis of the Netmon trace you've collected shows that the Time to Live (TTL)) total is 64. According to the values mentioned in the [IP Time to Live (TTL) and Hop Limit Basics](https://packetpushers.net/ip-time-to-live-and-hop-limit-basics/) article, extracted in the following list, you can see that it's the Linux System that resets the package and causes the disconnection.
     
@@ -858,12 +846,6 @@ Successful scenarios are shown in the following examples:
 
     :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/tcp-4-handshake-workflow.png" alt-text="Diagram of a TCP 4 handshake workflow."::: 
 
-### Microsoft email notification about updating your network configuration
-
-You might receive the following email notification, which recommends that you update your network configuration to allow communication with new IP addresses for Azure Data Factory by 8 November 2020:
-
-   :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/email-notification.png" alt-text="Screenshot of Microsoft email notification requesting update of network configuration.":::
-
 #### Determine whether this notification affects you
 
 This notification applies to the following scenarios:
@@ -914,7 +896,7 @@ How to determine whether you're affected:
     
     "The underlying connection was closed: Could not establish trust relationship for the SSL/TLS secure channel. The remote certificate is invalid according to the validation procedure."
     
-    The simplest way to check the server certificate of the service is to open the service URL in your browser. For example, open the [check server certificate link](https://eu.frontend.clouddatahub.net/) on the machine where the self-hosted IR is installed, and then view the server certificate information.
+    The simplest way to check the server certificate of the service is to open the service URL in your browser. For example, open the check server certificate link (```https://eu.frontend.clouddatahub.net/```) on the machine where the self-hosted IR is installed, and then view the server certificate information.
     
     :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/server-certificate.png" alt-text="Screenshot of the check server certificate pane of the Azure Data Factory service.":::
     
@@ -939,17 +921,17 @@ How to determine whether you're affected:
     
     :::image type="content" source="media/self-hosted-integration-runtime-troubleshoot-guide/trusted-root-ca-check.png" alt-text="Screenshot showing the DigiCert Global Root G2 folder in the Trusted Root Certification Authorities directory.":::
     
-    If it isn't in the trusted root CA, [download it here](http://cacerts.digicert.com/DigiCertGlobalRootG2.crt ). 
+    If it isn't in the trusted root CA, [download it here](http://cacerts.digicert.com/DigiCertGlobalRootG2.crt). 
 
 
-## Next steps
+## Related content
 
 For more help with troubleshooting, try the following resources:
 
 *  [Data Factory blog](https://techcommunity.microsoft.com/t5/azure-data-factory-blog/bg-p/AzureDataFactoryBlog)
 *  [Data Factory feature requests](/answers/topics/azure-data-factory.html)
-*  [Azure videos](https://azure.microsoft.com/resources/videos/index/?sort=newest&services=data-factory)
+- [Azure videos](/shows/data-exposed/?products=azure&terms=data-factory)
 *  [Microsoft Q&A page](/answers/topics/azure-data-factory.html)
 *  [Stack overflow forum for Data Factory](https://stackoverflow.com/questions/tagged/azure-data-factory)
-*  [Twitter information about Data Factory](https://twitter.com/hashtag/DataFactory)
+*  [X information about Data Factory](https://x.com/hashtag/DataFactory)
 *  [Mapping data flows performance guide](concepts-data-flow-performance.md)

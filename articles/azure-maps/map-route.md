@@ -2,11 +2,12 @@
 title: Show route directions on a map
 titleSuffix: Microsoft Azure Maps
 description: This article demonstrates how to display directions between two locations on a map using the Microsoft Azure Maps Web SDK.
-author: dubiety
-ms.author: yuchungchen
+author: sinnypan
+ms.author: sipa
 ms.date: 07/01/2023
 ms.topic: how-to
 ms.service: azure-maps
+ms.subservice: web-sdk
 ---
 
 # Show directions from A to B
@@ -30,9 +31,9 @@ const onload = () => {
     authOptions: {
       // Use Azure Active Directory authentication.
       authType: "aad",
-      clientId: "<Your Azure Maps Client Id>",
-      aadAppId: "<Your Azure Active Directory Client Id>",
-      aadTenant: "<Your Azure Active Directory Tenant Id>"
+      clientId: "<Your Azure Maps Client ID>",
+      aadAppId: "<Your Azure Active Directory Client ID>",
+      aadTenant: "<Your Azure Active Directory Tenant ID>"
     }
   });
 
@@ -47,7 +48,7 @@ const onload = () => {
     };
 
     // Create a Route client.
-    const client = MapsRoute(credential, "<Your Azure Maps Client Id>");
+    const client = MapsRoute(credential, "<Your Azure Maps Client ID>");
 
     // Create a data source and add it to the map.
     const dataSource = new atlas.source.DataSource();
@@ -169,7 +170,7 @@ document.body.onload = onload;
 > [!VIDEO //codepen.io/azuremaps/embed/RBZbep/?height=265&theme-id=0&default-tab=js,result&embed-version=2&editable=true]
 --------------------------------------------------------->
 
-In the previous code example, the first block constructs a map object and sets the authentication mechanism to use Azure Active Directory. You can see [Create a map] for instructions.
+In the previous code example, the first block constructs a map object and sets the authentication mechanism to use Microsoft Entra ID. You can see [Create a map] for instructions.
 
 The second block of code creates an object that implements the [TokenCredential] interface to authenticate HTTP requests to Azure Maps with the access token. It then passes the credential object to [MapsRoute] and creates an instance of the client.
 
@@ -201,9 +202,9 @@ const onload = () => {
     authOptions: {
       // Use Azure Active Directory authentication.
       authType: "aad",
-      clientId: "<Your Azure Maps Client Id>",
-      aadAppId: "<Your Azure Active Directory Client Id>",
-      aadTenant: "<Your Azure Active Directory Tenant Id>"
+      clientId: "<Your Azure Maps Client ID>",
+      aadAppId: "<Your Azure Active Directory Client ID>",
+      aadTenant: "<Your Azure Active Directory Tenant ID>"
     }
   });
 
@@ -270,7 +271,7 @@ const onload = () => {
     fetch(url, {
       headers: {
         Authorization: "Bearer " + map.authentication.getToken(),
-        "x-ms-client-id": "<Your Azure Maps Client Id>"
+        "x-ms-client-id": "<Your Azure Maps Client ID>"
       }
     })
       .then((response) => response.json())
@@ -309,7 +310,7 @@ document.body.onload = onload;
 > [!VIDEO //codepen.io/azuremaps/embed/zRyNmP/?height=469&theme-id=0&default-tab=js,result&embed-version=2&editable=true]
 --------------------------------------------------------->
 
-In the previous code example, the first block of code constructs a map object and sets the authentication mechanism to use Azure Active Directory. You can see [Create a map] for instructions.
+In the previous code example, the first block of code constructs a map object and sets the authentication mechanism to use Microsoft Entra ID. You can see [Create a map] for instructions.
 
 The second block of code creates and adds a [DataSource] object to the map.
 

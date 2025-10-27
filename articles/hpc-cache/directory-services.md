@@ -2,10 +2,12 @@
 title: Use extended groups in Azure HPC Cache
 description: How to configure directory services for client access to storage targets in Azure HPC Cache
 author: ekpgh
-ms.service: hpc-cache
+ms.service: azure-hpc-cache
 ms.topic: how-to
 ms.date: 07/27/2022
 ms.author: rohogue
+ms.custom: sfi-image-nochange
+# Customer intent: As a systems administrator, I want to configure directory services for Azure HPC Cache so that I can enable user authentication for accessing NFS storage targets with extended group support.
 ---
 
 # Configure directory services
@@ -16,7 +18,7 @@ You might need to enable **Extended groups** if your workflow includes NFS stora
 
 After you click the button to enable extended groups, you must choose the source that Azure HPC Cache will use to get user and group credentials.
 
-* [Active Directory](#configure-active-directory) - Get credentials from an external Active Directory server. You can't use Azure Active Directory for this task.
+* [Active Directory](#configure-active-directory) - Get credentials from an external Active Directory server. You can't use Microsoft Entra ID for this task.
 * [Flat file](#configure-file-download) - Download `/etc/group` and `/etc/passwd` files from a network location.
 * [LDAP](#configure-ldap) - Get credentials from a Lightweight Directory Access Protocol (LDAP)-compatible source.
 

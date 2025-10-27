@@ -1,14 +1,12 @@
 ---
 title: Authentication mechanisms with the COPY statement
 description: Outlines the authentication mechanisms to bulk load data with the COPY statement in Synapse SQL.
-services: synapse-analytics
-author: WilliamDAssafMSFT
-ms.service: synapse-analytics
+author: ajagadish-24
+ms.author: ajagadish
+ms.service: azure-synapse-analytics
 ms.topic: quickstart
 ms.subservice: sql-dw
-ms.date: 06/15/2022
-ms.author: wiassaf
-ms.reviewer: sngun
+ms.date: 10/23/2025
 ms.custom: subject-rbac-steps, mode-other
 ---
 
@@ -18,7 +16,7 @@ This article highlights and provides examples on the secure authentication mecha
 
 ## Supported authentication mechanisms
 
-The following matrix describes the supported authentication methods for each file type and storage account. This applies to the source storage location and the error file location.
+The following matrix describes the supported authentication methods for each file type and storage account. This information applies to the source storage location and the error file location.
 
 |                          |                CSV                |                      Parquet                       |                        ORC                         |
 | :----------------------: | :-------------------------------: | :------------------------------------------------: | :------------------------------------------------: |
@@ -46,7 +44,7 @@ WITH (
 ```
 > [!IMPORTANT]
 >
-> - Use the hexadecimal value (0x0A) to specify the Line Feed/Newline character. Note the COPY statement will interpret the `\n` string as `\r\n` (carriage return newline).
+> - Use the hexadecimal value (0x0A) to specify the Line Feed/Newline character. Note the COPY statement interprets the `\n` string as `\r\n` (carriage return newline).
 
 ## B. Shared Access Signatures (SAS) with CRLF as the row terminator (Windows style new line)
 
@@ -63,7 +61,7 @@ WITH (
 ```
 
 > [!IMPORTANT]
-> Do not specify the `ROWTERMINATOR` as '\r\n' which will be interpreted as '\r\r\n' and can result in parsing issues. The COPY command automatically prefixes the \r character when \n (newline) is specified. This results in carriage return newline (\r\n) for Windows based systems.
+> Don't specify the `ROWTERMINATOR` as '\r\n', which is interpreted as '\r\r\n' and can result in parsing issues. The COPY command automatically prefixes the \r character when \n (newline) is specified. This results in carriage return newline (\r\n) for Windows based systems.
 
 ## C. Managed Identity
 
@@ -77,7 +75,7 @@ Managed Identity authentication is required when your storage account is attache
 
 #### Steps
 
-1. If you have a standalone dedicated SQL pool, register your SQL server with Azure Active Directory (Azure AD) using PowerShell: 
+1. If you have a standalone dedicated SQL pool, register your SQL server with Microsoft Entra ID using PowerShell: 
 
    ```powershell
    Connect-AzAccount
@@ -85,7 +83,7 @@ Managed Identity authentication is required when your storage account is attache
    Set-AzSqlServer -ResourceGroupName your-database-server-resourceGroup -ServerName your-SQL-servername -AssignIdentity
    ```
 
-   This step is not required for dedicated SQL pools within a Synapse workspace. The system assigned managed identity (SA-MI) of the workspace is a member of the Synapse Administrator role and thus has elevated privileges on the dedicated SQL pools of the workspace.
+   This step isn't required for dedicated SQL pools within a Synapse workspace. The system assigned managed identity (SA-MI) of the workspace is a member of the Synapse Administrator role and thus has elevated privileges on the dedicated SQL pools of the workspace.
 
 1. Create a **general-purpose v2 Storage Account**. For more information, see [Create a storage account](../../storage/common/storage-account-create.md).
 
@@ -98,15 +96,15 @@ Managed Identity authentication is required when your storage account is attache
 
 1. Select **Add** > **Add role assignment** to open the Add role assignment page.
 
-1. Assign the following role. For detailed steps, see [Assign Azure roles using the Azure portal](../../role-based-access-control/role-assignments-portal.md).
+1. Assign the following role. For detailed steps, see [Assign Azure roles using the Azure portal](/azure/role-based-access-control/role-assignments-portal).
     
     | Setting | Value |
     | --- | --- |
     | Role | Storage Blob Data Contributor |
     | Assign access to | SERVICEPRINCIPAL |
-    | Members | server or workspace hosting your dedicated SQL pool that you've registered with Azure Active Directory (Azure AD)  |
+    | Members | Server or workspace hosting your dedicated SQL pool that is registered with Microsoft Entra ID  |
 
-    ![Add role assignment page in Azure portal.](../../../includes/role-based-access-control/media/add-role-assignment-page.png)
+    ![Add role assignment page in Azure portal.](~/reusable-content/ce-skilling/azure/media/role-based-access-control/add-role-assignment-page.png)
 
 
    > [!NOTE]
@@ -128,29 +126,31 @@ Managed Identity authentication is required when your storage account is attache
     )
     ```
 
-## D. Azure Active Directory Authentication
+<a name='d-azure-active-directory-authentication'></a>
+
+## D. Microsoft Entra authentication
 #### Steps
 
 1. Under your storage account, select **Access control (IAM)**.
 
 1. Select **Add** > **Add role assignment** to open the Add role assignment page.
 
-1. Assign the following role. For detailed steps, see [Assign Azure roles using the Azure portal](../../role-based-access-control/role-assignments-portal.md).
+1. Assign the following role. For detailed steps, see [Assign Azure roles using the Azure portal](/azure/role-based-access-control/role-assignments-portal).
     
     | Setting | Value |
     | --- | --- |
     | Role | Storage Blob Data Owner, Contributor, or Reader |
     | Assign access to | USER |
-    | Members | Azure AD user |
+    | Members | Microsoft Entra user |
 
-    ![Add role assignment page in Azure portal.](../../../includes/role-based-access-control/media/add-role-assignment-page.png)
+    ![Add role assignment page in Azure portal.](~/reusable-content/ce-skilling/azure/media/role-based-access-control/add-role-assignment-page.png)
 
     > [!IMPORTANT]
     > Specify the **Storage** **Blob Data** Owner, Contributor, or Reader Azure role. These roles are different than the Azure built-in roles of Owner, Contributor, and Reader.
 
     ![Granting Azure RBAC permission to load](./media/quickstart-bulk-load-copy-tsql-examples/rbac-load-permissions.png)
 
-1. Configure Azure AD authentication. Refer to [Configure and manage Azure AD authentication with Azure SQL](/azure/azure-sql/database/authentication-aad-configure?tabs=azure-powershell). 
+1. Configure Microsoft Entra authentication. Refer to [Configure and manage Microsoft Entra authentication with Azure SQL](/azure/azure-sql/database/authentication-aad-configure?tabs=azure-powershell). 
 
 1. Connect to your SQL pool using Active Directory where you can now run the COPY statement without specifying any credentials:
 
@@ -166,11 +166,11 @@ Managed Identity authentication is required when your storage account is attache
 ## E. Service Principal Authentication
 #### Steps
 
-1. [Create an Azure Active Directory application](../..//active-directory/develop/howto-create-service-principal-portal.md#register-an-application-with-azure-ad-and-create-a-service-principal).
+1. [Create a Microsoft Entra application](../..//active-directory/develop/howto-create-service-principal-portal.md#register-an-application-with-azure-ad-and-create-a-service-principal).
 2. [Get application ID](../..//active-directory/develop/howto-create-service-principal-portal.md#sign-in-to-the-application).
 3. [Get the authentication key](../../active-directory/develop/howto-create-service-principal-portal.md#set-up-authentication).
 4. [Get the V1 OAuth 2.0 token endpoint](../../data-lake-store/data-lake-store-service-to-service-authenticate-using-active-directory.md?bc=%2fazure%2fsynapse-analytics%2fsql-data-warehouse%2fbreadcrumb%2ftoc.json&toc=%2fazure%2fsynapse-analytics%2fsql-data-warehouse%2ftoc.json#step-4-get-the-oauth-20-token-endpoint-only-for-java-based-applications).
-5. [Assign read, write, and execution permissions to your Azure AD application](../../data-lake-store/data-lake-store-service-to-service-authenticate-using-active-directory.md?bc=%2fazure%2fsynapse-analytics%2fsql-data-warehouse%2fbreadcrumb%2ftoc.json&toc=%2fazure%2fsynapse-analytics%2fsql-data-warehouse%2ftoc.json#step-3-assign-the-azure-ad-application-to-the-azure-data-lake-storage-gen1-account-file-or-folder) on your storage account.
+5. [Assign read, write, and execution permissions to your Microsoft Entra application](../../data-lake-store/data-lake-store-service-to-service-authenticate-using-active-directory.md?bc=%2fazure%2fsynapse-analytics%2fsql-data-warehouse%2fbreadcrumb%2ftoc.json&toc=%2fazure%2fsynapse-analytics%2fsql-data-warehouse%2ftoc.json#step-3-assign-the-azure-ad-application-to-the-azure-data-lake-storage-gen1-account-file-or-folder) on your storage account.
 6. You can now run the COPY statement:
 
     ```sql

@@ -3,18 +3,19 @@ title: Subnet extension in Azure
 titleSuffix: Azure Virtual Network
 description: Learn about subnet extension in Azure.
 author: asudbring
-ms.service: virtual-network
-ms.topic: conceptual
-ms.workload: infrastructure-services
+ms.service: azure-virtual-network
+ms.topic: concept-article
 ms.date: 04/06/2023
 ms.author: allensu
+ms.custom: sfi-image-nochange
+# Customer intent: As a network architect, I want to extend my on-premises subnets into Azure, so that I can migrate applications without renumbering IP addresses and enable seamless communication between cloud and on-premises resources.
 ---
 
 # Subnet extension
 
 Workload migration to the public cloud requires careful planning and coordination. One of the key considerations can be the ability to retain your IP addresses. Which can be important especially if your applications have IP address dependency or you have compliance requirements to use specific IP addresses. Azure Virtual Network solves this problem for you by allowing you to create virtual networks and subnets using an IP address range of your choice.
 
-Migrations can get a bit challenging when the above requirement is coupled with an extra requirement to keep some applications on-premises. In such as a situation, you have to split the applications between Azure and on-premises, without renumbering the IP addresses on either side. Additionally, you have to allow the applications to communicate as if they are in the same network.
+Migrations can get a bit challenging when the above requirement is coupled with an extra requirement to keep some applications on-premises. In such a situation, you have to split the applications between Azure and on-premises, without renumbering the IP addresses on either side. Additionally, you have to allow the applications to communicate as if they are in the same network.
 
 One solution to the above problem is subnet extension. Extending a network allows applications to talk over the same broadcast domain when they exist at different physical locations, removing the need to rearchitect your network topology. 
 

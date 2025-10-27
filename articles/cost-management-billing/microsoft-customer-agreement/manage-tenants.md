@@ -1,14 +1,14 @@
 ---
 title: Manage tenants in your Microsoft Customer Agreement billing account - Azure
 description: The article helps you understand and manage tenants associated with your Microsoft Customer Agreement billing account.
-author: bandersmsft
-tags: billing
+author: baolcsva
 ms.service: cost-management-billing
 ms.subservice: microsoft-customer-agreement
 ms.topic: conceptual
-ms.date: 04/05/2023
-ms.author: banders
+ms.date: 08/28/2025
+ms.author: baolcsva
 ms.reviewer: baolcsva
+ms.custom: sfi-image-nochange
 ---
 
 # Manage tenants in your Microsoft Customer Agreement billing account
@@ -17,7 +17,7 @@ The article helps you understand and manage tenants associated with your Microso
 
 ## What's a tenant?
 
-A tenant is a digital representation of your organization and is primarily associated with a domain, like Microsoft.com. It's an environment managed through Azure Active Directory that enables you to assign users permissions to manage Azure resources and billing.
+A tenant is a digital representation of your organization and is primarily associated with a domain, like Microsoft.com. It's an environment managed through Microsoft Entra ID that enables you to assign users permissions to manage Azure resources and billing.
 
 Each tenant is distinct and separate from other tenants. You can allow users from other tenants to access your billing account by using one of the following methods:
 -	Creating guest users in your tenants and assigning the appropriate billing role.
@@ -67,11 +67,27 @@ There are three ways users with billing owner access can assign roles to users t
 - Assign billing roles to external users (outside of your primary tenant) if they are part of an associated tenant 
 - If tenants are not associated, [create guest users in primary tenant and assign roles](#add-guest-users-to-your-microsoft-customer-agreement-tenant). 
 
+## Understanding Guest Users in Azure Portal
+
+A guest user (also known as guested user or B2B user) is an external user who has been invited to access resources within an Azure Active Directory (Azure AD) tenant. Typically, this user has a primary identity in another Azure AD tenant or identity provider and receives access via Azure AD B2B (business-to-business) collaboration features. Once invited, the guest user appears in the inviting organization’s directory and can be assigned roles and permissions just like any other user.
+
+### Accessing the Azure Portal
+
+The guest user must sign in to the [Azure portal](https://portal.azure.com/) using their own organization’s credentials. Upon successful authentication, they should select the host directory (the client organization) from the top-right user menu in the Azure portal if they are members of multiple tenants.
+
+### Navigation and User Interface
+
+Once inside the client’s directory, the guest user will see the resources and features available based on their role assignments. They can navigate to: 
+
+- Cost Management + Billing: The main blade for all billing-related tasks. 
+- Billing accounts, profiles, and invoice sections: Visible as per access rights. 
+
+
 ## Add guest users to your Microsoft Customer Agreement tenant
 
 Users that are added to your Microsoft Customer Agreement billing tenant, to manage billing responsibilities from a different tenant, must be invited as a guest.
 
-To invite someone as a guest, the user must have an existing email address with a domain that's different from your Azure Active Directory (AD) domain. Azure AD sends the guest user an email with a link for authentication.
+To invite someone as a guest, the user must have an existing email address with a domain that's different from your Microsoft Entra domain. Microsoft Entra ID sends the guest user an email with a link for authentication.
 
 :::image type="content" source="./media/manage-tenants/guest-invitation-email.png" alt-text="Screenshot showing an example email invitation." lightbox="./media/manage-tenants/guest-invitation-email.png" :::
 
@@ -89,27 +105,35 @@ After they accept, they can [view the Microsoft Customer Agreement billing accou
 
 :::image type="content" source="./media/manage-tenants/billing-microsoft-customer-agreement-in-list.png" alt-text="Screenshot showing the Microsoft Customer Agreement in the list of billing accounts." lightbox="./media/manage-tenants/billing-microsoft-customer-agreement-in-list.png" :::
 
-Authorization to invite guest users is controlled by your Azure AD settings. The value of the settings is shown under **Settings** on the **Organizational relationships** page. Ensure that the setting is selected, otherwise the invitation fails. For more information, see [Restrict guest user access permissions](../../active-directory/enterprise-users/users-restrict-guest-permissions.md).
+Authorization to invite guest users is controlled by your Microsoft Entra settings. The value of the settings is shown under **Settings** on the **Organizational relationships** page. Ensure that the setting is selected, otherwise the invitation fails. For more information, see [Restrict guest user access permissions](../../active-directory/enterprise-users/users-restrict-guest-permissions.md).
 
 :::image type="content" source="./media/manage-tenants/external-collaboration-settings.png" alt-text="Screenshot showing External collaboration settings." lightbox="./media/manage-tenants/external-collaboration-settings.png" :::
 
 > [!IMPORTANT]
 > Guest users get access to the Microsoft Customer Agreement tenant, which can potentially pose a security concern. For more information, see [Learn how to restrict guest users' default permissions](../../active-directory/fundamentals/users-default-permissions.md#restrict-member-users-default-permissions).
 
-## Manage multiple Microsoft cloud services under an Azure AD tenant
+<a name='manage-multiple-microsoft-cloud-services-under-an-azure-ad-tenant'></a>
 
-You can manage multiple cloud services for your organization under a single Azure AD tenant. User accounts for all of Microsoft's cloud offerings are stored in the Azure AD tenant, which contains user accounts and groups. The following diagram shows an example of an organization with multiple services using a common Azure AD tenant containing accounts. Each service has its own portal, in blue text, where users manage their services.
+## Troubleshooting Common Issues for Guest Users
 
-:::image type="content" source="./media/manage-tenants/diagram-multiple-services-common-azure-ad-tenant-accounts.png" alt-text="Diagram showing an example of an organization with multiple services using a common Azure AD tenant containing accounts." border="false" lightbox="./media/manage-tenants/diagram-multiple-services-common-azure-ad-tenant-accounts.png":::
+- Access Denied Errors: Ensure correct roles are assigned and the guest has accepted the invitation. 
+- Directory Not Found: Instruct the user to switch directories in the Azure Portal. 
+- Resource Visibility: Confirm that the user’s roles map to the correct billing profiles or invoice sections. 
 
-## Next steps
+## Manage multiple Microsoft cloud services under a Microsoft Entra tenant
+
+You can manage multiple cloud services for your organization under a single Microsoft Entra tenant. User accounts for all of Microsoft's cloud offerings are stored in the Microsoft Entra tenant, which contains user accounts and groups. The following diagram shows an example of an organization with multiple services using a common Microsoft Entra tenant containing accounts. Each service has its own portal, in blue text, where users manage their services.
+
+:::image type="content" source="./media/manage-tenants/diagram-multiple-services-common-azure-ad-tenant-accounts.png" alt-text="Diagram showing an example of an organization with multiple services using a common Microsoft Entra tenant containing accounts." border="false" lightbox="./media/manage-tenants/diagram-multiple-services-common-azure-ad-tenant-accounts.png":::
+
+## Related content
 
 Read the following articles to learn how to administer flexible billing ownership and ensure secure access to your Microsoft Customer Agreement.
 
 - [How to set up a tenant](../../active-directory/develop/quickstart-create-new-tenant.md)
 - [Azure built-in roles](../../role-based-access-control/built-in-roles.md)
-- [Transfer an Azure subscription to a different Azure AD directory](../../role-based-access-control/transfer-subscription.md)
-- [Restrict guest access permissions (preview) in Azure Active Directory](../../active-directory/enterprise-users/users-restrict-guest-permissions.md)
+- [Transfer an Azure subscription to a different Microsoft Entra directory](../../role-based-access-control/transfer-subscription.md)
+- [Restrict guest access permissions (preview) in Microsoft Entra ID](../../active-directory/enterprise-users/users-restrict-guest-permissions.md)
 - [Add guest users to your directory in the Azure portal](../../active-directory/external-identities/b2b-quickstart-add-guest-users-portal.md#accept-the-invitation)
-- [What are the default user permissions in Azure Active Directory?](../../active-directory/external-identities/b2b-quickstart-add-guest-users-portal.md#accept-the-invitation)
-- [What is Azure Active Directory?](../../active-directory/fundamentals/active-directory-whatis.md)
+- [What are the default user permissions in Microsoft Entra ID?](../../active-directory/external-identities/b2b-quickstart-add-guest-users-portal.md#accept-the-invitation)
+- [What is Microsoft Entra ID?](../../active-directory/fundamentals/active-directory-whatis.md)

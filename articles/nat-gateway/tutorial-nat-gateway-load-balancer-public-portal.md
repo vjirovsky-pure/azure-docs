@@ -4,10 +4,11 @@ titleSuffix: Azure NAT Gateway
 description: In this tutorial, learn how to integrate a NAT gateway with a public load Balancer using the Azure portal.
 author: asudbring
 ms.author: allensu
-ms.service: nat-gateway
+ms.service: azure-nat-gateway
 ms.topic: tutorial
-ms.date: 05/24/2022
-ms.custom: template-tutorial
+ms.date: 08/06/2025
+ms.custom: template-tutorial, linux-related-content
+# Customer intent: "As a cloud architect, I want to integrate a NAT gateway with a public load balancer, so that I can ensure secure and efficient outbound connectivity for my backend resources."
 ---
 
 # Tutorial: Integrate a NAT gateway with a public load balancer using the Azure portal
@@ -17,6 +18,8 @@ In this tutorial, you learn how to integrate a NAT gateway with a public load ba
 By default, an Azure Standard Load Balancer is secure. Outbound connectivity is explicitly defined by enabling outbound SNAT (Source Network Address Translation). SNAT is enabled in a load-balancing rule or outbound rules. 
 
 The NAT gateway integration replaces the need for outbound rules for backend pool outbound SNAT. 
+
+:::image type="content" source="./media/tutorial-nat-gateway-load-balancer-public-portal/resources-diagram.png" alt-text="Diagram of Azure resources created in tutorial." lightbox="./media/tutorial-nat-gateway-load-balancer-public-portal/resources-diagram.png":::
 
 In this tutorial, you learn how to:
 
@@ -28,7 +31,7 @@ In this tutorial, you learn how to:
 
 ## Prerequisites
 
-An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 
 ## Sign in to Azure
 
@@ -72,12 +75,12 @@ In this section, you test the NAT gateway. You first discover the public IP of t
 
     ```output
     azureuser@vm-1:~$ curl ifconfig.me
-    20.7.200.36
+    203.0.113.25
     ```
 
 1. Close the bastion connection to **vm-1**.
 
-[!INCLUDE [portal-clean-up.md](../../includes/portal-clean-up.md)]
+[!INCLUDE [portal-clean-up.md](~/reusable-content/ce-skilling/azure/includes/portal-clean-up.md)]
 
 ## Next steps
 

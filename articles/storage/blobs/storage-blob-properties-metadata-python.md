@@ -3,28 +3,42 @@ title: Manage properties and metadata for a blob with Python
 titleSuffix: Azure Storage
 description: Learn how to set and retrieve system properties and store custom metadata on blobs in your Azure Storage account using the Python client library.
 services: storage
-author: pauljewellmsft
+author: stevenmatthew
 
-ms.author: pauljewell
-ms.date: 08/02/2023
+ms.author: shaas
+ms.date: 08/05/2024
 ms.service: azure-blob-storage
 ms.topic: how-to
 ms.devlang: python
 ms.custom: devx-track-python, devguide-python
+# Customer intent: As a Python developer, I want to manage system properties and user-defined metadata for blobs in Azure Storage, so that I can enhance data organization and retrieval based on my application's specific needs.
 ---
 
 # Manage blob properties and metadata with Python
 
+[!INCLUDE [storage-dev-guide-selector-manage-properties-blob](../../../includes/storage-dev-guides/storage-dev-guide-selector-manage-properties-blob.md)]
+
 In addition to the data they contain, blobs support system properties and user-defined metadata. This article shows how to manage system properties and user-defined metadata using the [Azure Storage client library for Python](/python/api/overview/azure/storage).
 
-## Prerequisites
+To learn about managing properties and metadata using asynchronous APIs, see [Set blob metadata asynchronously](#set-blob-metadata-asynchronously).
 
-- This article assumes you already have a project set up to work with the Azure Blob Storage client library for Python. To learn about setting up your project, including package installation, adding `import` statements, and creating an authorized client object, see [Get started with Azure Blob Storage and Python](storage-blob-python-get-started.md).
-- The [authorization mechanism](../common/authorize-data-access.md) must have permissions to work with blob properties or metadata. To learn more, see the authorization guidance for the following REST API operations:
-    - [Set Blob Properties](/rest/api/storageservices/set-blob-properties#authorization)
-    - [Get Blob Properties](/rest/api/storageservices/get-blob-properties#authorization)
-    - [Set Blob Metadata](/rest/api/storageservices/set-blob-metadata#authorization)
-    - [Get Blob Metadata](/rest/api/storageservices/get-blob-metadata#authorization)
+[!INCLUDE [storage-dev-guide-prereqs-python](../../../includes/storage-dev-guides/storage-dev-guide-prereqs-python.md)]
+
+## Set up your environment
+
+[!INCLUDE [storage-dev-guide-project-setup-python](../../../includes/storage-dev-guides/storage-dev-guide-project-setup-python.md)]
+
+#### Add import statements
+
+Add the following `import` statements:
+
+:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags.py" id="Snippet_imports":::
+
+#### Authorization
+
+The authorization mechanism must have the necessary permissions to work with container properties or metadata. For authorization with Microsoft Entra ID (recommended), you need Azure RBAC built-in role **Storage Blob Data Reader** or higher for the *get* operations, and **Storage Blob Data Contributor** or higher for the *set* operations. To learn more, see the authorization guidance for [Set Blob Properties (REST API)](/rest/api/storageservices/set-blob-properties#authorization), [Get Blob Properties (REST API)](/rest/api/storageservices/get-blob-properties#authorization), [Set Blob Metadata (REST API)](/rest/api/storageservices/set-blob-metadata#authorization), or [Get Blob Metadata (REST API)](/rest/api/storageservices/get-blob-metadata#authorization).
+
+[!INCLUDE [storage-dev-guide-create-client-python](../../../includes/storage-dev-guides/storage-dev-guide-create-client-python.md)]
 
 ## About properties and metadata
 
@@ -49,7 +63,7 @@ Any properties not explicitly set are cleared. To preserve any existing properti
 
 The following code example sets the `content_type` and `content_language` system properties on a blob, while preserving the existing properties:
 
-:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob-devguide-blobs.py" id="Snippet_set_blob_properties":::
+:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags.py" id="Snippet_set_blob_properties":::
 
 To retrieve properties on a blob, use the following method:
 
@@ -57,7 +71,7 @@ To retrieve properties on a blob, use the following method:
 
 The following code example gets a blob's system properties and displays some of the values:
 
-:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob-devguide-blobs.py" id="Snippet_get_blob_properties":::
+:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags.py" id="Snippet_get_blob_properties":::
 
 ## Set and retrieve metadata
 
@@ -67,17 +81,59 @@ You can specify metadata as one or more name-value pairs on a blob or container 
 
 The following code example sets metadata on a blob:
 
-:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob-devguide-blobs.py" id="Snippet_set_blob_metadata":::
+:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags.py" id="Snippet_set_blob_metadata":::
 
 To retrieve metadata, call the [get_blob_properties](/python/api/azure-storage-blob/azure.storage.blob.blobclient#azure-storage-blob-blobclient-get-blob-properties) method on your blob to populate the metadata collection, then read the values, as shown in the example below. The `get_blob_properties` method retrieves blob properties and metadata by calling both the [Get Blob Properties](/rest/api/storageservices/get-blob-properties) operation and the [Get Blob Metadata](/rest/api/storageservices/get-blob-metadata) operation.
 
 The following code example reads metadata on a blob and prints each key/value pair: 
 
-:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob-devguide-blobs.py" id="Snippet_get_blob_metadata":::
+:::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags.py" id="Snippet_get_blob_metadata":::
+
+## Set blob metadata asynchronously
+
+The Azure Blob Storage client library for Python supports managing blob properties and metadata asynchronously. To learn more about project setup requirements, see [Asynchronous programming](storage-blob-python-get-started.md#asynchronous-programming).
+
+Follow these steps to set blob metadata using asynchronous APIs:
+
+1. Add the following import statements:
+
+    ```python
+    import asyncio
+
+    from azure.identity.aio import DefaultAzureCredential
+    from azure.storage.blob.aio import BlobServiceClient
+    ```
+
+1. Add code to run the program using `asyncio.run`. This function runs the passed coroutine, `main()` in our example, and manages the `asyncio` event loop. Coroutines are declared with the async/await syntax. In this example, the `main()` coroutine first creates the top level `BlobServiceClient` using `async with`, then calls the method that sets the blob metadata. Note that only the top level client needs to use `async with`, as other clients created from it share the same connection pool.
+
+    ```python
+    async def main():
+        sample = BlobSamples()
+
+        # TODO: Replace <storage-account-name> with your actual storage account name
+        account_url = "https://<storage-account-name>.blob.core.windows.net"
+        credential = DefaultAzureCredential()
+
+        async with BlobServiceClient(account_url, credential=credential) as blob_service_client:
+            await sample.set_metadata(blob_service_client, "sample-container")
+
+    if __name__ == '__main__':
+        asyncio.run(main())
+    ```
+
+1. Add code to set the blob metadata. The code is the same as the synchronous example, except that the method is declared with the `async` keyword and the `await` keyword is used when calling the `get_blob_properties` and `set_blob_metadata` methods.
+
+    :::code language="python" source="~/azure-storage-snippets/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags_async.py" id="Snippet_set_blob_metadata":::
+
+With this basic setup in place, you can implement other examples in this article as coroutines using async/await syntax.
 
 ## Resources
 
 To learn more about how to manage system properties and user-defined metadata using the Azure Blob Storage client library for Python, see the following resources.
+
+### Code samples
+
+- View [synchronous](https://github.com/Azure-Samples/AzureStorageSnippets/blob/master/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags.py) or [asynchronous](https://github.com/Azure-Samples/AzureStorageSnippets/blob/master/blobs/howto/python/blob-devguide-py/blob_devguide_blobs_properties_metadata_tags_async.py) code samples from this article (GitHub)
 
 ### REST API operations
 
@@ -88,8 +144,6 @@ The Azure SDK for Python contains libraries that build on top of the Azure REST 
 - [Set Blob Metadata](/rest/api/storageservices/set-blob-metadata) (REST API)
 - [Get Blob Metadata](/rest/api/storageservices/get-blob-metadata) (REST API)
 
-### Code samples
-
-- [View code samples from this article (GitHub)](https://github.com/Azure-Samples/AzureStorageSnippets/blob/master/blobs/howto/python/blob-devguide-py/blob-devguide-blobs.py)
-
 [!INCLUDE [storage-dev-guide-resources-python](../../../includes/storage-dev-guides/storage-dev-guide-resources-python.md)]
+
+[!INCLUDE [storage-dev-guide-next-steps-python](../../../includes/storage-dev-guides/storage-dev-guide-next-steps-python.md)]

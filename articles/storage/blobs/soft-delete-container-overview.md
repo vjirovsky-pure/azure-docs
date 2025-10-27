@@ -4,11 +4,12 @@ titleSuffix: Azure Storage
 description: Soft delete for containers protects your data so that you can more easily recover your data when it's erroneously modified or deleted by an application or by another storage account user.
 author: normesta
 
-ms.service: storage
-ms.topic: conceptual
+ms.service: azure-blob-storage
+ms.topic: concept-article
 ms.date: 06/22/2022
 ms.author: normesta
 ms.custom: references_regions
+# Customer intent: As a data administrator, I want to enable container soft delete for my storage accounts, so that I can recover deleted containers and their contents easily in case of accidental deletion.
 ---
 
 # Soft delete for containers
@@ -53,7 +54,7 @@ Container soft delete is available for the following types of storage accounts:
 - Block blob storage accounts
 - Blob storage accounts
 
-Storage accounts with a hierarchical namespace enabled for use with Azure Data Lake Storage Gen2 are also supported.
+Storage accounts with a hierarchical namespace enabled for use with Azure Data Lake Storage are also supported.
 
 Version 2019-12-12 or higher of the Azure Storage REST API supports container soft delete.
 

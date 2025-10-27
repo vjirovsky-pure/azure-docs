@@ -4,14 +4,23 @@ description: Learn how to discover AWS instances with Azure Migrate Discovery an
 author: Vikram1988
 ms.author: vibansa
 ms.manager: abhemraj
+ms.reviewer: v-uhabiba
 ms.topic: tutorial
-ms.date: 07/10/2023
+ms.date: 02/07/2025
 ms.service: azure-migrate
-ms.custom: mvc, subject-rbac-steps, engagement-fy23
-#Customer intent: As a server admin I want to discover my AWS instances.
+ms.collection:
+ - migration
+ - aws-to-azure
+ms.custom:
+  - mvc
+  - subject-rbac-steps
+  - engagement-fy25
+  - sfi-image-nochange
+  - sfi-ropc-nochange
+# Customer intent: "As a server administrator, I want to discover my AWS instances using a migration tool, so that I can assess and plan their migration to Azure efficiently."
 ---
 
-# Tutorial: Discover AWS instances with Azure Migrate: Discovery and assessment
+# Tutorial: Discover AWS instances with Azure Migrate
 
 As part of your migration journey to Azure, you discover your servers for assessment and migration.
 
@@ -37,7 +46,7 @@ Before you start this tutorial, check you have these prerequisites in place.
 
 **Requirement** | **Details**
 --- | ---
-**Appliance** | You need an EC2 VM on which to run the Azure Migrate appliance. The machine should have:<br/><br/> - Windows Server 2016 installed.<br/> _Running the appliance on a machine with Windows Server 2019 isn't supported_.<br/><br/> - 16-GB RAM, 8 vCPUs, around 80 GB of disk storage, and an external virtual switch.<br/><br/> - A static or dynamic IP address, with internet access, either directly or through a proxy.
+**Appliance** | You need an EC2 VM on which to run the Azure Migrate appliance. The machine should have:<br/><br/> - Windows Server 2019 or Windows Server 2022 installed. - 16-GB RAM, 8 vCPUs, around 80 GB of disk storage, and an external virtual switch.<br/><br/> - A static or dynamic IP address, with internet access, either directly or through a proxy.
 **Windows instances** | Allow inbound connections on WinRM port 5985 (HTTP) for discovery of Windows servers.
 **Linux instances** | Allow inbound connections on port 22 (TCP) for discovery of Linux servers.<br/><br/> The instances should use `bash` as the default shell, otherwise discovery will fail.
 
@@ -46,13 +55,13 @@ Before you start this tutorial, check you have these prerequisites in place.
 To create a project and register the Azure Migrate appliance, you need an account with:
 
 * Contributor or Owner permissions on an Azure subscription.
-* Permissions to register Azure Active Directory apps.
+* Permissions to register Microsoft Entra apps.
 
 If you just created a free Azure account, you're the owner of your subscription. If you're not the subscription owner, work with the owner to assign the permissions as follows:
 
 1. In the Azure portal, search for "subscriptions", and under **Services**, select **Subscriptions**.
 
-    ![Image of Search box to search for the Azure subscription.](./media/tutorial-discover-aws/search-subscription.png)
+    :::image type="content" source="./media/tutorial-discover-aws/search-subscription.png" alt-text="Screenshot of Search box to search for the Azure subscription.":::
 
 1. In the **Subscriptions** page, select the subscription in which you want to create a project.
 
@@ -60,7 +69,7 @@ If you just created a free Azure account, you're the owner of your subscription.
 
 1. Select **Add** > **Add role assignment** to open the **Add role assignment** page.
 
-1. Assign the following role. For detailed steps, see [Assign Azure roles using the Azure portal](../role-based-access-control/role-assignments-portal.md).
+1. Assign the following role. For detailed steps, see [Assign Azure roles using the Azure portal](/azure/role-based-access-control/role-assignments-portal).
 
     | Setting | Value |
     | --- | --- |
@@ -68,20 +77,20 @@ If you just created a free Azure account, you're the owner of your subscription.
     | Assign access to | User |
     | Members | azmigrateuser |
 
-    ![Add role assignment page in Azure portal.](../../includes/role-based-access-control/media/add-role-assignment-page.png)
+    :::image type="content" source="~/reusable-content/ce-skilling/azure/media/role-based-access-control/add-role-assignment-page.png" alt-text="Screenshot of Add role assignment page in Azure portal.":::
 
-1. To register the appliance, your Azure account needs **permissions to register Azure Active Directory apps.**
+1. To register the appliance, your Azure account needs **permissions to register Microsoft Entra apps.**
 
-1. In the portal, go to **Azure Active Directory** > **Users**.
+1. In the portal, go to **Microsoft Entra ID** > **Users**.
 
-1. Request the tenant or global admin to assign the [Application Developer role](../active-directory/roles/permissions-reference.md#application-developer) to the account to allow Azure AD app registration by users. [Learn more](../active-directory/roles/manage-roles-portal.md#assign-a-role).
+1. Request the tenant or global admin to assign the [Application Developer role](../active-directory/roles/permissions-reference.md#application-developer) to the account to allow Microsoft Entra app registration by users. [Learn more](../active-directory/roles/manage-roles-portal.md#assign-a-role).
 
 ## Prepare AWS instances
 
 Set up an account that the appliance can use to access AWS instances.
 
-- For **Windows servers**, set up a local user account on all the Windows servers that you want to include in the discovery. Add the user account to the following groups: - Remote Management Users - Performance Monitor Users - Performance Log users.
- - For **Linux servers**, you need a root account on the Linux servers that you want to discover. Refer to the instructions in the [support matrix](migrate-support-matrix-physical.md#permissions-for-linux-server) for an alternative.
+- For **Windows servers**, set up a local user account on all the Windows servers that you want to include in the discovery. Add the user account to the following groups: - Remote Management Users - Performance Monitor Users - Performance Log users. Refer the [instructions](tutorial-discover-physical.md#prepare-windows-server).
+ - For **Linux servers**, you need a root account on the Linux servers that you want to discover. Refer the [instructions](tutorial-discover-physical.md#prepare-linux-server).
 - Azure Migrate uses password authentication when discovering AWS instances. AWS instances don't support password authentication by default. Before you can discover instance, you need to enable password authentication.
     - For Windows servers, allow WinRM port 5985 (HTTP). This allows remote WMI calls.
     - For Linux servers:
@@ -103,17 +112,15 @@ Set up a new project.
 2. Under **Services**, select **Azure Migrate**.
 3. In **Get started**, select **Create project**.
 5. In **Create project**, select your Azure subscription and resource group. Create a resource group if you don't have one.
-6. In **Project Details**, specify the project name and the geography in which you want to create the project. Review supported geographies for [public](migrate-support-matrix.md#public-cloud) and [government clouds](migrate-support-matrix.md#azure-government).
-
-   ![Screenshot for project name and region.](./media/tutorial-discover-aws/new-project.png)
+6. In **Project Details**, specify the project name and the geography in which you want to create the project. Review supported geographies for [public](supported-geographies.md#public-cloud) and [government clouds](supported-geographies.md#azure-government).
 
 7. Select **Create**.
 8. Wait a few minutes for the project to deploy. The **Azure Migrate: Discovery and assessment** tool is added by default to the new project.
 
-![Page showing Server Assessment tool added by default.](./media/tutorial-discover-aws/added-tool.png)
+:::image type="content" source="./media/tutorial-discover-aws/added-tool.png" alt-text="Screenshot of Discovery and assessment tool added by default.":::
 
 > [!NOTE]
-> If you have already created a project, you can use the same project to register additional appliances to discover and assess more no of servers.[Learn more](create-manage-projects.md#find-a-project)
+> If you have already created a project, you can use the same project to register additional appliances to discover and assess more no of servers. [Learn more](create-manage-projects.md#find-a-project).
 
 ## Set up the appliance
 
@@ -159,13 +166,13 @@ Check that the zipped file is secure, before you deploy it.
 
         **Scenario** | **Download*** | **Hash value**
         --- | --- | ---
-        Physical (85 MB) | [Latest version](https://go.microsoft.com/fwlink/?linkid=2191847) | 967FC3B8A5C467C303D86C8889EB4E0D4A8A7798865CBFBDF23E425D4EE425CA
+        Physical (85 MB) | [Latest version](https://go.microsoft.com/fwlink/?linkid=2191847) | [!INCLUDE [security-hash-value.md](includes/security-hash-value.md)]
 
     - For Azure Government:
 
         **Scenario** | **Download*** | **Hash value**
         --- | --- | ---
-        Physical (85 MB) | [Latest version](https://go.microsoft.com/fwlink/?linkid=2191847) | 967FC3B8A5C467C303D86C8889EB4E0D4A8A7798865CBFBDF23E425D4EE425CA 
+        Physical (85 MB) | [Latest version](https://go.microsoft.com/fwlink/?linkid=2191847) | [!INCLUDE [security-hash-value.md](includes/security-hash-value.md)]
  
 
 ### 3. Run the Azure Migrate installer script
@@ -233,7 +240,9 @@ In the configuration manager, select **Set up prerequisites**, and then complete
     3. To register the appliance, you need to select **Login**. In **Continue with Azure Login**, select **Copy code & Login** to copy the device code (you must have a device code to authenticate with Azure) and open an Azure Login prompt in a new browser tab. Make sure you've disabled the pop-up blocker in the browser to see the prompt.
     
         :::image type="content" source="./media/tutorial-discover-vmware/device-code.png" alt-text="Screenshot that shows where to copy the device code and sign in.":::
+
     4. In a new tab in your browser, paste the device code and sign in by using your Azure username and password. Signing in with a PIN isn't supported.
+
 	    > [!NOTE]
         > If you close the sign in tab accidentally without signing in, refresh the browser tab of the appliance configuration manager to display the device code and Copy code & Login button.
 	5. After you successfully sign in, return to the browser tab that displays the appliance configuration manager. If the Azure user account that you used to sign in has the required permissions for the Azure resources that were created during key generation, appliance registration starts.
@@ -256,7 +265,7 @@ Now, connect from the appliance to the physical servers to be discovered, and st
     * Currently Azure Migrate does not support SSH private key file generated by PuTTY.
     * Azure Migrate supports OpenSSH format of the SSH private key file as shown below:
     
-    ![Image of SSH private key supported format.](./media/tutorial-discover-physical/key-format.png)
+    :::image type="content" source="./media/tutorial-discover-physical/key-format.png" alt-text="Screenshot of SSH private key supported format.":::
 
 
 1. If you want to add multiple credentials at once, select **Add more** to save and add more credentials. Multiple credentials are supported for physical servers discovery.
@@ -290,8 +299,8 @@ Select **Start discovery**, to kick off discovery of the successfully validated 
 
 * It takes approximately 2 minutes to complete discovery of 100 servers and their metadata to appear in the Azure portal.
 * [Software inventory](how-to-discover-applications.md) (discovery of installed applications) is automatically initiated when the discovery of servers is finished.
-* [Software inventory](how-to-discover-applications.md) identifies the SQL Server instances that are running on the servers. Using the information it collects, the appliance attempts to connect to the SQL Server instances through the Windows authentication credentials or the SQL Server authentication credentials that are provided on the appliance. Then, it gathers data on SQL Server databases and their properties. The SQL Server discovery is performed once every 24 hours.
-* Appliance can connect to only those SQL Server instances to which it has network line of sight, whereas software inventory by itself may not need network line of sight.
+* [Software inventory](how-to-discover-applications.md) identifies the SQL Server instances that are running on the servers. Using the information it collects, the appliance attempts to connect to the SQL Server instances through the Windows authentication credentials or the SQL Server authentication credentials that are provided on the appliance. Then, it gathers data on SQL Server databases and their properties. The SQL Server discovery is performed once every 24 hours. To discover SQL Server instances and databases, the Windows or SQL Server account must be a member of the sysadmin server role or have [these permissions](./migrate-support-matrix-vmware.md#configure-the-custom-login-for-sql-server-discovery) for each SQL Server instance.
+* Appliance can connect to only those SQL Server instances to which it has network line of sight, whereas software inventory by itself might not need network line of sight.
 * The time taken for discovery of installed applications depends on the number of discovered servers. For 500 servers, it takes approximately one hour for the discovered inventory to appear in the Azure Migrate project in the portal.
 * During software inventory, the added server credentials are iterated against servers and validated for agentless dependency analysis. When the discovery of servers is finished, in the portal, you can enable agentless dependency analysis on the servers. Only the servers on which validation succeeds can be selected to enable [agentless dependency analysis](how-to-create-group-machine-dependencies-agentless.md).
 * SQL Server instances and databases data begin to appear in the portal within 24 hours after you start discovery.
@@ -307,5 +316,5 @@ After discovery finishes, you can verify that the servers appear in the portal.
 
 ## Next steps
 
-- [Assess physical servers](tutorial-migrate-aws-virtual-machines.md) for migration to Azure VMs.
+- [Assess AWS VMs](tutorial-migrate-aws-virtual-machines.md) for migration to Azure.
 - [Review the data](discovered-metadata.md#collected-data-for-physical-servers) that the appliance collects during discovery.

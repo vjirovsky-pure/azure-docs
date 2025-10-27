@@ -3,9 +3,14 @@ title: Azure Blob storage trigger and bindings for Azure Functions
 description: Learn to use the Azure Blob storage trigger and bindings in Azure Functions.
 
 ms.topic: reference
-ms.custom: devx-track-extended-java, devx-track-js, devx-track-python
+ms.custom:
+  - devx-track-extended-java
+  - devx-track-js
+  - devx-track-python
+  - devx-track-ts
+  - build-2025
 ms.date: 11/11/2022
-zone_pivot_groups: programming-languages-set-functions-lang-workers
+zone_pivot_groups: programming-languages-set-functions
 ---
 
 # Azure Blob storage bindings for Azure Functions overview
@@ -24,15 +29,17 @@ Azure Functions integrates with [Azure Storage](../storage/index.yml) via [trigg
 
 The extension NuGet package you install depends on the C# mode you're using in your function app: 
 
-# [In-process](#tab/in-process)
+# [Isolated worker model](#tab/isolated-process)
+
+Functions execute in an isolated C# worker process. To learn more, see [Guide for running C# Azure Functions in an isolated worker process](dotnet-isolated-process-guide.md).
+
+# [In-process model](#tab/in-process)
+
+[!INCLUDE [functions-in-process-model-retirement-note](../../includes/functions-in-process-model-retirement-note.md)]
 
 Functions execute in the same process as the Functions host. To learn more, see [Develop C# class library functions using Azure Functions](functions-dotnet-class-library.md).
 
 In a variation of this model, Functions can be run using [C# scripting], which is supported primarily for C# portal editing. To update existing binding extensions for C# script apps running in the portal without having to republish your function app, see [Update your extensions].
-
-# [Isolated process](#tab/isolated-process)
-
-Functions execute in an isolated C# worker process. To learn more, see [Guide for running C# Azure Functions in an isolated worker process](dotnet-isolated-process-guide.md).
 
 ---
 
@@ -64,6 +71,8 @@ Working with the trigger and bindings requires that you reference the appropriat
 
 # [Functions 1.x](#tab/functionsv1/in-process)
 
+[!INCLUDE [functions-runtime-1x-retirement-note](../../includes/functions-runtime-1x-retirement-note.md)]
+
 Functions 1.x apps automatically have a reference the [Microsoft.Azure.WebJobs](https://www.nuget.org/packages/Microsoft.Azure.WebJobs) NuGet package, version 2.x.
 
 [!INCLUDE [functions-storage-sdk-version](../../includes/functions-storage-sdk-version.md)]
@@ -74,15 +83,26 @@ Functions 1.x apps automatically have a reference the [Microsoft.Azure.WebJobs](
 
 This version allows you to bind to types from [Azure.Storage.Blobs](/dotnet/api/azure.storage.blobs). Learn more about how these new types are different from `WindowsAzure.Storage` and `Microsoft.Azure.Storage` and how to migrate to them from the [Azure.Storage.Blobs Migration Guide](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/AzureStorageNetMigrationV12.md).
 
-Add the extension to your project by installing the [Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs NuGet package], version 5.x.
+This version supports configuration of triggers and bindings through [.NET Aspire integration](./dotnet-aspire-integration.md#connection-configuration-with-aspire).
+
+Add the extension to your project by installing the [Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs NuGet package], version 5.x or later.
 
 Using the .NET CLI:
 
 ```dotnetcli
-dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs --version 5.0.0
+dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs
 ``` 
 
 [!INCLUDE [functions-bindings-storage-extension-v5-isolated-worker-tables-note](../../includes/functions-bindings-storage-extension-v5-isolated-worker-tables-note.md)]
+
+If you're writing your application using F#, you must also configure this extension as part of the app's [startup configuration](./dotnet-isolated-process-guide.md#start-up-and-configuration). In the call to `ConfigureFunctionsWorkerDefaults()` or `ConfigureFunctionsWebApplication()`, add a delegate that takes an `IFunctionsWorkerApplication` parameter. Then within the body of that delegate, call `ConfigureBlobStorageExtension()` on the object:
+
+```fsharp
+let hostBuilder = new HostBuilder()
+hostBuilder.ConfigureFunctionsWorkerDefaults(fun (context: HostBuilderContext) (appBuilder: IFunctionsWorkerApplicationBuilder) ->
+    appBuilder.ConfigureBlobStorageExtension() |> ignore
+) |> ignore
+```
 
 # [Functions 2.x and higher](#tab/functionsv2/isolated-process)
 
@@ -96,31 +116,9 @@ Functions version 1.x doesn't support isolated worker process.
 
 ::: zone-end  
 
-::: zone pivot="programming-language-javascript,programming-language-python,programming-language-java,programming-language-powershell"  
+::: zone pivot="programming-language-javascript,programming-language-typescript,programming-language-python,programming-language-java,programming-language-powershell"  
 
-## Install bundle
-
-The Blob storage binding is part of an [extension bundle], which is specified in your host.json project file. You may need to modify this bundle to change the version of the binding, or if bundles aren't already installed. To learn more, see [extension bundle].
-
-# [Bundle v3.x](#tab/extensionv3)
-
-[!INCLUDE [functions-bindings-supports-identity-connections-note](../../includes/functions-bindings-supports-identity-connections-note.md)]
-
-You can add this version of the extension from the extension bundle v3 by adding or replacing the following code in your `host.json` file:
-
-[!INCLUDE [functions-extension-bundles-json-v3](../../includes/functions-extension-bundles-json-v3.md)]
-
-To learn more, see [Update your extensions].
-
-# [Bundle v2.x](#tab/extensionv2)
-
-You can install this version of the extension in your function app by registering the [extension bundle], version 2.x.
-
-# [Functions 1.x](#tab/functions1)
-
-Functions 1.x apps automatically have a reference to the extension.
-
----
+[!INCLUDE [functions-install-extension-bundle](../../includes/functions-install-extension-bundle.md)]
 
 ::: zone-end
 
@@ -130,14 +128,14 @@ Functions 1.x apps automatically have a reference to the extension.
 
 The binding types supported for .NET depend on both the extension version and C# execution mode, which can be one of the following: 
    
-# [In-process](#tab/in-process)
-
-An in-process class library is a compiled C# function runs in the same process as the Functions runtime.
- 
-# [Isolated process](#tab/isolated-process)
+# [Isolated worker model](#tab/isolated-process)
 
 An isolated worker process class library compiled C# function runs in a process isolated from the runtime.  
    
+# [In-process model](#tab/in-process)
+
+An in-process class library is a compiled C# function runs in the same process as the Functions runtime.
+ 
 ---
 
 Choose a version to see binding type details for the mode and version. 
@@ -225,6 +223,28 @@ Functions version 1.x doesn't support isolated worker process. To use the isolat
 
 :::zone-end
 
+::: zone pivot="programming-language-python"
+
+## SDK Binding Types
+
+SDK Types for Azure Storage Blob are generally available! Follow the [Python SDK Bindings for Blob Sample](https://github.com/Azure-Samples/azure-functions-blob-sdk-bindings-python) to get started with SDK Types for Blob in Python. 
+> [!IMPORTANT]  
+> Using SDK type bindings requires the [Python v2 programming model](functions-reference-python.md?pivots=python-mode-decorators#sdk-type-bindings).
+
+---
+| Binding      | Parameter types                                                         | Samples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|--------------|-------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Blob trigger | [BlobClient],<br/>[ContainerClient],<br/>[StorageStreamDownloader]<br/> | [`BlobClient`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-blob/samples/blob_samples_blobclient/function_app.py),<br/>[`ContainerClient`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-blob/samples/blob_samples_containerclient/function_app.py),<br/>[`StorageStreamDownloader`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-blob/samples/blob_samples_storagestreamdownloader/function_app.py) |
+| Blob input   | [BlobClient],<br/>[ContainerClient],<br/>[StorageStreamDownloader]<br/> | [`BlobClient`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-blob/samples/blob_samples_blobclient/function_app.py),<br/>[`ContainerClient`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-blob/samples/blob_samples_containerclient/function_app.py),<br/>[`StorageStreamDownloader`](https://github.com/Azure/azure-functions-python-extensions/blob/dev/azurefunctions-extensions-bindings-blob/samples/blob_samples_storagestreamdownloader/function_app.py) |
+
+---
+
+[BlobClient]: /python/api/azure-storage-blob/azure.storage.blob.blobclient
+[ContainerClient]: /python/api/azure-storage-blob/azure.storage.blob.containerclient
+[StorageStreamDownloader]: /python/api/azure-storage-blob/azure.storage.blob.storagestreamdownloader
+
+:::zone-end
+
 ## host.json settings
 
 This section describes the function app configuration settings available for functions that use this binding. These settings only apply when using extension version 5.0.0 and higher. The example host.json file below contains only the version 2.x+ settings for this binding. For more information about function app configuration settings in versions 2.x and later versions, see [host.json reference for Azure Functions](functions-host-json.md).
@@ -237,7 +257,8 @@ This section describes the function app configuration settings available for fun
     "version": "2.0",
     "extensions": {
         "blobs": {
-            "maxDegreeOfParallelism": 4
+            "maxDegreeOfParallelism": 4,
+            "poisonBlobThreshold": 1
         }
     }
 }
@@ -246,6 +267,7 @@ This section describes the function app configuration settings available for fun
 |Property  |Default | Description |
 |---------|---------|---------|
 |maxDegreeOfParallelism|8 * (the number of available cores)|The integer number of concurrent invocations allowed for all blob-triggered functions in a given function app. The minimum allowed value is 1.|
+|poisonBlobThreshold|5|The integer number of times to try processing a message before moving it to the poison queue. The minimum allowed value is 1.|
 
 ## Next steps
 
@@ -254,7 +276,7 @@ This section describes the function app configuration settings available for fun
 - [Write blob storage data from a function](./functions-bindings-storage-blob-output.md)
 
 [core tools]: ./functions-run-local.md
-[extension bundle]: ./functions-bindings-register.md#extension-bundles
+[extension bundle]: ./extension-bundles.md
 [Microsoft.Azure.WebJobs.Extensions.Storage.Blobs NuGet package]: https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.Storage.Blobs
 [Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs NuGet package]: https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs
 [Microsoft.Azure.WebJobs.Extensions.Storage NuGet package, version 4.x]: https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.Storage/4.0.5

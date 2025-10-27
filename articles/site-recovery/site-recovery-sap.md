@@ -1,13 +1,14 @@
 ---
 title: Set up SAP NetWeaver disaster recovery with Azure Site Recovery 
 description: Learn how to set up disaster recovery for SAP NetWeaver with Azure Site Recovery.
-ms.author: ankitadutta
-author: ankitaduttaMSFT
-manager: rochakm
-ms.service: site-recovery
+ms.author: v-gajeronika
+author: Jeronika-MS
+ms.service: azure-site-recovery
 ms.topic: how-to
-ms.date: 11/27/2018
+ms.date: 08/19/2025
+ms.custom: sfi-image-nochange
 
+# Customer intent: "As an IT administrator managing SAP NetWeaver deployments, I want to set up a disaster recovery solution using cloud-based replication, so that I can ensure business continuity and minimize downtime during incidents."
 ---
 # Set up disaster recovery for a multi-tier SAP NetWeaver app deployment
 
@@ -47,7 +48,7 @@ In this article, we use an **Azure-to-Azure** disaster recovery scenario. The sc
 ### Required foundation services
 In the scenario we discuss in this article, the following foundation services are deployed:
 * Azure ExpressRoute or Azure VPN Gateway
-* At least one Azure Active Directory domain controller and DNS server, running in Azure
+* At least one Microsoft Entra domain controller and DNS server, running in Azure
 
 We recommend that you establish this infrastructure before you deploy Site Recovery.
 
@@ -135,7 +136,7 @@ For your applications to function correctly, you might need to do some operation
 
 You can deploy the most used Site Recovery scripts into your Azure Automation account by selecting **Deploy to Azure**. When you use any published script, follow the guidance in the script.
 
-[![Deploy to Azure](https://azurecomcdn.azureedge.net/mediahandler/acomblog/media/Default/blog/c4803408-340e-49e3-9a1f-0ed3f689813d.png)](https://aka.ms/asr-automationrunbooks-deploy)
+[Deploy to Azure](https://aka.ms/asr-automationrunbooks-deploy)
 
 1. Add a pre-action script to Group 1 to fail over the SQL Server availability group. Use the ASR-SQL-FailoverAG script published in the sample scripts. Follow the guidance in the script and make the required changes in the script appropriately.
 1. Add a post-action script to attach a load balancer onto the failed-over virtual machines of the Web tier (Group 1). Use the ASR-AddSingleLoadBalancer script published in the sample scripts. Follow the guidance in the script and make the required changes in the script as needed.

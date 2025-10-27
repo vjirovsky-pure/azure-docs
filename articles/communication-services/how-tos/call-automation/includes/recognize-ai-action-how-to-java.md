@@ -12,7 +12,7 @@ ms.author: kpunjabi
 ---
 
 ## Prerequisites
-- Azure account with an active subscription, for details see [Create an account for free.](https://azure.microsoft.com/free/)
+- Azure account with an active subscription, for details see [Create an account for free.](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 - Azure Communication Services resource. See [Create an Azure Communication Services resource](../../../quickstarts/create-communication-resource.md?tabs=windows&pivots=platform-azp)
 - Create a new web service application using the [Call Automation SDK](../../../quickstarts/call-automation/callflows-for-customer-interactions.md).
 - [Java Development Kit](/java/azure/jdk/?preserve-view=true&view=azure-java-stable) version 8 or above.
@@ -27,7 +27,7 @@ The following parameters are available to customize the Recognize function:
 | Parameter | Type|Default (if not specified) | Description | Required or Optional |
 | ------- |--| ------------------------ | --------- | ------------------ |
 | Prompt <br/><br/> *(for details on Play action, refer to [this how-to guide](../play-ai-action.md))* | FileSource, TextSource | Not set |This is the message you wish to play before recognizing input. | Optional |
-| InterToneTimeout | TimeSpan | 2 seconds <br/><br/>**Min:** 1 second <br/>**Max:** 60 seconds | Limit in seconds that ACS waits for the caller to press another digit (inter-digit timeout). | Optional |
+| InterToneTimeout | TimeSpan | 2 seconds <br/><br/>**Min:** 1 second <br/>**Max:** 60 seconds | Limit in seconds that Azure Communication Services waits for the caller to press another digit (inter-digit timeout). | Optional |
 | InitialSegmentationSilenceTimeoutInSeconds | Integer | 0.5 seconds | How long recognize action waits for input before considering it a timeout. [Read more here](../../../../../articles/cognitive-services/Speech-Service/how-to-recognize-speech.md). | Optional |
 | RecognizeInputsType | Enum | dtmf | Type of input to be recognized. Options are dtmf, choices, speech and speechordtmf. | Required |
 | InitialSilenceTimeout | TimeSpan | 5 seconds<br/><br/>**Min:** 0 seconds <br/>**Max:** 300 seconds (DTMF) <br/>**Max:** 20 seconds (Choices) <br/>**Max:** 20 seconds (Speech)| Initial silence timeout adjusts how much nonspeech audio is allowed before a phrase before the recognition attempt ends in a "no match" result. [Read more here](../../../../../articles/cognitive-services/Speech-Service/how-to-recognize-speech.md). | Optional |
@@ -199,7 +199,7 @@ if (callEvent instanceof RecognizeFailed) {
                 if(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT.equals(recognizeFailed.getReasonCode()))
                 {
                     PlaySource playSource = new TextSource()
-                        .setText("No input recieved and recognition timed out, Disconnecting the call. Thank you!")
+                        .setText("No input received and recognition timed out, Disconnecting the call. Thank you!")
                         .setPlaySourceId("RecognitionTimedOut");
                     Response<?> response = callMedia.playToAllWithResponse(playSource, new PlayOptions(), null);
                 }
@@ -209,7 +209,7 @@ if (callEvent instanceof RecognizeFailed) {
                 {
                     PlaySource playSource = new TextSource()
                         .setText("Invalid speech phrase or tone detected, Disconnecting the call. Thank you!")
-                        .setPlaySourceId("InavlidInput");
+                        .setPlaySourceId("invalidInput");
                     Response<?> response = callMedia.playToAllWithResponse(playSource, new PlayOptions(), null);
                 }
             }
@@ -219,7 +219,7 @@ if (callEvent instanceof RecognizeFailed) {
 ``` java
 if (callEvent instanceof RecognizeCanceled) { 
 
-            //Take action on Canceled notification, like terinating a call
+            //Take action on Canceled notification, like terminating a call
             callConnection.hangUp(true);
          }
 ```

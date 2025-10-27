@@ -1,21 +1,17 @@
 ---
 title: Public endpoint connectivity for Azure VMs&Standard ILB in SAP HA scenarios
 description: Public endpoint connectivity for Virtual Machines using Azure Standard Load Balancer in SAP high-availability scenarios
-services: virtual-machines-windows,virtual-network,storage, 
-documentationcenter: saponazure
+services: virtual-machines-windows,virtual-network,storage,
 author: rdeltcheva
 manager: juergent
-editor: ''
-tags: azure-resource-manager
-keywords: ''
 ms.service: sap-on-azure
 ms.subservice: sap-vm-workloads
 ms.topic: article
 ms.tgt_pltfrm: vm-windows
-ms.workload: infrastructure-services
 ms.date: 3/9/2023
 ms.author: radeltch
-
+ms.custom: sfi-image-nochange
+# Customer intent: As a system administrator managing SAP high-availability solutions, I want to configure outbound connectivity options for Azure VMs without exposing them to public endpoints, so that I can ensure compliance with security requirements while maintaining necessary Azure service accessibility.
 ---
 
 # Public endpoint connectivity for Virtual Machines using Azure Standard Load Balancer in SAP high-availability scenarios

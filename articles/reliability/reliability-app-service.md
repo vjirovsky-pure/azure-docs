@@ -1,254 +1,151 @@
 ---
 title: Reliability in Azure App Service
-description: Find out about reliability in Azure App Service
+description: Learn how to improve reliability in Azure App Service by using zone redundancy, multi-region deployments, and best practices for scaling and fault tolerance.
 author: anaharris-ms 
 ms.author: anaharris
-ms.topic: overview
+ms.topic: reliability-article
 ms.custom: subject-reliability
-ms.service: app-service
-ms.date: 07/26/2023
+ms.service: azure-app-service
+ms.date: 07/17/2025
+
+#Customer intent: As an engineer responsible for business continuity, I want to understand the details of how Azure App Service works from a reliability perspective and plan resiliency strategies in alignment with the exact processes that Azure services follow during different kinds of situations.
 ---
 
 # Reliability in Azure App Service
 
-This article describes reliability support in [Azure App Service](../app-service/overview.md), and covers intra-regional resiliency with [availability zones](#availability-zone-support). For a more detailed overview of reliability in Azure, see [Azure reliability](/azure/architecture/framework/resiliency/overview).
+This article describes reliability support in [Azure App Service](../app-service/overview.md). It covers intra-regional resiliency via [availability zones](#availability-zone-support) and [multiple-region deployments](#multiple-region-support). App Service is an HTTP-based service for hosting web applications, REST APIs, and mobile back ends. App Service integrates with Microsoft Azure to provide security, load balancing, autoscaling, and automated management for applications. 
 
-Azure App Service is an HTTP-based service for hosting web applications, REST APIs, and mobile back ends; and adds the power of Microsoft Azure to your application, such as:
+For more information about reliability support in App Service Environment, see [Reliability in App Service Environment](./reliability-app-service-environment.md).
 
-- Security
-- Load balancing
-- Autoscaling
-- Automated management
+[!INCLUDE [Shared responsibility description](includes/reliability-shared-responsibility-include.md)]
 
-To explore how Azure App Service can bolster the resiliency of your application workload, see [Why use App Service?](../app-service/overview.md#why-use-app-service)
+## Production deployment recommendations
 
-## Reliability recommendations
+To learn about how to deploy App Service to support your solution's reliability requirements, and how reliability affects other aspects of your architecture, see [Architecture best practices for App Service (Web Apps) in the Azure Well-Architected Framework](/azure/well-architected/service-guides/app-service-web-apps).
 
-[!INCLUDE [Reliability recommendations](includes/reliability-recommendations-include.md)]
- 
-### Reliability recommendations summary
+## Reliability architecture overview
 
-| Category | Priority |Recommendation |  
-|---------------|--------|---|
-| [**High Availability**](#high-availability) |:::image type="icon" source="media/icon-recommendation-high.svg":::| [ASP-1 - Deploy zone-redundant App Service plans](#-asp-1---deploy-zone-redundant-app-service-plans) |
-|[**Resiliency**](#resiliency)|:::image type="icon" source="media/icon-recommendation-high.svg"::: |[ASP-2 -Use an App Service plan that supports availability zones](#-asp-2--use-an-app-service-plan-that-supports-availability-zones) | 
-||:::image type="icon" source="media/icon-recommendation-high.svg"::: |[ASP-4 - Create separate App Service plans for production and test](#-asp-4---create-separate-app-service-plans-for-production-and-test) | 
-|[**Scalability**](#scalability)|:::image type="icon" source="media/icon-recommendation-medium.svg"::: |[ASP-3 - Avoid frequently scaling up or down](#-asp-3---avoid-frequently-scaling-up-or-down) | 
-||:::image type="icon" source="media/icon-recommendation-medium.svg"::: |[ASP-5 - Enable Autoscale/Automatic scaling to ensure adequate resources are available to service requests](#-asp-5---enable-autoscaleautomatic-scaling-to-ensure-that-adequate-resources-are-available-to-service-requests) | 
+When you create an App Service web app, you specify the [App Service plan](../app-service/overview-hosting-plans.md) that runs the app.
 
+[!INCLUDE [App Service reliability architecture - plan description](includes/app-service/reliability-architecture-plans.md)]
 
-### High availability
- 
-#### :::image type="icon" source="media/icon-recommendation-high.svg"::: **ASP-1 - Deploy zone-redundant App Service plans** 
-To enhance the resiliency and reliability of your business-critical workloads, it's recommended that you deploy your new App Service Plans with zone-redundancy. Follow the steps to [redeploy to availability zone support](#create-a-resource-with-availability-zone-enabled), configure your pipelines to redeploy your WebApp on the new App Services Plan, and then use a [Blue-Green deployment](/azure/spring-apps/concepts-blue-green-deployment-strategies) approach to failover to the new site.
+[!INCLUDE [App Service reliability architecture overview](includes/app-service/reliability-architecture-overview.md)]
 
-By distributing your applications across multiple availability zones, you can ensure their continued operation even in the event of a datacenter-level failure. For more information on availability zone support in Azure App Service, see [Availability zone support](#availability-zone-support).
+## Transient faults
 
-# [Azure Resource Graph](#tab/graph)
+[!INCLUDE [Transient fault description](includes/reliability-transient-fault-description-include.md)]
 
-:::code language="kusto" source="~/azure-proactive-resiliency-library/docs/content/services/web/app service plan/code/asp-1/asp-1.kql":::
-
-----
-
-### Resiliency
- 
-#### :::image type="icon" source="media/icon-recommendation-high.svg"::: **ASP-2 -Use an App Service plan that supports availability zones**
-
-Availability zone support is only available on certain App Service plans. To see which plan you need in order to use availability zones, see [Availability zone prerequisites](#prerequisites).
-
-# [Azure Resource Graph](#tab/graph)
-
-:::code language="kusto" source="~/azure-proactive-resiliency-library/docs/content/services/web/app service plan/code/asp-2/asp-2.kql":::
-
-----
-
-#### :::image type="icon" source="media/icon-recommendation-high.svg"::: **ASP-4 - Create separate App Service plans for production and test** 
-
-To enhance the resiliency and reliability of your business-critical workloads, you should migrate your existing App Service plans and App Service Environments to availability zone support. By distributing your applications across multiple availability zones, you can ensure their continued operation even in the event of a datacenter-level failure. For more information on availability zone support in Azure App Service, see [Availability zone support](#availability-zone-support).
-
-
-### Scalability
- 
-#### :::image type="icon" source="media/icon-recommendation-medium.svg"::: **ASP-3 - Avoid frequently scaling up or down** 
-
-It's recommended that you avoid frequently scaling up or down your Azure App Service instances. Instead, choose an appropriate tier and instance size that can handle your typical workload, and scale out the instances to accommodate changes in traffic volume. Scaling up or down can potentially trigger an application restart, which may result in service disruptions.
-
-
-#### :::image type="icon" source="media/icon-recommendation-medium.svg"::: **ASP-5 - Enable Autoscale/Automatic scaling to ensure that adequate resources are available to service requests** 
-
-It's recommended that you enable autoscale/automatic scaling for your Azure App Service to ensure that sufficient resources are available to handle incoming requests. Autoscaling is rule based scaling, while automatic scaling performs automatic in and out scaling based on HTTP traffic. For more information see, [automatic scaling in Azure App Service](/azure/app-service/manage-automatic-scaling) or [get started with autoscale in Azure](/azure/azure-monitor/autoscale/autoscale-get-started).
-
-# [Azure Resource Graph](#tab/graph)
-
-:::code language="kusto" source="~/azure-proactive-resiliency-library/docs/content/services/web/app service plan/code/asp-5/asp-5.kql":::
-
-----
+[!INCLUDE [Transient fault handling app service description](includes/app-service/reliability-transient-fault-handling-include.md)]
 
 ## Availability zone support
 
-[!INCLUDE [Availability zone description](includes/reliability-availability-zone-description-include.md)]
+[!INCLUDE [Availability zone support description](includes/reliability-availability-zone-description-include.md)]
 
-Azure App Service can be deployed across [availability zones (AZ)](../reliability/availability-zones-overview.md) to help you achieve resiliency and reliability for your business-critical workloads. This architecture is also known as zone redundancy.
+For **Premium v2 to v4 tiers**, you can configure App Service as *zone redundant*, which means that your resources are distributed across multiple availability zones. Distribution across multiple zones helps your production workloads achieve resiliency and reliability. When you configure zone redundancy on App Service plans, all apps that use the plan become zone redundant.
 
-When you configure to be zone redundant, the platform automatically spreads the instances of the Azure App Service plan across three zones in the selected region. This means that the minimum App Service Plan instance count will always be three. If you specify a capacity larger than three, and the number of instances is divisible by three, the instances are spread evenly. Otherwise, instance counts beyond 3*N are spread across the remaining one or two zones.
+### Region support
 
-Availability zone support is a property of the App Service plan. App Service plans can be created on managed multi-tenant environment or dedicated environment using App Service Environment. To Learn more regarding App Service Environment, see [App Service Environment v3 overview](../app-service/environment/overview.md).
+- For App Service **Premium v2 and v3** plans, zone redundancy is supported in [any region that supports availability zones](./regions-list.md).
 
-For App Services that aren't configured to be zone redundant, VM instances are not zone resilient and can experience downtime during an outage in any zone in that region.
+- To enable zone redundancy for **App Service Premium v4** plans:
 
-For information on enterprise deployment architecture, see [High availability enterprise deployment using App Service Environment](/azure/architecture/web-apps/app-service-environment/architectures/ase-high-availability-deployment).
-
-### Prerequisites
-
-The current requirements/limitations for enabling availability zones are:
-
-- Both Windows and Linux are supported.
-
-- Your App Services plan must be one of the following plans that support availability zones:
-
-    - In a multi-tenant environment using App Service Premium v2 or Premium v3 plans.
-    - In a dedicated environment using App Service Environment v3, which is used with Isolated v2 App Service plans.
-
-- For dedicated environments, your App Service Environment must be v3. 
-
-    >[!IMPORTANT]
-    >[App Service Environment v2 and v1 will be retired on 31 August 2024](https://azure.microsoft.com/updates/app-service-environment-v1-and-v2-retirement-announcement/). App Service Environment v3 is easier to use and runs on more powerful infrastructure. To learn more about App Service Environment v3, see [App Service Environment overview](../app-service/environment/overview.md). If you're currently using App Service Environment v2 or v1 and you want to upgrade to v3, please follow the [steps in this article](../app-service/environment/migration-alternatives.md) to migrate to the new version.
-     
-- Minimum instance count of three zones is enforced. The platform will enforce this minimum count behind the scenes if you specify an instance count fewer than three.
-
-- Availability zones can only be specified when creating a **new** App Service plan. A pre-existing App Service plan can't be converted to use availability zones.
-    
-- The following regions support Azure App Services running on multi-tenant environments:
-
-    - Australia East
-    - Brazil South
-    - Canada Central
-    - Central India
-    - Central US
-    - East Asia
-    - East US
-    - East US 2
-    - France Central
-    - Germany West Central
-    - Japan East
-    - Korea Central
-    - North Europe
-    - Norway East
-    - Poland Central
-    - Qatar Central
-    - South Africa North
-    - South Central US
-    - Southeast Asia
-    - Sweden Central
-    - Switzerland North
-    - UAE North
-    - UK South
-    - West Europe
-    - West US 2
-    - West US 3
-    - Microsoft Azure operated by 21Vianet - China North 3
-    - Azure Government - US Gov Virginia
+   1. [Confirm that your desired region supports v4 plans](/azure/app-service/app-service-configure-premium-v4-tier#regions).
+   2. [Determine if that region supports availability zones](./regions-list.md).
 
 
-- To see which regions support availability zones for App Service Environment v3, see [Regions](../app-service/environment/overview.md#regions).
+### Requirements
 
-### Create a resource with availability zone enabled
+To enable zone-redundancy, you must meet the following requirements:
 
-#### To deploy a multi-tenant zone-redundant App Service
+- Use [Premium v2 to v4 plan types](/azure/app-service/overview-hosting-plans). 
 
-# [Azure CLI](#tab/cli)
+- Deploy a minimum of two instances in your plan.
 
-To enable availability zones using the Azure CLI, include the `--zone-redundant` parameter when you create your App Service plan. You can also include the `--number-of-workers` parameter to specify capacity. If you don't specify a capacity, the platform defaults to three. Capacity should be set based on the workload requirement, but no less than three. A good rule of thumb to choose capacity is to ensure sufficient instances for the application such that losing one zone of instances leaves sufficient capacity to handle expected load.
+- Use a scale unit that supports availability zones. When you create an App Service plan, the plan is assigned to a scale unit based on the resource group where the plan resides. If your scale unit doesn't support availability zones, you need to create a new plan in a new resource group.
 
-```azurecli
-az appservice plan create --resource-group MyResourceGroup --name MyPlan --sku P1v2 --zone-redundant --number-of-workers 6
-```    
+  To determine whether the scale unit for your App Service plan supports zone redundancy, see [Check for zone redundancy support for an App Service plan](../app-service/configure-zone-redundancy.md#check-for-zone-redundancy-support-on-an-app-service-plan).
 
-> [!TIP]
-> To decide instance capacity, you can use the following calculation:
->
-> Since the platform spreads VMs across three zones and you need to account for at least the failure of one zone, multiply peak workload instance count by a factor of zones/(zones-1), or 3/2. For example, if your typical peak workload requires four instances, you should provision six instances: (2/3 * 6 instances) = 4 instances.
->
+### Instance distribution across zones
 
-# [Azure portal](#tab/portal)
+[!INCLUDE [Instance distribution across zones description](includes/app-service/reliability-instance-distribution-across-zones-include.md)]
 
+### Considerations
 
+For **Premium v2 to v4** plans, an availability zone outage might affect some aspects of Azure App Service, even though the application continues to serve traffic. These behaviors include App Service plan scaling, application creation, application configuration, and application publishing.
 
-To create an App Service with availability zones using the Azure portal, enable the zone redundancy option during the "Create Web App" or "Create App Service Plan" experiences.
+When you enable zone redundancy on your App Service **Premium v2 to v4** plan, you also improve resiliency during platform updates. For more information, see [Reliability during service maintenance](#reliability-during-service-maintenance).
 
-:::image type="content" source="../app-service/media/how-to-zone-redundancy/zone-redundancy-portal.png" alt-text="Screenshot of zone redundancy enablement using the portal.":::
+For App Service plans that aren't configured as zone redundant, the underlying virtual machine (VM) instances aren't resilient to availability zone failures. They can experience downtime during an outage in any zone in that region.
 
-The capacity/number of workers/instance count can be changed once the App Service Plan is created by navigating to the **Scale out (App Service plan)** settings.
+### Cost
 
-:::image type="content" source="../app-service/media/how-to-zone-redundancy/capacity-portal.png" alt-text="Screenshot of a capacity update using the portal.":::
+When you use App Service **Premium v2 to v4 plans**, enabling availability zones doesn't add cost if you have two or more instances. Charges are based on your App Service plan SKU, the capacity that you specify, and any instances that you scale to based on your autoscale criteria.
 
+If you enable availability zones but specify a capacity of less than two, the platform enforces a minimum instance count of two. The platform charges you for those two instances.
 
+### Configure availability zone support
 
-# [Azure Resource Manager (ARM)](#tab/arm)
+- **Create a new zone-redundant App Service plan.** For more information, see [Create a new App Service plan that includes zone redundancy](../app-service/configure-zone-redundancy.md#create-a-new-zone-redundant-app-service-plan).
 
+- **Enable or disable zone redundancy on an existing App Service plan.** For more information, see [Set zone redundancy for an existing App Service plan](../app-service/configure-zone-redundancy.md#set-zone-redundancy-for-an-existing-app-service-plan).
 
+### Capacity planning and management
 
-The only changes needed in an Azure Resource Manager template to specify an App Service with availability zones are the ***zoneRedundant*** property (required) and optionally the App Service plan instance count (***capacity***) on the [Microsoft.Web/serverfarms](/azure/templates/microsoft.web/serverfarms?tabs=json) resource. The ***zoneRedundant*** property should be set to ***true*** and ***capacity*** should be set based on the same conditions described previously.
+[!INCLUDE [Capacity planning and management description](includes/app-service/reliability-capacity-planning-management-include.md)]
 
-The Azure Resource Manager template snippet below shows the new ***zoneRedundant*** property and ***capacity*** specification.
+### Normal operations
 
-```json
-"resources": [
-  {
-    "type": "Microsoft.Web/serverfarms",
-    "apiVersion": "2018-02-01",
-    "name": "your-appserviceplan-name-here",
-    "location": "West US 3",
-    "sku": {
-        "name": "P1v3",
-        "tier": "PremiumV3",
-        "size": "P1v3",
-        "family": "Pv3",
-        "capacity": 3
-    },
-    "kind": "app",
-    "properties": {
-        "zoneRedundant": true
-    }
-  }
-]
-```
----
+[!INCLUDE [Normal operations description](includes/app-service/reliability-normal-operations-include.md)]
 
-#### To deploy a zone-redundant App Service using a dedicated environment
+### Zone-down experience
 
-To learn how to create an App Service Environment v3 on the Isolated v2 plan, see [Create an App Service Environment](../app-service/environment/creation.md).
+[!INCLUDE [Zone-down experience description](includes/app-service/reliability-zone-down-experience-include.md)]
 
-### Fault tolerance
+### Zone recovery
 
-To prepare for availability zone failure, you should over-provision capacity of service to ensure that the solution can tolerate 1/3 loss of capacity and continue to function without degraded performance during zone-wide outages. Since the platform spreads VMs across three zones and you need to account for at least the failure of one zone, multiply peak workload instance count by a factor of zones/(zones-1), or 3/2. For example, if your typical peak workload requires four instances, you should provision six instances: (2/3 * 6 instances) = 4 instances.
+[!INCLUDE [Failback description](includes/app-service/reliability-failback-include.md)]
 
-### Zone down experience
+### Test for zone failures
 
-Traffic is routed to all of your available App Service instances. In the case when a zone goes down, the App Service platform will detect lost instances and automatically attempt to find new replacement instances and spread traffic as needed. If you have [autoscale](../app-service/manage-scale-up.md) configured, and if it decides more instances are needed, autoscale will also issue a request to App Service to add more instances. Note that [autoscale behavior is independent of App Service platform behavior](../azure-monitor/autoscale/autoscale-overview.md) and that your autoscale instance count specification doesn't need to be a multiple of three. 
+[!INCLUDE [Testing for zone failures description](includes/app-service/reliability-testing-for-zone-failures-include.md)]
 
->[!NOTE] 
->There's no guarantee that requests for additional instances in a zone-down scenario will succeed. The back filling of lost instances occurs on a best-effort basis. The recommended solution is to create and configure your App Service plans to account for losing a zone as described in the next section.
+## Multiple-region support
 
-Applications that are deployed in an App Service plan that has availability zones enabled will continue to run and serve traffic even if other zones in the same region suffer an outage. However it's possible that non-runtime behaviors including App Service plan scaling, application creation, application configuration, and application publishing may still be impacted from an outage in other Availability Zones. Zone redundancy for App Service plans only ensures continued uptime for deployed applications.
+App Service is a single-region service. If the region becomes unavailable, your application is also unavailable.
 
-When the App Service platform allocates instances to a zone redundant App Service plan, it uses [best effort zone balancing offered by the underlying Azure Virtual Machine Scale Sets](../virtual-machine-scale-sets/virtual-machine-scale-sets-use-availability-zones.md#zone-balancing). An App Service plan will be "balanced" if each zone has either the same number of VMs, or +/- one VM in all of the other zones used by the App Service plan.
+### Alternative multiple-region approaches
 
-### Availability zone migration
+To reduce the risk of a single-region failure affecting your application, you can deploy plans across multiple regions. The following steps help strengthen resilience:
 
-You cannot migrate existing App Service instances or environment resources from non-availability zone support to availability zone support. To get support for availability zones, you'll need to [create your resources with availability zones enabled](#create-a-resource-with-availability-zone-enabled).
+- Deploy your application to the plans in each region.
+- Configure load balancing and failover policies.
+- Replicate your data across regions so that you can recover your last application state.
 
-### Pricing
+Consider the following related resources: 
 
-There's no additional cost associated with enabling availability zones. Pricing for a zone redundant App Service is the same as a single zone App Service. You'll be charged based on your App Service plan SKU, the capacity you specify, and any instances you scale to based on your autoscale criteria. If you enable availability zones but specify a capacity less than three, the platform will enforce a minimum instance count of three and charge you for those three instances. For pricing information for App Service Environment v3, see [Pricing](../app-service/environment/overview.md#pricing).
+- [Reference architecture: Highly available multiple-region web application](/azure/architecture/web-apps/guides/enterprise-app-patterns/reliable-web-app/dotnet/guidance)
+- [Approaches to consider](/azure/architecture/web-apps/guides/multi-region-app-service/multi-region-app-service?tabs=paired-regions#approaches-to-consider)
+- [Tutorial: Create a highly available multiple-region app in App Service](/azure/app-service/tutorial-multi-region-app)
 
+## Backups
 
+When you use the Basic tier or higher, you can back up your App Service apps to a file by using the App Service backup and restore capabilities.
 
-## Next steps
+[!INCLUDE [Backups description](includes/app-service/reliability-backups-include.md)]
 
-> [!div class="nextstepaction"]
-> [Reliability in Azure](/azure/availability-zones/overview)
+## Reliability during service maintenance
 
+[!INCLUDE [Reliability during service maintenance description](includes/app-service/reliability-maintenance-include.md)]
 
+For more information, see [Routine planned maintenance for App Service](/azure/app-service/routine-maintenance) and [Routine maintenance for App Service, restarts, and downtime](/azure/app-service/routine-maintenance-downtime).
 
+## Service-level agreement
 
+[!INCLUDE [SLA description](includes/reliability-service-level-agreement-include.md)]
+
+[!INCLUDE [SLA description for zone-redundant App Service plans](includes/app-service/reliability-app-service-service-level-agreement-include.md)]
+
+## Related content
+
+- [Reliability in Azure](./overview.md)
+- [Reliability in App Service Environment](./reliability-app-service-environment.md)

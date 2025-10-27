@@ -2,13 +2,14 @@
 title: Azure Data Box Disk portal admin guide | Microsoft Docs 
 description: Learn how to manage the Data Box Disk by using the Azure portal. Manage orders, manage disks, and track the status of an order as it progresses.
 services: databox
-author: alkohli
+author: stevenmatthew
 
-ms.service: databox
-ms.subservice: disk
+ms.service: azure-data-box-disk
 ms.topic: how-to
 ms.date: 02/22/2023
-ms.author: alkohli
+ms.author: shaas
+ms.custom: sfi-image-nochange
+# Customer intent: "As a data management administrator, I want to effectively manage Data Box Disk orders through the portal, so that I can ensure efficient data transfer and maintain control over order status and modifications throughout the process."
 ---
 # Use Azure portal to administer your Data Box Disk
 

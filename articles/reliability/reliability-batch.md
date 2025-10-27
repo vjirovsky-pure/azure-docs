@@ -1,11 +1,11 @@
 ---
 title: Reliability in Azure Batch
-description: Learn about reliability in Azure Batch
+description: Improve reliability in Azure Batch by using availability zones, zone redundancy, and disaster recovery strategies. Design more resilient batch processing workloads.
 author: anaharris-ms
 ms.author: anaharris
-ms.topic: overview
+ms.topic: reliability-article
 ms.custom: subject-reliability
-ms.service: batch
+ms.service: azure-batch
 ms.date: 03/09/2023
 ---
 
@@ -14,8 +14,7 @@ ms.date: 03/09/2023
 
 # Reliability in Azure Batch
 
-This article describes reliability support in Azure Batch and covers both intra-regional resiliency with [availability zones](#availability-zone-support) and links to information on [cross-region resiliency with disaster recovery](#disaster-recovery-cross-region-failover). 
-
+This article describes reliability support in Azure Batch. It covers how to improve intra-regional resiliency by using [availability zones](#availability-zone-support), batch pools, and compute nodes to minimize downtime and data loss. It also links to information about [cross-region recovery and business continuity](#cross-region-disaster-recovery-and-business-continuity).
 
 ## Availability zone support
 
@@ -28,9 +27,9 @@ Batch maintains parity with Azure on supporting availability zones.
 
 - For [user subscription mode Batch accounts](../batch/accounts.md#batch-accounts), make sure that the subscription in which you're creating your pool doesn't have a zone offer restriction on the requested VM SKU. To see if your subscription doesn't have any restrictions, call the [Resource Skus List API](/rest/api/compute/resource-skus/list?tabs=HTTP) and check the `ResourceSkuRestrictions`. If a zone restriction exists, you can submit a support ticket to remove the zone restriction.
 
-- Because InfiniBand doesn't support inter-zone communication, you can't create a pool with a zonal policy if it has inter-node communication enabled and uses a [VM SKU that supports InfiniBand](../virtual-machines/workloads/hpc/enable-infiniband.md).
+- Because InfiniBand doesn't support inter-zone communication, you can't create a pool with a zonal policy if it has inter-node communication enabled and uses a [VM SKU that supports InfiniBand](/azure/virtual-machines/workloads/hpc/enable-infiniband).
 
-- Batch maintains parity with Azure on supporting availability zones. To use the zonal option, your pool must be created in an [Azure region with availability zone support](availability-zones-service-support.md#azure-regions-with-availability-zone-support).
+- Batch maintains parity with Azure on supporting availability zones. To use the zonal option, your pool must be created in an [Azure region with availability zone support](regions-list.md).
 
 - To allocate your Batch pool across availability zones, the Azure region in which the pool was created must support the requested VM SKU in more than one zone. To validate that the region supports the requested VM SKU in more than one zone, call the [Resource Skus List API](/rest/api/compute/resource-skus/list?tabs=HTTP) and check the `locationInfo` field of `resourceSku`. Ensure that more than one zone is supported for the requested VM SKU. You can also use the [Azure CLI](/rest/api/compute/resource-skus/list?tabs=CLI) to list all available Resource SKUs with the following command:
 
@@ -58,11 +57,11 @@ Azure Batch account doesn't reallocate or create new nodes to compensate for nod
 To prepare for a possible availability zone failure, you should over-provision capacity of service to ensure that the solution can tolerate 1/3 loss of capacity and continue to function without degraded performance during zone-wide outages. Since the platform spreads VMs across three zones and you need to account for at least the failure of one zone, multiply peak workload instance count by a factor of zones/(zones-1), or 3/2. For example, if your typical peak workload requires four instances, you should provision six instances: (2/3 * 6 instances) = 4 instances.
 
 
-### Availability zone redeployment and migration
+### Availability zone migration
 
 You can't migrate an existing Batch pool to availability zone support. If you wish to recreate your Batch pool across availability zones, see [Create an Azure Batch pool across availability zones](/azure/batch/create-pool-availability-zones).
 
-## Disaster recovery: cross region failover
+## Cross-region disaster recovery and business continuity
 
 Azure Batch is available in all Azure regions. However, when a Batch account is created, it must be associated with one specific region. All subsequent operations for that Batch account only apply to that region. For example, pools and associated virtual machines (VMs) are created in the same region as the Batch account.
 
@@ -91,7 +90,7 @@ Consider the following points when designing a solution that can failover:
 The duration of time to recover from a disaster depends on the setup you choose. Batch itself is agnostic regarding whether you're using multiple accounts or a single account. In active-active configurations, where two Batch instances are receiving traffic simultaneously, disaster recovery is faster than for an active-passive configuration. Which configuration you choose should be based on business needs (different regions, latency requirements) and technical considerations. 
 
 
-### Single-region geography disaster recovery
+### Single-region disaster recovery
 How you implement disaster recovery in Batch is the same, whether you're working in a single-region or multi-region geography. The only differences are which SKU you use for storage, and whether you intend to use the same or different storage account across all regions.
 
 ### Disaster recovery testing 
@@ -135,5 +134,4 @@ When a storage account is linked to a Batch account, think of it as the autostor
 
 ## Next steps
 
-> [!div class="nextstepaction"]
-> [Resiliency in Azure](/azure/availability-zones/overview)
+- [Reliability in Azure](./overview.md)

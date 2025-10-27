@@ -1,18 +1,21 @@
 ---
-title: 'Azure Event Grid Namespace MQTT client establishing multiple sessions'
+title: 'MQTT client establishing multiple sessions with MQTT broker, a feature of Azure Event Grid'
 description: 'Describes how to configure MQTT clients to establish multiple sessions.'
 ms.topic: conceptual
-ms.custom: build-2023
-ms.date: 05/23/2023
-author: veyaddan
-ms.author: veyaddan
+ms.custom:
+  - build-2023
+  - ignite-2023
+ms.date: 11/15/2023
+author: george-guirguis
+ms.author: geguirgu
+ms.subservice: mqtt
 ---
 
 # How to establish multiple sessions for a single client
 
 In this guide, you learn how to establish multiple sessions for a single client to an Event Grid namespace.
 
-[!INCLUDE [mqtt-preview-note](./includes/mqtt-preview-note.md)]
+
 
 ## Prerequisites
 - You have an Event Grid namespace created.  Refer to this [Quickstart - Publish and subscribe on a MQTT topic](mqtt-publish-and-subscribe-portal.md) to create the namespace, subresources, and to publish/subscribe on a topic.
@@ -51,6 +54,6 @@ Second connect packet:
 - username: “ipv4=127.0.0.1”
 - clientId: “sessionId2”
 
-:::image type="content" source="./media/mqtt-establishing-multiple-sessions-per-client/mqtt-mqttx-app-session-2-connect-configuration.png" alt-text="creenshot showing the MQTTX application client configuration with second session.":::
+:::image type="content" source="./media/mqtt-establishing-multiple-sessions-per-client/mqtt-mqttx-app-session-2-connect-configuration.png" alt-text="Screenshot showing the MQTTX application client configuration with second session.":::
 
 You can use the same client certificate credentials to authenticate both the sessions.

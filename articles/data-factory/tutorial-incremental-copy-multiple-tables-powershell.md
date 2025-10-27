@@ -3,12 +3,13 @@ title: Incrementally copy multiple tables using PowerShell
 description: In this tutorial, you create an Azure Data Factory with a pipeline that loads delta data from multiple tables in a SQL Server database to Azure SQL Database.
 ms.author: yexu
 author: dearandyxu
-ms.reviewer: douglasl, jburchel
-ms.service: data-factory
-ms.subservice: tutorials
+ms.reviewer: douglasl, whhender
 ms.topic: tutorial
-ms.custom: devx-track-azurepowershell
-ms.date: 08/10/2023
+ms.date: 10/03/2024
+ms.subservice: data-movement
+ms.custom:
+  - devx-track-azurepowershell
+  - sfi-ropc-nochange
 ---
 
 # Incrementally load data from multiple tables in SQL Server to Azure SQL Database using PowerShell
@@ -58,7 +59,7 @@ Here are the important steps to create this solution:
     :::image type="content" source="media/tutorial-incremental-copy-multiple-tables-powershell/high-level-solution-diagram.png" alt-text="Incrementally load data":::
 
 
-If you don't have an Azure subscription, create a [free](https://azure.microsoft.com/free/) account before you begin.
+If you don't have an Azure subscription, create a [free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) account before you begin.
 
 ## Prerequisites
 
@@ -67,7 +68,7 @@ If you don't have an Azure subscription, create a [free](https://azure.microsoft
 
 ### Create source tables in your SQL Server database
 
-1. Open [SQL Server Management Studio (SSMS)](/sql/ssms/download-sql-server-management-studio-ssms) or [Azure Data Studio](/sql/azure-data-studio/download-azure-data-studio), and connect to your SQL Server database.
+1. Open [SQL Server Management Studio (SSMS)](/sql/ssms/download-sql-server-management-studio-ssms) or [Azure Data Studio](/azure-data-studio/download-azure-data-studio), and connect to your SQL Server database.
 
 2. In **Server Explorer (SSMS)** or in the **Connections pane (Azure Data Studio)**, right-click the database and choose **New Query**.
 
@@ -106,7 +107,7 @@ If you don't have an Azure subscription, create a [free](https://azure.microsoft
 
 ### Create destination tables in your Azure SQL Database
 
-1. Open [SQL Server Management Studio (SSMS)](/sql/ssms/download-sql-server-management-studio-ssms) or [Azure Data Studio](/sql/azure-data-studio/download-azure-data-studio), and connect to your SQL Server database.
+1. Open [SQL Server Management Studio (SSMS)](/sql/ssms/download-sql-server-management-studio-ssms) or [Azure Data Studio](/azure-data-studio/download-azure-data-studio), and connect to your SQL Server database.
 
 2. In **Server Explorer (SSMS)** or in the **Connections pane (Azure Data Studio)**, right-click the database and choose **New Query**.
 
@@ -226,7 +227,7 @@ END
 
 ### Azure PowerShell
 
-Install the latest Azure PowerShell modules by following the instructions in [Install and configure Azure PowerShell](/powershell/azure/azurerm/install-azurerm-ps).
+Install the latest Azure PowerShell modules by following the instructions in [Install and configure Azure PowerShell](/powershell/azure/install-azure-powershell).
 
 ## Create a data factory
 
@@ -980,7 +981,7 @@ project_table    2017-10-01 00:00:00.000
 
 Notice that the watermark values for both tables were updated.
 
-## Next steps
+## Related content
 You performed the following steps in this tutorial:
 
 > [!div class="checklist"]

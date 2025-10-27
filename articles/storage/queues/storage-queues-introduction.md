@@ -8,11 +8,12 @@ ms.reviewer: dineshm
 ms.date: 03/18/2020
 ms.topic: overview
 ms.service: azure-queue-storage
+# Customer intent: "As a developer, I want to understand how Azure Queue Storage works, so that I can effectively implement asynchronous message processing in my application."
 ---
 
 # What is Azure Queue Storage?
 
-Azure Queue Storage is a service for storing large numbers of messages. You access messages from anywhere in the world via authenticated calls using HTTP or HTTPS. A queue message can be up to 64 KB in size. A queue may contain millions of messages, up to the total capacity limit of a storage account. Queues are commonly used to create a backlog of work to process asynchronously.
+Azure Queue Storage is a service for storing large numbers of messages. You access messages from anywhere in the world via authenticated calls using HTTP or HTTPS. A queue message can be up to 64 KB in size. A queue may contain millions of messages, up to the total capacity limit of a storage account. Queues are commonly used to create a backlog of work to process asynchronously, like in the [Web-Queue-Worker architectural style](/azure/architecture/guide/architecture-styles/web-queue-worker).
 
 ## Queue Storage concepts
 

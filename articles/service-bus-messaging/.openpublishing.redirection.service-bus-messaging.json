@@ -1,5 +1,10 @@
 {
-  "redirections": [
+  "redirections": [    
+  {
+    "source_path": "transport-layer-security-configure-client-version.md",
+    "redirect_url": "/azure/service-bus-messaging/transport-layer-security-configure-minimum-version#tls-version-used-by-a-client",
+    "redirect_document_id": false
+  },  
   {
     "source_path": "migrate-java-apps-wild-fly.md",
     "redirect_url": "/azure/app-service/configure-language-java#use-service-bus-as-a-message-broker",
@@ -8,11 +13,6 @@
   {
     "source_path": "policy-samples.md",
     "redirect_url": "/azure/service-bus-messaging/policy-reference",
-    "redirect_document_id": false
-  },
-  {
-    "source_path": "service-bus-messaging-exceptions.md",
-    "redirect_url": "https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/servicebus/Azure.Messaging.ServiceBus/TROUBLESHOOTING.md",
     "redirect_document_id": false
   },
   {
@@ -27,7 +27,7 @@
   },
   {
     "source_path": "service-bus-amqp-php.md",
-    "redirect_url": "/azure/service-bus-messaging/service-bus-php-how-to-use-queues",
+    "redirect_url": "https://github.com/Azure/azure-sdk-for-php/tree/master/src/ServiceBus",
     "redirect_document_id": false
   },
   {
@@ -191,6 +191,16 @@
     "redirect_document_id": false
   },
   {
+    "source_path": "service-bus-php-how-to-use-queues.md",
+    "redirect_url": "https://github.com/Azure/azure-sdk-for-php/tree/master/src/ServiceBus",
+    "redirect_document_id": false
+  },
+  {
+    "source_path": "service-bus-php-how-to-use-topics-subscriptions.md",
+    "redirect_url": "https://github.com/Azure/azure-sdk-for-php/tree/master/src/ServiceBus",
+    "redirect_document_id": false
+  },
+  {
     "source_path": "service-bus-shared-access-signature-authentication.md",
     "redirect_url": "/azure/service-bus-messaging/service-bus-sas",
     "redirect_document_id": false
@@ -203,6 +213,11 @@
   {
     "source_path": "enable-partitions.md",
     "redirect_url": "/azure/service-bus-messaging/enable-partitions-basic-standard",
+    "redirect_document_id": false
+  },
+  {
+    "source_path_from_root": "/articles/service-bus/index.md",
+    "redirect_url": "/azure/service-bus-messaging/index",
     "redirect_document_id": false
   }
 ]

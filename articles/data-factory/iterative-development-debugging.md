@@ -2,15 +2,14 @@
 title: Iterative development and debugging
 titleSuffix: Azure Data Factory & Azure Synapse
 description: Learn how to develop and debug Data Factory and Synapse Analytics pipelines iteratively with the service UI.
-ms.date: 07/20/2023
+ms.date: 05/15/2024
 ms.topic: conceptual
-ms.service: data-factory
 ms.subservice: authoring
-ms.custom: synapse
-services: data-factory
-ms.workload: data-services
 author: kromerm
 ms.author: makromer
+ms.custom:
+  - synapse
+  - sfi-image-nochange
 ---
 
 # Iterative development and debugging with Azure Data Factory and Synapse Analytics pipelines
@@ -95,6 +94,6 @@ Using the activity runtime will create a new cluster using the settings specifie
 
 :::image type="content" source="media/iterative-development-debugging/iterative-development-dataflow.png" alt-text="Running a pipeline with a dataflow":::
 
-## Next steps
+## Related content
 
 After testing your changes, promote them to higher environments using [continuous integration and deployment](continuous-integration-delivery.md).

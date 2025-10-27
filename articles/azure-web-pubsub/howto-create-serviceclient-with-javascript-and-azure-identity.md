@@ -3,7 +3,7 @@ title: How to create a WebPubSubServiceClient with JavaScript and Azure Identity
 description: How to create a WebPubSubServiceClient with JavaScript and Azure Identity
 author: terencefan
 
-ms.author: tefa
+ms.author: lianwei
 ms.date: 11/15/2021
 ms.service: azure-web-pubsub
 ms.custom: devx-track-js
@@ -65,7 +65,3 @@ This how-to guide shows you how to create a `WebPubSubServiceClient` using Micro
    ```
 
    Learn how to use this client, see [Azure Web PubSub service client library for JavaScript](/javascript/api/overview/azure/web-pubsub-readme)
-
-## Complete sample
-
-- [Simple chatroom with Microsoft Entra ID authorization](https://github.com/Azure/azure-webpubsub/tree/main/samples/javascript/chatapp-aad)

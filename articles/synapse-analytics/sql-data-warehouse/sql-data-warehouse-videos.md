@@ -1,13 +1,12 @@
 ---
 title: Videos for Azure Synapse Analytics
 description: Links to various video playlists for Azure Synapse Analytics.
-author: WilliamDAssafMSFT
-manager: craigg
-ms.service: synapse-analytics
-ms.topic: conceptual
-ms.subservice: sql-dw 
+author: ajagadish-24
+ms.author: ajagadish
 ms.date: 07/18/2023
-ms.author: wiassaf
+ms.service: azure-synapse-analytics
+ms.subservice: sql-dw
+ms.topic: conceptual
 ---
 
 # Azure Synapse Analytics - dedicated SQL pool  (formerly SQL DW) Videos

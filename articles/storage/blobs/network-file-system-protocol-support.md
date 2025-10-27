@@ -4,11 +4,12 @@ titleSuffix: Azure Storage
 description: Blob storage now supports the Network File System (NFS) 3.0 protocol. This support enables Linux clients to mount a container in Blob storage from an Azure Virtual Machine (VM) or a computer that runs on-premises.
 author: normesta
 
-ms.service: storage
-ms.topic: conceptual
+ms.service: azure-blob-storage
+ms.custom: linux-related-content
+ms.topic: concept-article
 ms.date: 08/18/2023
 ms.author: normesta
-
+# Customer intent: "As a cloud developer, I want to leverage NFS 3.0 support in Azure Blob Storage, so that I can efficiently run legacy high-throughput applications with hierarchical namespace access from both Azure VMs and on-premises systems."
 ---
 
 # Network File System (NFS) 3.0 protocol support for Azure Blob Storage
@@ -25,7 +26,7 @@ The NFS 3.0 protocol feature is best suited for processing high throughput, high
 
 ## NFS 3.0 and the hierarchical namespace
 
-NFS 3.0 protocol support requires blobs to be organized into on a hierarchical namespace. You can enable a hierarchical namespace when you create a storage account. The ability to use a hierarchical namespace was introduced by Azure Data Lake Storage Gen2. It organizes objects (files) into a hierarchy of directories and subdirectories in the same way that the file system on your computer is organized. The hierarchical namespace scales linearly and doesn't degrade data capacity or performance. Different protocols extend from the hierarchical namespace. The NFS 3.0 protocol is one of the these available protocols.
+NFS 3.0 protocol support requires blobs to be organized into a hierarchical namespace. You can enable a hierarchical namespace when you create a storage account. The ability to use a hierarchical namespace was introduced by Azure Data Lake Storage. It organizes objects (files) into a hierarchy of directories and subdirectories in the same way that the file system on your computer is organized. The hierarchical namespace scales linearly and doesn't degrade data capacity or performance. Different protocols extend from the hierarchical namespace. The NFS 3.0 protocol is one of the these available protocols.
 
 > [!div class="mx-imgBorder"]
 > ![hierarchical namespace](./media/network-protocol-support/hierarchical-namespace-and-nfs-support.png)
@@ -54,7 +55,7 @@ For step-by-step guidance, see [Mount Blob storage by using the Network File Sys
 
 ## Network security
 
-Traffic must originate from a VNet. A VNet enables clients to securely connect to your storage account. The only way to secure the data in your account is by using a VNet and other network security settings. Any other tool used to secure data including account key authorization, Azure Active Directory (AD) security, and access control lists (ACLs) can't be used to authorize an NFS 3.0 request.
+Traffic must originate from a VNet. A VNet enables clients to securely connect to your storage account. The only way to secure the data in your account is by using a VNet and other network security settings. Any other tool used to secure data including account key authorization, Microsoft Entra security, and access control lists (ACLs) can't be used to authorize an NFS 3.0 request.
 
 To learn more, see [Network security recommendations for Blob storage](security-recommendations.md#networking).
 

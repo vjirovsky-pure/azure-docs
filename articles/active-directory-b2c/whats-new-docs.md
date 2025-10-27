@@ -1,61 +1,42 @@
 ---
 title: "What's new in Azure Active Directory business-to-customer (B2C)"
 description: "New and updated documentation for the Azure Active Directory business-to-customer (B2C)."
-ms.date: 08/01/2023
-ms.service: active-directory
-ms.subservice: B2C
-ms.topic: reference
-ms.workload: identity
+ms.date: 09/03/2025
+ms.service: azure-active-directory
+ms.subservice: b2c
+ms.topic: whats-new
+
 ms.author: kengaderdus
 author: kengaderdus
 manager: CelesteDG
+ms.custom: sfi-ropc-nochange
+
+#Customer intent: As a developer using Azure Active Directory B2C, I want to stay updated on the latest documentation changes and new features, so that I can effectively use and implement the B2C service in my applications.
 ---
 
 # Azure Active Directory B2C: What's new
+[!INCLUDE [active-directory-b2c-end-of-sale-notice-b](../../includes/active-directory-b2c-end-of-sale-notice-b.md)]
 
-Welcome to what's new in Azure Active Directory B2C documentation. This article lists new docs that have been added and those that have had significant updates in the last three months. To learn what's new with the B2C service, see [What's new in Azure Active Directory](../active-directory/fundamentals/whats-new.md) and [Azure AD B2C developer release notes](custom-policy-developer-notes.md)
+Welcome to what's new in Azure Active Directory B2C documentation. This article lists new and significantly updated docs from the past three months. To learn what's new with the B2C service, see [What's new in Microsoft Entra ID](../active-directory/fundamentals/whats-new.md), [Azure AD B2C developer release notes](custom-policy-developer-notes.md) and [What's new in Microsoft Entra External ID](/entra/external-id/whats-new-docs).
 
-## June 2023
-
-### New articles
-
-- [Microsoft Azure Active Directory B2C external identity video series](external-identities-videos.md)
-- [Manage directory size quota of your Azure Active Directory B2C tenant](tenant-management-directory-quota.md)
+## August 2025
 
 ### Updated articles
 
-- [Tutorial: Create an Azure Active Directory B2C tenant](tutorial-create-tenant.md) - [Azure AD B2C] Azure AD B2C Go-Local opt-in feature
-- [Tutorial: Configure security analytics for Azure Active Directory B2C data with Microsoft Sentinel](configure-security-analytics-sentinel.md) - Removing product name from filename and links. 
-- [Tutorial: Configure Azure Active Directory B2C with Azure Web Application Firewall](partner-web-application-firewall.md) - Removing product name from filename and links. 
-- [Title not found in: #240919](azure-ad-external-identities-videos.md) - Delete azure-ad-external-identities-videos.md
-- [Build a global identity solution with funnel-based approach](b2c-global-identity-funnel-based-design.md) - Removing product name from filename and links.
-- [Azure Active Directory B2C global identity framework proof of concept for funnel-based configuration](b2c-global-identity-proof-of-concept-funnel.md) - Removing product name from filename and links. 
-- [Azure Active Directory B2C global identity framework proof of concept for region-based configuration](b2c-global-identity-proof-of-concept-regional.md) - Removing product name from filename and links.
-- [Build a global identity solution with region-based approach](b2c-global-identity-region-based-design.md) - Removing product name from filename and links. 
-- [Azure Active Directory B2C global identity framework](b2c-global-identity-solutions.md) - Removing product name from filename and links. 
-- [Azure Active Directory B2C: What's new](whats-new-docs.md) - [Azure AD B2C] What is new May 2023
-- [Use the Azure portal to create and delete consumer users in Azure AD B2C](manage-users-portal.md) - [Azure AD B2C] Revoke user's session
-- [Monitor Azure AD B2C with Azure Monitor](azure-monitor.md) - Added steps to disable Azure monitor
+- [Azure Active Directory B2C service limits and restrictions](service-limits.md) - Added new object limits
+- [StringCollection claims transformations](stringcollection-transformations.md) - Updated claim type information
 
-## May 2023
-
-### New articles
-
-- [How to secure your Azure Active Directory B2C identity solution](security-architecture.md)
+## July 2025
 
 ### Updated articles
 
-- [Configure Azure Active Directory B2C with Akamai Web Application Protector](partner-akamai.md)
-- [Configure Asignio with Azure Active Directory B2C for multifactor authentication](partner-asignio.md)
-- [Configure xID with Azure Active Directory B2C for passwordless authentication](partner-xid.md)
-- [Configure WhoIAM Rampart with Azure Active Directory B2C](partner-whoiam-rampart.md)
-- [Build a global identity solution with funnel-based approach](azure-ad-b2c-global-identity-funnel-based-design.md)
-- [Use the Azure portal to create and delete consumer users in Azure AD B2C](manage-users-portal.md)
+- [Azure Active Directory B2C service limits and restrictions](service-limits.md) - Added new region limits
 
-## April 2023
+## June 2025
 
 ### Updated articles
 
-- [Configure Transmit Security with Azure Active Directory B2C for passwordless authentication](partner-bindid.md) - Update partner-bindid.md
-- [Tutorial: Enable secure hybrid access for applications with Azure Active Directory B2C and F5 BIG-IP](partner-f5.md) - Update partner-f5.md
-
+- [Configure Cloudflare Web Application Firewall with Azure Active Directory B2C](partner-cloudflare.md) - Added a note about Azure Front Door-managed certificates
+- [Azure AD B2C: Frequently asked questions (FAQ)](faq.yml) - Updated the note in the Azure AD B2C end-of-sale section
+- [Page layout versions](page-layout.md) - Added updates related to CAPTCHA
+- [Securing phone-based multifactor authentication](phone-based-mfa.md) - Added information on preventing fraudulent sign-ups

@@ -2,19 +2,17 @@
 title: Support policies for self-hosted gateway | Azure API Management
 description: Learn about the support policies and the shared responsibilities for the API Management self-hosted gateway.
 author: dlepow
-ms.service: api-management
-ms.topic: article
+ms.service: azure-api-management
+ms.topic: concept-article
 ms.author: danlep
-ms.date: 05/12/2023
+ms.date: 09/25/2024
 ---
 
 # Support policies for self-hosted gateway
 
-The Azure API Management service, in the Developer and Premium tiers, allows the deployment of the API Management gateway as a container running in on-premises infrastructure, other clouds, and Azure infrastructure options that support containers. This article provides details about technical support policies and limitations for the API Management [self-hosted gateway](self-hosted-gateway-overview.md).  
-
-[!INCLUDE [preview](./includes/preview/preview-callout-self-hosted-gateway-deprecation.md)]
-
 [!INCLUDE [api-management-availability-premium-dev](../../includes/api-management-availability-premium-dev.md)]
+
+The Azure API Management service, in the Developer and Premium tiers, allows the deployment of the API Management gateway as a container running in on-premises infrastructure, other clouds, and Azure infrastructure options that support containers. This article provides details about technical support policies and limitations for the API Management [self-hosted gateway](self-hosted-gateway-overview.md).  
 
 ## Differences between managed gateway and self-hosted gateway
 
@@ -31,11 +29,14 @@ The following table shows Microsoft's responsibilities, shared responsibilities,
 
 |Microsoft Azure  |Shared responsibilities  |Customers  |
 |---------|---------|---------|
-|▪️ **Configuration endpoint (management plane)** - The self-hosted gateway depends on a configuration endpoint that provides the configuration, APIs, hostnames, and policy information. This configuration endpoint is part of the management plane of every API Management service.<br/><br/>▪️ **Gateway container image maintenance and updates** - Bug fixes, patches, performance improvements, and new features in the self-hosted gateway [container image](self-hosted-gateway-overview.md#packaging).        |▪ **Securing self-hosted gateway communication with configuration endpoint** - The communication between the self-hosted gateway and the configuration endpoint can be secured by two mechanisms: either an access token that expires automatically every 30 days and needs to be updated for the running containers; or authentication with Azure Active Directory, which doesn't require token refresh.<br/><br/> ▪ **Keeping the gateway up to date** - The customer oversees regularly updating the gateway to the latest version and latest features. And Microsoft will provide updated images with new features, bug fixes, and patches.      | ▪  **Gateway hosting** - Deploying and operating the gateway infrastructure: virtual machines with container runtime and/or Kubernetes cluster.<br/><br/>▪ **Network configuration** - Necessary to maintain management plane connectivity and API access.<br/><br/>    ▪ **Gateway SLA** - Capacity management, scaling, and uptime.<br/><br/>  ▪ **Providing diagnostics data to support** - Collecting and sharing diagnostics data with support engineers.<br/><br/>▪ **Third party OSS (open-source software) software components** - Combining the self-hosted gateway with other software like Prometheus, Grafana, service meshes, container runtimes, Kubernetes distributions, and proxies are the customer's responsibility.  |
+|▪️ **Configuration endpoint (management plane)** - The self-hosted gateway depends on a configuration endpoint that provides the configuration, APIs, hostnames, and policy information. This configuration endpoint is part of the management plane of every API Management service.<br/><br/>▪️ **Gateway container image maintenance and updates** - Bug fixes, patches, performance improvements, and new features in the self-hosted gateway [container image](self-hosted-gateway-overview.md#packaging).        |▪ **Securing self-hosted gateway communication with configuration endpoint** - The communication between the self-hosted gateway and the configuration endpoint can be secured by two mechanisms: either an access token that expires automatically every 30 days and needs to be updated for the running containers; or authentication with Microsoft Entra ID, which doesn't require token refresh.<br/><br/> ▪ **Keeping the gateway up to date** - The customer oversees regularly updating the gateway to the latest version and latest features. And Microsoft will provide updated images with new features, bug fixes, and patches.      | ▪  **Gateway hosting** - Deploying and operating the gateway infrastructure: virtual machines with container runtime and/or Kubernetes cluster.<br/><br/>▪ **Network configuration** - Necessary to maintain management plane connectivity and API access.<br/><br/>    ▪ **Gateway SLA** - Capacity management, scaling, and uptime.<br/><br/>  ▪ **Providing diagnostics data to support** - Collecting and sharing diagnostics data with support engineers.<br/><br/>▪ **Third party OSS (open-source software) software components** - Combining the self-hosted gateway with other software like Prometheus, Grafana, service meshes, container runtimes, Kubernetes distributions, and proxies are the customer's responsibility.  |
 
 ## Self-hosted gateway container image support coverage 
 
 We have the following tagging strategy for the [self-hosted gateway container image](self-hosted-gateway-overview.md#packaging), following the major, minor, patch convention: `{major}.{minor}.{patch}`. You can find a full list of [available tags](https://mcr.microsoft.com/product/azure-api-management/gateway/tags). As a best practice, we recommend that customers run the latest stable version of our container image. Given the continuous releases of our container image, we'll provide official support for the following versions: 
+
+> [!TIP]
+> We highly encourage customers to upgrade to a newer self-hosted gateway by following [Safe Deployment Practices (SDP)](https://azure.microsoft.com/blog/advancing-safe-deployment-practices/).
 
 ### Supported versions 
 
@@ -93,7 +94,7 @@ If you have a support plan and you need technical help, create a [support requ
 
 You can also get help from our communities. You can file an issue on [GitHub](https://aka.ms/apim/sputnik/repo) or ask questions on [Stack  Overflow](https://aka.ms/apimso) and tag them with "azure-api-management".
 
-## Next steps
+## Related content
 
 * Learn how to deploy the API Management self-hosted gateway to [Azure Arc-enabled Kubernetes clusters](how-to-deploy-self-hosted-gateway-azure-arc.md), [Azure Kubernetes Service](how-to-deploy-self-hosted-gateway-azure-kubernetes-service.md), or a Kubernetes cluster using [YAML](how-to-deploy-self-hosted-gateway-kubernetes.md) or a [Helm chart](how-to-deploy-self-hosted-gateway-kubernetes-helm.md).
 

@@ -1,0 +1,37 @@
+### YamlMime:Landing
+
+title: Azure Integration Environments documentation (Preview) # < 60 chars
+summary: Centrally organize Azure resources for integration solutions by using Azure integration Environments. # < 160 chars
+
+metadata:
+  title: Azure Integration Environments documentation
+  description: Centrally organize Azure resources for integration solutions.
+  ms.service: azure
+  ms.subservice: azure-integration-environments
+  ms.topic: landing-page
+  author: ecfan
+  ms.author: estfan
+  ms.date: 09/11/2025
+  ms.update-cycle: 1095-days
+
+# linkListType: architecture | concept | deploy | download | get-started | how-to-guide | learn | overview | quickstart | reference | tutorial | video | whats-new
+
+landingContent:
+  - title: About Azure Integration Environments
+    linkLists:
+      - linkListType: overview
+        links:
+          - text: What is Azure Integration Environments?
+            url: overview.md
+      - linkListType: how-to-guide
+        links:
+          - text: Create an integration environment
+            url: create-integration-environment.md
+          - text: Create an application group
+            url: create-application-group.md
+          - text: Monitor health and performance
+            url: monitor-resources-create-alerts.md
+      - linkListType: reference
+        links:
+          - text: REST API
+            url: /rest/api/integration/

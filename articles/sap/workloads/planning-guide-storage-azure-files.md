@@ -3,13 +3,12 @@ title: 'Azure Premium Files NFS and SMB for SAP'
 description: Using Azure Premium Files NFS and SMB for SAP workload
 author: msftrobiro
 manager: msjuergent
-tags: azure-resource-manager
 ms.service: sap-on-azure
 ms.subservice: sap-vm-workloads
 ms.topic: article
-ms.workload: infrastructure-services
-ms.date: 04/26/2023
+ms.date: 04/01/2024
 ms.author: robiro
+# Customer intent: As an SAP administrator, I want to evaluate Azure Premium Files for NFS and SMB configurations, so that I can optimize storage performance and capacity for my SAP workloads while ensuring system stability and compliance with best practices.
 ---
 
 # Using Azure Premium Files NFS and SMB for SAP workload
@@ -26,7 +25,7 @@ For SAP workloads, the supported uses of Azure Files shares are:
 
 - sapmnt volume for a distributed SAP system
 - transport directory for SAP landscape
-- /hana/shared for HANA scale-out
+- /hana/shared for HANA scale-out. Review carefully the [considerations for sizing **/hana/shared**](hana-vm-operations-storage.md#considerations-for-the-hana-shared-file-system), as appropriately sized **/hana/shared** volume contributes to system's stability
 - file interface between your SAP landscape and other applications
 
 > [!NOTE]
@@ -50,13 +49,14 @@ When you plan your deployment with Azure Files, consider the following important
 - If you're deploying your VMs across availability zones, use a [storage account with ZRS](/azure/storage/common/storage-redundancy#zone-redundant-storage) in the Azure regions that support ZRS.
 - Azure Premium Files doesn't currently support automatic cross-region replication for disaster recovery scenarios. See [guidelines on DR for SAP applications](disaster-recovery-overview-guide.md) for available options.
 
-Carefully consider when consolidating multiple activities into one file share or multiple file shares in one storage accounts. Distributing these shares onto separate storage accounts improves throughput, resiliency and simplifies the performance analysis. If many SAP SIDs and shares are consolidated onto a single Azure Files storage account and the storage account performance is poor due to hitting the throughput limits. It can become difficult to identify which SID or volume is causing the problem.
+Carefully consider when consolidating multiple activities into one file share or multiple file shares in one storage account. Distributing these shares onto separate storage accounts improves throughput, resiliency and simplifies the performance analysis. If many SAP SIDs and shares are consolidated onto a single Azure Files storage account and the storage account performance is poor due to hitting the throughput limits, it can become difficult to identify which SID or volume is causing the problem.
 
 ## NFS additional considerations
 
 - We recommend that you deploy on SLES 15 SP2 or higher, RHEL 8.4 or higher to benefit from [NFS client improvements](/azure/storage/files/storage-troubleshooting-files-nfs#ls-hangs-for-large-directory-enumeration-on-some-kernels).
 - Mount the NFS shares with [documented mount](/azure/storage/files/storage-files-how-to-mount-nfs-shares) options, with [troubleshooting](/azure/storage/files/storage-troubleshooting-files-nfs#cannot-connect-to-or-mount-an-nfs-azure-file-share) information available for mount or connection problems.
 - For SAP J2EE systems, placing `/usr/sap/<SID>/J<nr>` on NFS on Azure Files isn't supported.
+- Azure Files NFS supports [Encryption in Transit (EiT)](./sap-azure-files-nfs-encryption-in-transit-guide.md) and can be used for all the supported scenarios of Azure Files shares for SAP workloads. 
 
 ## SMB additional considerations
 
@@ -69,5 +69,3 @@ Carefully consider when consolidating multiple activities into one file share or
 For more information, see:
 - [Azure Storage types for SAP workload](planning-guide-storage.md)
 - [SAP HANA High Availability guide for Azure virtual machines](sap-hana-availability-overview.md)
-
-

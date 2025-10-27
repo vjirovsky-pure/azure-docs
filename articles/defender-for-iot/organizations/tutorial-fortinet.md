@@ -2,8 +2,10 @@
 title: Integrate Fortinet with Microsoft Defender for IoT
 description: In this article, you learn how to integrate Microsoft Defender for IoT with Fortinet.
 ms.topic: tutorial
-ms.date: 01/01/2023
-ms.custom: how-to
+ms.date: 10/14/2024
+ms.custom:
+  - how-to
+  - sfi-image-nochange
 ---
 
 # Integrate Fortinet with Microsoft Defender for IoT
@@ -13,6 +15,10 @@ This article helps you learn how to integrate and use Fortinet with Microsoft De
 Microsoft Defender for IoT mitigates IIoT, ICS, and SCADA risk with ICS-aware self-learning engines that deliver immediate insights about ICS devices, vulnerabilities, and threats.  Defender for IoT accomplishes this without relying on agents, rules, signatures, specialized skills, or prior knowledge of the environment.
 
 Defender for IoT and Fortinet have established a technological partnership that detects and stop attacks on IoT and ICS networks.
+
+>[!Note]
+>
+>Defender for IoT plans to retire the Fortinet integration on December 1, 2025
 
 Fortinet and Microsoft Defender for IoT prevent:
 
@@ -89,7 +95,7 @@ An application programming interface (API) key is a uniquely generated code that
     | **Administrator Profile** | From the dropdown list, select the profile name that you've defined in the previous step. |
     | **PKI Group** | Toggle the switch to **Disable**. |
     | **CORS Allow Origin** | Toggle the switch to **Enable**. |
-    | **Restrict login to trusted hosts** | Add the IP addresses of the sensors and on-premises management consoles that will connect to FortiGate. |
+    | **Restrict login to trusted hosts** | Add the IP addresses of the sensors that will connect to FortiGate. |
 
 Save the API key when it's generated, as it will not be provided again. The bearer of the generated API key will be granted all access privileges assigned to the account.
 
@@ -99,44 +105,25 @@ The FortiGate firewall can be used to block suspicious traffic.
 
 Forwarding alert rules run only on alerts triggered after the forwarding rule is created. Alerts already in the system from before the forwarding rule was created aren't affected by the rule.
 
-**To set a forwarding rule to block malware-related alerts**:
+When creating your forwarding rule:
 
-1. Sign in to the Microsoft Defender for IoT sensor, and select **Forwarding**.
+1. In the **Actions** area, select **FortiGate**.
 
-1. Select **+ Create new rule**.
+1. Define the server IP address where you want to send the data.
 
-1. In the **Add forwarding rule** pane, define the rule parameters:
+1. Enter an API key created in FortiGate.
 
-    :::image type="content" source="media/tutorial-fortinet/forward-rule.png" alt-text="Screenshot of the Forwarding window option in a sensor." lightbox="media/tutorial-fortinet/forward-rule.png":::
+1. Enter the incoming and outgoing firewall interface ports.
 
-    | Parameter | Description |
-    |--|--|
-    | **Rule name** | The forwarding rule name. |
-    | **Minimal alert level** | The minimal security level incident to forward. For example, if Minor is selected, minor alerts and any alert above this severity level will be forwarded. |
-    | **Any protocol detected**     |  Toggle off to select the protocols you want to include in the rule.       |
-    | **Traffic detected by any engine**     | Toggle off to select the traffic you want to include in the rule.       |
+1. Select to forward specific alert details. We recommend selecting one of more of the following:
 
-1. In the **Actions** area, define the following values:
+    - **Block illegal function codes**:	Protocol violations - Illegal field value violating ICS protocol specification (potential exploit)
+    - **Block unauthorized PLC programming / firmware updates**:	Unauthorized PLC changes 
+    - **Block unauthorized PLC stop**	PLC stop (downtime)
+    - **Block malware related alerts**: Blocking of the industrial malware attempts, such as TRITON or NotPetya
+    - **Block unauthorized scanning**: Unauthorized scanning (potential reconnaissance)  
 
-    | Parameter | Description |
-    |--|--|
-    | **Server** | Select FortiGage. |
-    | **Host** | Define the ClearPass server IP to send alert information. |
-    | **API key** | Enter the [API key](#create-an-api-key-in-fortinet) that you created in FortiGate. |
-    | **Incoming Interface** | Enter the incoming firewall interface port. |
-    | **Outgoing Interface** | Enter the outgoing firewall interface port. |
-
-1. Configure which alert information you want to forward:
-
-    | Parameter | Description |
-    |--|--|
-    | **Block illegal function codes** | Protocol violations - Illegal field value violating ICS protocol specification (potential exploit) |
-    | **Block unauthorized PLC programming / firmware updates** | Unauthorized PLC changes. |
-    | **Block unauthorized PLC stop** | PLC stop (downtime). |
-    | **Block malware related alerts** | Blocking of the industrial malware attempts (TRITON, NotPetya, etc.). |
-    | **Block unauthorized scanning** | Unauthorized scanning (potential reconnaissance) |
-
-1. Select **Save**.
+For more information, see [Forward on-premises OT alert information](how-to-forward-alert-information-to-partners.md).
 
 ## Block the source of suspicious alerts
 
@@ -144,7 +131,7 @@ The source of suspicious alerts can be blocked in order to prevent further occur
 
 **To block the source of suspicious alerts**:
 
-1. Sign in to the on-premises management console, then select **Alerts**.
+1. Sign in to the OT sensor, then select **Alerts**.
 
 1. Select the alert related to Fortinet integration.
 
@@ -216,17 +203,13 @@ Forwarding alert rules run only on alerts triggered after the forwarding rule is
 
 You can set policies to automatically block malicious sources in the FortiGate firewall, using alerts in Defender for IoT.
 
-For example, the following alert can block the malicious source:
-
-:::image type="content" source="media/tutorial-fortinet/suspicion.png" alt-text="Screenshot of the NotPetya Malware suspicion window." lightbox="media/tutorial-fortinet/suspicion.png":::
-
 **To set a FortiGate firewall rule that blocks a malicious source**:
 
 1. In FortiGate, [create an API key](#create-an-api-key-in-fortinet).
 
-1. Sign in to the Defender for IoT sensor, or the on-premises management console, and select **Forwarding**, [set a forwarding rule that blocks malware-related alerts](#set-a-forwarding-rule-to-block-malware-related-alerts).
+1. Sign in to the Defender for IoT sensor, and select **Forwarding**, [set a forwarding rule that blocks malware-related alerts](#set-a-forwarding-rule-to-block-malware-related-alerts).
 
-1. In the Defender for IoT sensor, or the on-premises management console, select **Alerts**, and [block a malicious source](#block-a-malicious-source-using-the-fortigate-firewall).
+1. In the Defender for IoT sensor, select **Alerts**, and [block a malicious source](#block-a-malicious-source-using-the-fortigate-firewall).
 
 1. Navigate to the FortiGage **Administrator** window, and locate the malicious source address you blocked.
 

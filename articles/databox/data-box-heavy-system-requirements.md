@@ -2,13 +2,13 @@
 title: Microsoft Azure Data Box Heavy system requirements| Microsoft Docs
 description: Learn about the software and networking requirements for your Azure Data Box Heavy
 services: databox
-author: alkohli
+author: stevenmatthew
 
-ms.service: databox
-ms.subservice: heavy
-ms.topic: article
+ms.service: azure-data-box-heavy
+ms.topic: concept-article
 ms.date: 06/13/2023
-ms.author: alkohli
+ms.author: shaas
+# Customer intent: As a cloud engineer, I want to understand the system and networking requirements for the Azure Data Box Heavy, so that I can ensure proper deployment and optimal performance of the device in my data migration projects.
 ---
 # Azure Data Box Heavy system requirements
 

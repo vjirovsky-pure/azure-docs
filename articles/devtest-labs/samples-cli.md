@@ -5,7 +5,7 @@ ms.topic: sample
 ms.custom: devx-track-azurecli, UpdateFrequency2
 ms.author: rosemalcolm
 author: RoseHJM
-ms.date: 02/02/2022
+ms.date: 09/30/2023
 ---
 
 # Azure CLI Samples for Azure DevTest Labs
@@ -22,7 +22,7 @@ This article includes sample bash scripts built for Azure CLI for Azure DevTest 
 
 [!INCLUDE [sample-cli-install](../../includes/sample-cli-install.md)]
 
-[!INCLUDE [quickstarts-free-trial-note](../../includes/quickstarts-free-trial-note.md)]
+[!INCLUDE [quickstarts-free-trial-note](~/reusable-content/ce-skilling/azure/includes/quickstarts-free-trial-note.md)]
 
 All of these scripts have the following prerequisite:
 

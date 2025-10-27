@@ -1,72 +1,93 @@
 ---
-title: Azure API Center (preview) - Overview
-description: Introduction to key scenarios and capabilities of Azure API Center. API Center inventories an organization's APIs to promote API discovery, reuse, and governance at scale.
+title: Azure API Center - Overview
+description: Introduction to key scenarios and capabilities of Azure API Center. API Center inventories an organization's APIs for discovery, reuse, and governance at scale.
 author: dlepow
-editor: ''
  
-ms.service: api-center
+ms.service: azure-api-center
 ms.topic: overview
-ms.date: 06/05/2023
-ms.author: danlep
+ms.date: 11/15/2024
+ms.author: danlep 
 ms.custom: references_regions
 ---
 
-# What is Azure API Center (preview)?
+# What is Azure API Center?
 
-API Center enables tracking all of your APIs in a centralized location for discovery, reuse, and governance. Use API Center to develop and maintain a structured and organized inventory of your organization's APIs - regardless of their type, lifecycle stage, or deployment location - along with related information such as version details, specification files, and common metadata. 
+Azure API Center enables tracking all of your APIs in a centralized location for discovery, reuse, and governance. Use an API center to develop and maintain a structured and organized inventory of your organization's APIs - regardless of their type, lifecycle stage, or deployment location - along with related information such as version details, API definition files, and common metadata. 
 
-[!INCLUDE [api-center-preview-feedback](includes/api-center-preview-feedback.md)]
+With an API center, stakeholders throughout your organization - including API program managers, IT administrators, application developers, and API developers - can design, discover, reuse, and govern APIs.  
 
 > [!NOTE]
-> API Center is a solution for API inventory management. If you're looking for a solution to manage, secure, and publish your organization's API backends through an API gateway, see the [Azure API Management](../api-management/api-management-key-concepts.md) service.
+> Azure API Center is a solution for design-time API governance and centralized API discovery. Azure also offers complementary services such as Azure API Management, a solution for runtime API governance and observability using an API gateway. [Learn more](frequently-asked-questions.yml#what-s-the-difference-between-azure-api-management-and-azure-api-center) about the differences and how Azure API Center and API Management can work together.
+
+> [!TIP]
+> Getting started with API Center just got easier! The Free plan is now available with no time constraints. [Limits](/azure/azure-resource-manager/management/azure-subscription-service-limits?toc=/azure/api-center/toc.json&bc=/azure/api-center/breadcrumb/toc.json#azure-api-center-limits) apply.
+
 
 ## Benefits
 
-With API Center, stakeholders throughout your organization - including API program managers, application developers, and API developers - can discover, govern, and reuse APIs.  
+* **Create and maintain an organizational inventory​** - Organizations can build a **complete inventory of APIs** available in their organization. Register APIs managed in all of your API management solutions, including Azure API Management and platforms from other providers. Also include your unmanaged APIs and APIs under development. Foster communication and let API program managers and developers collaborate for increased API reuse, quality, security, compliance, and developer productivity.​
 
-* **API program managers**, usually IT or enterprise architects leading organizational API programs, who foster API reuse, quality, and compliance. API Center provides these users with a centralized inventory view of all APIs in the organization and information about those APIs, such as their deployments.
-* **Application developers**, including both professional developers and low-code/no-code developers, who discover and consume APIs to accelerate or enable development of applications. API Center helps these users find, understand, and get access to available APIs and reach the API developer teams who support them.
-* **API developers**, who design, develop, document, and publish APIs that meet organizational standards and comply with industry regulations. API Center helps these users reduce duplication, boost adoption, and track their APIs throughout their lifecycles.  
+*  **Govern your organization's APIs** - With more complete visibility into the APIs being developed and used within an organization, API program managers and IT administrators can govern this inventory to ensure it meets organizational standards by **defining custom metadata** and **analyzing API definitions** to enforce conformance to API style guidelines.​
+
+* **Easy API discovery** - Organizations want to promote API reuse to maximize developer productivity and ensure developers are using the right APIs. Azure API Center helps program managers and developers discover the API inventory and filter using built-in and custom metadata. ​
+
+* **Accelerate API consumption** - Maximize developer productivity when consuming APIs and ensure they are consumed in a secure manner consistent with organizational standards. 
+
 
 ## Key capabilities
 
-In preview, create and use an API Center in the Azure portal for the following:
+Create and use an API center for the following:
 
-* **API inventory management** - Register all of your organization's APIs for inclusion in a centralized inventory.
-* **Real-world API representation** - Add real-world information about each API including versions and specifications such as OpenAPI specifications. List API deployments and associate them with runtime environments, for example representing API management solutions.
-* **Metadata properties** - Organize and filter APIs and related resources using built-in and custom metadata properties, to help with API governance and discoverability by API consumers.  
-* **Workspaces** - Enable multiple teams to work independently in API Center by creating workspaces with permissions based on role-based access control.
+* **API inventory management** - API developers and API program managers can register all of your organization's APIs for inclusion in a centralized inventory using the Azure portal, the Azure CLI, developer tooling such as CI/CD pipelines, and links to API sources such as Azure API Management services. 
 
-For more information about the information assets and capabilities in API Center, see [Key concepts](key-concepts.md).
+* **API design and development** - With the [Azure API Center extension for Visual Studio Code](build-register-apis-vscode-extension.md), developers can register APIs directly from the same development environment where they create their APIs and apps. 
 
-## Preview limitations
+    Developers can take advantage of the extension's integration with GitHub Copilot to [create API definitions from code](build-register-apis-vscode-extension.md#generate-openapi-spec-from-api-code) and with GitHub Copilot for Azure to [design APIs with AI assistance](design-api-github-copilot-azure.md).  
 
-* In preview, API Center is available in the following Azure regions:
-   * Australia East
-   * Central India
-   * East US
-   * UK South
-   * West Europe 
-               
-## Frequently asked questions
+* **Real-world API representation** - Add real-world information about each API including versions and definitions such as OpenAPI definitions. List API deployments and associate them with runtime environments, for example, representing Azure API Management or other API management solutions.
 
-### Q: Is API Center part of Azure API Management? 
+* **API governance** - Organize and filter APIs and related resources using built-in and custom metadata, to help with API governance and discovery by API consumers. Set up [linting and analysis](enable-managed-api-analysis-linting.md) to enforce API definition quality. 
 
-A: API Center is a stand-alone Azure service that's complementary to Azure API Management and API management services from other providers. API Center provides a unified API inventory for all APIs in the organization, including APIs that don't run in API gateways (such as those that are still in design) and those that are managed with different API management solutions. 
+    API developers can shift-left API design conformance checks into Visual Studio Code with integrated linting support and breaking change detection. Integrate with tools such as Dev Proxy to ensure that apps don't use unregistered [shadow APIs](discover-shadow-apis-dev-proxy.md) or APIs that don't meet organizational standards.
 
-### Q: Is my data encrypted in API Center?
+* **API discovery and reuse** - Enable enterprise developers and API program managers to discover APIs via an [API Center portal](set-up-api-center-portal.md). You can also enable the portal using the [Azure API Center Visual Studio Code extension](enable-api-center-portal-vs-code-extension.md).
 
-A: Yes, all data in API Center is encrypted at rest.
+For more about the entities you can manage and the capabilities in Azure API Center, see [Key concepts](key-concepts.md).
+
+## Available regions
+Azure API Center is currently available in the following Azure regions:
+
+* Australia East
+* Canada Central
+* Central India
+* East US
+* France Central
+* Sweden Central
+* UK South
+* West Europe 
+
+API Center is offered in a Free plan and a Standard plan. [Learn more](../azure-resource-manager/management/azure-subscription-service-limits.md?toc=/azure/api-center/toc.json&bc=/azure/api-center/breadcrumb/toc.json#azure-api-center-limits).
+             
+## Azure API Center and the API ecosystem
+
+Azure API Center can serve a key role in an organization's API ecosystem. Consider the hypothetical Contoso organization, which has adopted an API-first strategy, emphasizing the importance of APIs in their software development and integration. 
+
+Contoso's API developers, app developers, API program managers, and API managers collaborate through Azure API Center to develop and use the organization's API inventory. See the following diagram and explanation.
+
+:::image type="content" source="media/overview/api-ecosystem-example.png" alt-text="Diagram showing API Center in an example API ecosystem.":::
+
+Contoso's API ecosystem includes the following:
+
+* **API development** - Contoso's developers regularly build ASP.NET web APIs. They also create Azure Functions with HTTP triggers.
+
+* **API deployment environments** - Contoso deploys a portion of their APIs to Azure App Service. Another subset of their APIs is deployed to an Azure Function app. 
+
+* **Azure API Management** - Contoso uses the Azure [API Management](../api-management/api-management-key-concepts.md) service to manage, publish, and secure their APIs. They use separate instances for Development, Test, and Production, each with a distinct name. 
+
+* **Azure API Center** - Contoso has adopted Azure API Center as their centralized hub for API discovery, governance, and consumption. API Center serves as a structured and organized API hub that provides comprehensive information about all organizational APIs, maintaining related information including versions and associated deployments. 
 
 ## Next steps
 
 > [!div class="nextstepaction"]
-> [Get access to the preview](https://aka.ms/apicenter/joinpreview)
-
-
-> [!div class="nextstepaction"]
-> [Set up your API center](set-up-api-center.md)
-
-> [!div class="nextstepaction"]
-> [Provide feedback](https://aka.ms/apicenter/preview/feedback)
+> [Set up your API center - portal](set-up-api-center.md)
 

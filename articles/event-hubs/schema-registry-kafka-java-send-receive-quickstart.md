@@ -5,8 +5,9 @@ ms.topic: how-to
 ms.date: 04/26/2023
 ms.devlang: java
 ms.custom: devx-track-extended-java
-author: kasun04
-ms.author: kindrasiri
+ms.subservice: kafka
+author: spelluru
+ms.author: spelluru
 ---
 
 # Validate schemas for Apache Kafka applications using Avro (Java)
@@ -22,7 +23,7 @@ In this use case a Kafka producer application uses Avro schema stored in Azure S
 If you're new to Azure Event Hubs, see [Event Hubs overview](event-hubs-about.md) before you do this quickstart. 
 
 To complete this quickstart, you need the following prerequisites:
-- If you don't have an **Azure subscription**, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+- If you don't have an **Azure subscription**, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 - In your development environment, install the following components: 
     * [Java Development Kit (JDK) 1.7+](/azure/developer/java/fundamentals/java-support-on-azure).
     * [Download](https://maven.apache.org/download.cgi) and [install](https://maven.apache.org/install.html) a Maven binary archive.
@@ -65,9 +66,9 @@ Follow instructions from [Create schemas using Schema Registry](create-schema-re
     ```
 
 ## Register an application to access schema registry 
-You can use Azure Active Directory to authorize your Kafka producer and consumer application to access Azure Schema Registry resources by registering your client application with an Azure AD tenant from the Azure portal. 
+You can use Microsoft Entra ID to authorize your Kafka producer and consumer application to access Azure Schema Registry resources by registering your client application with a Microsoft Entra tenant from the Azure portal. 
 
-To register an Azure Active Directory application named  `example-app` see [Register your application with an Azure AD tenant](authenticate-application.md).
+To register a Microsoft Entra application named  `example-app` see [Register your application with a Microsoft Entra tenant](authenticate-application.md).
 
 - tenant.id - sets the tenant ID of the application
 - client.id - sets the client ID of the application
@@ -83,7 +84,7 @@ And if you're using managed identity, you would need:
 ## Add user to Schema Registry Reader role
 Add your user account to the **Schema Registry Reader** role at the namespace level. You can also use the **Schema Registry Contributor** role, but that's not necessary for this quickstart.  
 
-1. On the **Event Hubs Namespace** page, select **Access control (IAM)** on the left menu.
+1. On the **Event Hubs namespace** page, select **Access control (IAM)** on the left menu.
 2. On the **Access control (IAM)** page, select **+ Add** -> **Add role assignment** on the menu. 
 3. On the **Assignment type** page, select **Next**.
 4. On the **Roles** page, select **Schema Registry Reader (Preview)**, and then select **Next** at the bottom of the page.
@@ -92,13 +93,13 @@ Add your user account to the **Schema Registry Reader** role at the namespace le
 
 
 ## Update client application configuration of Kafka applications
-You need to update the client configuration of the Kafka producer and consumer applications with the configuration related to Azure Active directory application that we created and the schema registry information. 
+You need to update the client configuration of the Kafka producer and consumer applications with the configuration related to Microsoft Entra application that we created and the schema registry information. 
 
 To update the Kafka Producer configuration, navigate to *azure-schema-registry-for-kafka/tree/master/java/avro/samples/kafka-producer*.
 
 1. Update the configuration of the Kafka application in *src/main/resources/app.properties* by following [Kafka Quickstart guide for Event Hubs](event-hubs-quickstart-kafka-enabled-event-hubs.md). 
 
-1. Update the configuration details for the producer in *src/main/resources/app.properties* using schema registry related configuration and Azure Active directory application that you created above as follows:
+1. Update the configuration details for the producer in *src/main/resources/app.properties* using schema registry related configuration and Microsoft Entra application that you created above as follows:
 
    ```xml
    schema.group=contoso-sg

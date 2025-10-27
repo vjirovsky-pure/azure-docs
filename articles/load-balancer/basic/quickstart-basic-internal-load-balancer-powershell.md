@@ -3,12 +3,14 @@ title: 'Quickstart: Create an internal basic load balancer - Azure PowerShell'
 titleSuffix: Azure Load Balancer
 description: This quickstart shows how to create an internal basic load balancer using Azure PowerShell
 author: mbender-ms
-ms.service: load-balancer
+ms.service: azure-load-balancer
 ms.topic: quickstart
-ms.date: 04/10/2023
+ms.date: 03/12/2024
+ROBOTS: NOINDEX, NOFOLLOW
 ms.author: mbender
 ms.custom: devx-track-azurepowershell, mode-api
 #Customer intent: I want to create a load balancer so that I can load balance internal traffic to VMs.
+# Customer intent: As a cloud infrastructure architect, I want to create an internal load balancer with associated virtual machines, so that I can efficiently manage and distribute traffic for backend applications within my network.
 ---
 
 # Quickstart: Create an internal basic load balancer to load balance VMs using Azure PowerShell
@@ -20,7 +22,7 @@ Get started with Azure Load Balancer by using Azure PowerShell to create an inte
 
 ## Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F)
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 
 - Azure PowerShell installed locally or Azure Cloud Shell
 
@@ -56,7 +58,7 @@ Create an Azure Bastion host to securely manage the virtual machines in the back
 
 > [!IMPORTANT]
 
-> [!INCLUDE [Pricing](../../../includes/bastion-pricing.md)]
+> [!INCLUDE [Pricing](~/reusable-content/ce-skilling/azure/includes/bastion-pricing.md)]
 
 >
 
@@ -133,9 +135,9 @@ New-AzNetworkSecurityGroup @nsg
 
 This section details how you can create and configure the following components of the load balancer:
 
-* Create a front-end IP with [New-AzLoadBalancerFrontendIpConfig](/powershell/module/az.network/new-azloadbalancerfrontendipconfig) for the frontend IP pool. This IP receives the incoming traffic on the load balancer
+* Create a frontend IP with [New-AzLoadBalancerFrontendIpConfig](/powershell/module/az.network/new-azloadbalancerfrontendipconfig) for the frontend IP pool. This IP receives the incoming traffic on the load balancer
 
-* Create a back-end address pool with [New-AzLoadBalancerBackendAddressPoolConfig](/powershell/module/az.network/new-azloadbalancerbackendaddresspoolconfig) for traffic sent from the frontend of the load balancer
+* Create a backend address pool with [New-AzLoadBalancerBackendAddressPoolConfig](/powershell/module/az.network/new-azloadbalancerbackendaddresspoolconfig) for traffic sent from the frontend of the load balancer
 
 * Create a health probe with [Add-AzLoadBalancerProbeConfig](/powershell/module/az.network/add-azloadbalancerprobeconfig) that determines the health of the backend VM instances
 
@@ -314,7 +316,7 @@ Id     Name            PSJobTypeName   State         HasMoreData     Location   
 3      Long Running O… AzureLongRunni… Completed     True            localhost            New-AzVM
 ```
 
-[!INCLUDE [ephemeral-ip-note.md](../../../includes/ephemeral-ip-note.md)]
+[!INCLUDE [ephemeral-ip-note.md](~/reusable-content/ce-skilling/azure/includes/ephemeral-ip-note.md)]
 
 ## Create the test virtual machine
 

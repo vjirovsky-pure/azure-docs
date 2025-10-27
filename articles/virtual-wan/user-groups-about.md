@@ -3,9 +3,9 @@ title: 'About user groups and IP address pools for point-to-site User VPN'
 titleSuffix: Azure Virtual WAN
 description: Learn about using user groups to assign IP addresses from specific address pools based on identity or authentication credentials.
 author: cherylmc
-ms.service: virtual-wan
-ms.topic: conceptual
-ms.date: 07/31/2023
+ms.service: azure-virtual-wan
+ms.topic: concept-article
+ms.date: 03/27/2025
 ms.author: cherylmc
 
 ---
@@ -39,9 +39,9 @@ In this example, the VPN server configuration has the following groups configure
 
 |Default|Priority|Group name|Authentication type|Member value|
 |---|---|---|---|---|
-|Yes|0|Engineering|Azure Active Directory|groupObjectId1|
-|No|1|Finance|Azure Active Directory|groupObjectId2|
-|No|2|PM|Azure Active Directory|groupObjectId3|
+|Yes|0|Engineering|Microsoft Entra ID|groupObjectId1|
+|No|1|Finance|Microsoft Entra ID|groupObjectId2|
+|No|2|PM|Microsoft Entra ID|groupObjectId3|
 
 This VPN server configuration can be assigned to a P2S VPN gateway in Virtual WAN with:
 
@@ -52,8 +52,8 @@ This VPN server configuration can be assigned to a P2S VPN gateway in Virtual WA
 
 The following result is:
 
-* Users who are connecting to this P2S VPN gateway will be assigned an address from x.x.x.x/yy if they're part of the Engineering or PM Azure Active Directory groups.
-* Users who are part of Finance Azure Active Directory group are assigned IP addresses from a.a.a.a/bb.
+* Users who are connecting to this P2S VPN gateway will be assigned an address from x.x.x.x/yy if they're part of the Engineering or PM Microsoft Entra groups.
+* Users who are part of Finance Microsoft Entra group are assigned IP addresses from a.a.a.a/bb.
 * Because Engineering is the default group, users who aren't part of any configured group are assumed to be part of Engineering and assigned an IP address from x.x.x.x/yy.
 
 ## Configuration considerations
@@ -68,13 +68,13 @@ This section lists configuration requirements and limitations for user groups an
 
 ## Use cases
 
-Contoso corporation is composed of multiple functional departments, such as Finance, Human Resources and Engineering. Contoso uses Azure Virtual WAN to allow remote workers (users) to connect to the virtual WAN and access resources hosted on-premises or in a virtual network connected to the virtual WAN hub.
+Contoso corporation is composed of multiple functional departments, such as Finance, Human Resources, and Engineering. Contoso uses Azure Virtual WAN to allow remote workers (users) to connect to the virtual WAN and access resources hosted on-premises or in a virtual network connected to the virtual WAN hub.
 
 However, Contoso has internal security policies where users from the Finance department can only access certain databases and virtual machines, and users from Human Resources have access to other sensitive applications.
 
 * Contoso can configure different user groups for each of their functional departments. This ensures users from each department are assigned IP addresses from a department-level predefined address pool.
 
-* Contoso's network administrator can then configure Firewall rules, network security groups (NSG) or access control lists (ACLs) to allow or deny certain users access to resources based on their IP addresses.
+* Contoso's network administrator can then configure Firewall rules, network security groups (NSG), or access control lists (ACLs) to allow or deny certain users access to resources based on their IP addresses.
 
 ## Next steps
 

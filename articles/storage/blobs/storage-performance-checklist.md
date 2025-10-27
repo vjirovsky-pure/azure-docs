@@ -3,14 +3,15 @@ title: Performance and scalability checklist for Blob storage
 titleSuffix: Azure Storage
 description: A checklist of proven practices for use with Blob storage in developing high-performance applications.
 services: storage
-author: tamram
+author: akashdubey-ms
 
-ms.service: azure-storage
-ms.topic: conceptual
+ms.service: azure-blob-storage
+ms.topic: concept-article
 ms.date: 06/01/2023
-ms.author: tamram
+ms.author: akashdubey
 ms.devlang: csharp
 ms.custom: devx-track-csharp, devx-track-dotnet
+# Customer intent: As a developer, I want a checklist of proven practices for optimizing Blob storage performance, so that I can ensure my application scales efficiently and meets performance targets while avoiding throttling and errors.
 ---
 
 # Performance and scalability checklist for Blob storage
@@ -47,6 +48,7 @@ This article organizes proven practices for performance into a checklist you can
 | &nbsp; |Copying blobs |[Are you using the Azure Data Box family for importing large volumes of data?](#use-azure-data-box) |
 | &nbsp; |Content distribution |[Are you using a CDN for content distribution?](#content-distribution) |
 | &nbsp; |Use metadata |[Are you storing frequently used metadata about blobs in their metadata?](#use-metadata) |
+| &nbsp; |Service metadata | [Allow time for account and container metadata propagation](#account-and-container-metadata-updates) |
 | &nbsp; |Performance tuning |[Are you proactively tuning client library options to optimize data transfer performance?](#performance-tuning-for-data-transfers) |
 | &nbsp; |Uploading quickly |[When trying to upload one blob quickly, are you uploading blocks in parallel?](#upload-one-large-blob-quickly) |
 | &nbsp; |Uploading quickly |[When trying to upload many blobs quickly, are you uploading blobs in parallel?](#upload-many-blobs-quickly) |
@@ -62,7 +64,7 @@ For more information about scalability targets for the Queue service, see [Azure
 
 If you're approaching the maximum number of storage accounts permitted for a particular subscription/region combination, evaluate your scenario and determine whether any of the following conditions apply:
 
-- Are you using storage accounts to store unmanaged disks and adding those disks to your virtual machines (VMs)? For this scenario, Microsoft recommends using managed disks. Managed disks scale for you automatically and without the need to create and manage individual storage accounts. For more information, see [Introduction to Azure managed disks](../../virtual-machines/managed-disks-overview.md)
+- Are you using storage accounts to store unmanaged disks and adding those disks to your virtual machines (VMs)? For this scenario, Microsoft recommends using managed disks. Managed disks scale for you automatically and without the need to create and manage individual storage accounts. For more information, see [Introduction to Azure managed disks](/azure/virtual-machines/managed-disks-overview)
 - Are you using one storage account per customer, for the purpose of data isolation? For this scenario, Microsoft recommends using a blob container for each customer, instead of an entire storage account. Azure Storage now allows you to assign Azure roles on a per-container basis. For more information, see [Assign an Azure role for access to blob data](assign-azure-role-data-access.md).
 - Are you using multiple storage accounts to shard to increase ingress, egress, I/O operations per second (IOPS), or capacity? In this scenario, Microsoft recommends that you take advantage of increased limits for storage accounts to reduce the number of storage accounts required for your workload if possible. Contact [Azure Support](https://azure.microsoft.com/support/options/) to request increased limits for your storage account.
 
@@ -97,7 +99,7 @@ Understanding how Azure Storage partitions your blob data is useful for enhancin
 
 Blob storage uses a range-based partitioning scheme for scaling and load balancing. Each blob has a partition key comprised of the full blob name (account+container+blob). The partition key is used to partition blob data into ranges. The ranges are then load-balanced across Blob storage.
 
-Range-based partitioning means that naming conventions that use  lexical ordering (for example, *mypayroll*, *myperformance*, *myemployees*, etc.) or timestamps (*log20160101*, *log20160102*, *log20160102*, etc.) are more likely to result in the partitions being co-located on the same partition server until increased load requires that they're split into smaller ranges. Co-locating blobs on the same partition server enhances performance, so an important part of performance enhancement involves naming blobs in a way that organizes them most effectively.
+Range-based partitioning means that naming conventions that use  lexical ordering (for example, *mypayroll*, *myperformance*, *myemployees*, etc.) or timestamps (*log20160101*, *log20160102*, *log20160102*, etc.) are more likely to result in the partitions being co-located on the same partition server until increased load requires that they're split into smaller ranges. Co-locating blobs on the same partition server impacts performance, so an important part of performance enhancement involves naming blobs in a way that organizes them most effectively.
 
 For example, all blobs within a container can be served by a single server until the load on these blobs requires further rebalancing of the partition ranges. Similarly, a group of lightly loaded accounts with their names arranged in lexical order may be served by a single server until the load on one or all of these accounts require them to be split across multiple partition servers.
 
@@ -105,7 +107,7 @@ Each load-balancing operation may impact the latency of storage calls during the
 
 You can follow some best practices to reduce the frequency of such operations.
 
-- If possible, use blob or block sizes greater than 256 KiB for standard and premium storage accounts. Larger blob or block sizes automatically activate high-throughput block blobs. High-throughput block blobs provide high-performance ingest that isn't affected by partition naming.
+- If possible, use blob or block sizes greater than 4 MiB for standard storage accounts and 256 KiB for premium storage accounts. Larger blob or block sizes automatically activate high-throughput block blobs. High-throughput block blobs provide high-performance ingest that isn't affected by partition naming.
 - Examine the naming convention you use for accounts, containers, blobs, tables, and queues. Consider prefixing account, container, or blob names with a three-digit hash using a hashing function that best suits your needs.
 - If you organize your data using timestamps or numerical identifiers, make sure that you aren't using an append-only (or prepend-only) traffic pattern. These patterns aren't suitable for a range-based partitioning system. These patterns may lead to all traffic going to a single partition and limiting the system from effectively load balancing.
 
@@ -245,13 +247,20 @@ For importing large volumes of data into Blob storage, consider using the Azure 
 
 ## Content distribution
 
-Sometimes an application needs to serve the same content to many users (for example, a product demo video used in the home page of a website), located in either the same or multiple regions. In this scenario, use a Content Delivery Network (CDN) such as Azure Front Door. Azure Front Door is Microsoft’s modern cloud CDN that provides fast, reliable, and secure access between your users and your applications’ static and dynamic web content across the globe. Azure Front Door delivers your Blob Storage content using Microsoft’s global edge network with hundreds of [global and local points of presence (PoPs)](../../frontdoor/edge-locations-by-region.md). A CDN can typically support much higher egress limits than a single storage account and offers improved latency for content delivery to other regoins. 
+Sometimes an application needs to serve the same content to many users (for example, a product demo video used in the home page of a website), located in either the same or multiple regions. In this scenario, use a Content Delivery Network (CDN) such as Azure Front Door. Azure Front Door is Microsoft’s modern cloud CDN that provides fast, reliable, and secure access between your users and your applications’ static and dynamic web content across the globe. Azure Front Door delivers your Blob Storage content using Microsoft’s global edge network with hundreds of [global and local points of presence (PoPs)](../../frontdoor/edge-locations-by-region.md). A CDN can typically support much higher egress limits than a single storage account and offers improved latency for content delivery to other regions. 
 
 For more information about Azure Front Door, see [Azure Front Door](../../frontdoor/front-door-overview.md).
 
 ## Use metadata
 
 The Blob service supports HEAD requests, which can include blob properties or metadata. For example, if your application needs the Exif (exchangeable image format) data from a photo, it can retrieve the photo and extract it. To save bandwidth and improve performance, your application can store the Exif data in the blob's metadata when the application uploads the photo. You can then retrieve the Exif data in metadata using only a HEAD request. Retrieving only metadata and not the full contents of the blob saves significant bandwidth and reduces the processing time required to extract the Exif data. Keep in mind that 8 KiB of metadata can be stored per blob.
+
+## Account and container metadata updates
+
+Account and container metadata is propagated across the storage service in the region where the account resides. Full propagation of this metadata can take up to 60 seconds depending on the operation. For example:
+
+- If you are rapidly creating, deleting, and recreating accounts with the same account name in the same region ensure that you are waiting 60 seconds for the account state to fully propagate, or your requests may fail.
+- When you establish a stored access policy on a container, the policy might take up to 30 seconds to take effect.
 
 ## Performance tuning for data transfers
 
@@ -284,3 +293,4 @@ Page blobs are appropriate if the application needs to perform random writes on 
 - [Scalability and performance targets for Blob storage](scalability-targets.md)
 - [Scalability and performance targets for standard storage accounts](../common/scalability-targets-standard-account.md?toc=/azure/storage/blobs/toc.json)
 - [Status and error codes](/rest/api/storageservices/Status-and-Error-Codes2)
+

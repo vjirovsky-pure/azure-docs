@@ -1,9 +1,10 @@
 ---
-author: alkohli
-ms.service: databox  
+author: stevenmatthew
+ms.service: azure-databox
 ms.topic: include
 ms.date: 12/07/2018
-ms.author: alkohli
+ms.author: shaas
+ms.custom: sfi-image-nochange
 ---
 
 1. Sign into the Data Box device. Ensure it is unlocked.
@@ -27,3 +28,4 @@ ms.author: alkohli
 7. For reference, use the following image. Save the **hosts** file.
 
     ![Screenshot shows a Notepad document with the I P address and blob service endpoint added.](media/data-box-add-device-ip/data-box-connect-via-rest-5.png)
+

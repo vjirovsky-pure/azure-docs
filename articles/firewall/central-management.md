@@ -1,12 +1,13 @@
 ---
 title: Azure Firewall central management
 description: Learn about Azure Firewall Manager central management
-author: vhorne
-ms.service: firewall
+author: duongau
+ms.service: azure-firewall
 services: firewall
-ms.topic: conceptual
+ms.topic: concept-article
 ms.date: 07/13/2020
-ms.author: victorh
+ms.author: duau
+# Customer intent: As a network security administrator, I want to centrally manage firewall policies using Azure Firewall Manager, so that I can ensure consistent security across multiple firewalls while allowing DevOps teams to implement local policies for greater flexibility.
 ---
 
 # Azure Firewall central management
@@ -35,7 +36,7 @@ Policies are billed based on firewall associations. A policy with zero or one fi
 The following leading third-party solutions support Azure Firewall central management using standard Azure REST APIs. Each of these solutions has its own unique characteristics and features:
 
 - [AlgoSec CloudFlow](https://www.algosec.com/azure/) 
-- [Barracuda Cloud Security Guardian](https://www.barracuda.com/products/cloudsecurityguardian/for_azure)
+- [Barracuda Cloud Security Guardian](https://www.barracuda.com/solutions/azure)
 - [Tufin Orca](https://www.tufin.com/products/tufin-orca)
 
 

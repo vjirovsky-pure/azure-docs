@@ -1,13 +1,14 @@
 ---
 title: Join Azure-SSIS integration runtime to a virtual network via Azure portal
 description: Learn how to join Azure-SSIS integration runtime to a virtual network via Azure portal. 
-ms.service: data-factory
 ms.subservice: integration-services
-ms.custom: devx-track-arm-template
 ms.topic: conceptual
-ms.date: 07/20/2023
+ms.date: 05/15/2024
 author: chugugrace
 ms.author: chugu 
+ms.custom:
+  - devx-track-arm-template
+  - sfi-image-nochange
 ---
 
 # Join Azure-SSIS integration runtime to a virtual network via Azure portal
@@ -70,7 +71,7 @@ Use Azure portal to configure a classic virtual network before you try to join y
 
    1. On the **Add role assignment** page, enter **Microsoft Azure Batch** in the search box, select the role, and select **Next**.
 
-      :::image type="content" source="media/join-azure-ssis-integration-runtime-virtual-network/add-virtual-machine-contributor-role.png" alt-text="Sreenshot showing search results for the &quot;Virtual Machine Contributor&quot; role.":::
+      :::image type="content" source="media/join-azure-ssis-integration-runtime-virtual-network/add-virtual-machine-contributor-role.png" alt-text="Screenshot showing search results for the &quot;Virtual Machine Contributor&quot; role.":::
 
    1. On the **Members** page, under **Members** select **+ Select members**.  Then on the **Select Members** pane, search for **Microsoft Azure Batch**, and select it from the list to add it, and click **Select**. 
 
@@ -144,7 +145,7 @@ After you've configured an Azure Resource Manager/classic virtual network, you c
 
 1. Start your Azure-SSIS IR by selecting the **Start** button in **Actions** column for your Azure-SSIS IR. It takes about 5/20-30 minutes to start your Azure-SSIS IR that joins a virtual network with express/standard injection method, respectively. 
 
-## Next steps
+## Related content
 
 - [Configure a virtual network to inject Azure-SSIS IR](azure-ssis-integration-runtime-virtual-network-configuration.md)
 - [Express virtual network injection method](azure-ssis-integration-runtime-express-virtual-network-injection.md)

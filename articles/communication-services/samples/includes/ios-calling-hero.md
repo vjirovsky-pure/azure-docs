@@ -55,7 +55,7 @@ Below you'll find more information on prerequisites and steps to set up the samp
 
 ## Prerequisites
 
-- An Azure account with an active subscription. For details, see [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- An Azure account with an active subscription. For details, see [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 - A Mac running [Xcode](https://go.microsoft.com/fwLink/p/?LinkID=266532), along with a valid developer certificate installed into your Keychain.
 - An Azure Communication Services resource. For details, see [Create an Azure Communication Services resource](../../quickstarts/create-communication-resource.md).
 - An Azure Function running the [Authentication Endpoint](../../tutorials/trusted-service-tutorial.md) to fetch access tokens.
@@ -81,14 +81,14 @@ Build and run the sample in XCode, using the AzureCalling target on the simulato
 
 For demonstration purposes, this sample uses a publicly accessible endpoint by default to fetch an Azure Communication Services access token. For production scenarios, we recommend using your own secured endpoint to provision your own tokens.
 
-With additional configuration, this sample supports connecting to an **Azure Active Directory** (Azure AD) protected endpoint so that user login is required for the app to fetch an Azure Communication Services access token. See steps below:
+With additional configuration, this sample supports connecting to an **Microsoft Entra ID** (Microsoft Entra ID) protected endpoint so that user login is required for the app to fetch an Azure Communication Services access token. See steps below:
 
-1. Enable Azure Active Directory authentication in your app.  
-   - [Register your app under Azure Active Directory (using iOS / macOS platform settings)](../../../active-directory/develop/tutorial-v2-ios.md) 
-	- [Configure your App Service or Azure Functions app to use Azure AD login](../../../app-service/configure-authentication-provider-aad.md)
-2. Go to your registered app overview page under Azure Active Directory App Registrations. Take note of the `Application (client) ID`, `Directory (tenant) ID`, `Application ID URI`
+1. Enable Microsoft Entra authentication in your app.  
+   - [Register your app under Microsoft Entra ID (using iOS / macOS platform settings)](/entra/identity-platform/tutorial-v2-ios) 
+	- [Configure your App Service or Azure Functions app to use Microsoft Entra login](../../../app-service/configure-authentication-provider-aad.md)
+2. Go to your registered app overview page under Microsoft Entra App Registrations. Take note of the `Application (client) ID`, `Directory (tenant) ID`, `Application ID URI`
 
-:::image type="content" source="../media/calling/aad-overview.png" alt-text="Azure Active Directory configuration on Azure portal.":::
+:::image type="content" source="../media/calling/aad-overview.png" alt-text="Microsoft Entra configuration on Azure portal.":::
 
 3. Create a `AppSettings.xcconfig` file at the root if not already present and add the values:
    ```text

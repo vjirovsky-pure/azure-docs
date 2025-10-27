@@ -4,13 +4,15 @@ description: Reference for the cache-store policy available for use in Azure API
 services: api-management
 author: dlepow
 
-ms.service: api-management
-ms.topic: article
-ms.date: 12/07/2022
+ms.service: azure-api-management
+ms.topic: reference
+ms.date: 07/23/2024
 ms.author: danlep
 ---
 
 # Store to cache
+
+[!INCLUDE [api-management-availability-all-tiers](../../includes/api-management-availability-all-tiers.md)]
 
 The `cache-store` policy caches responses according to the specified cache settings. This policy can be applied in cases where response content remains static over a period of time. Response caching reduces bandwidth and processing requirements imposed on the backend web server and lowers latency perceived by API consumers.
 
@@ -38,19 +40,25 @@ The `cache-store` policy caches responses according to the specified cache setti
 
 ## Usage
 
-- [**Policy sections:**](./api-management-howto-policies.md#sections) outbound
+- [**Policy sections:**](./api-management-howto-policies.md#understanding-policy-configuration) outbound
 - [**Policy scopes:**](./api-management-howto-policies.md#scopes) global, workspace, product, API, operation
--  [**Gateways:**](api-management-gateways-overview.md) dedicated, consumption, self-hosted
+-  [**Gateways:**](api-management-gateways-overview.md) classic, v2, consumption, self-hosted, workspace
 
 ### Usage notes
 
 - API Management only caches responses to HTTP GET requests.
 - This policy can only be used once in a policy section.
+- [!INCLUDE [api-management-cache-rate-limit](../../includes/api-management-cache-rate-limit.md)]
 
 
 ## Examples
 
 ### Example with corresponding cache-lookup policy
+
+This example shows how to use the `cache-store` policy along with a `cache-lookup` policy to cache responses in the built-in API Management cache. 
+
+> [!NOTE]
+> [!INCLUDE [api-management-cache-availability](../../includes/api-management-cache-availability.md)]
 
 ```xml
 <policies>
@@ -59,6 +67,7 @@ The `cache-store` policy caches responses according to the specified cache setti
         <cache-lookup vary-by-developer="false" vary-by-developer-groups="false" downstream-caching-type="none" must-revalidate="true" caching-type="internal" >
             <vary-by-query-parameter>version</vary-by-query-parameter>
         </cache-lookup>
+        <rate-limit calls="10" renewal-period="60" />
     </inbound>
     <outbound>
         <cache-store duration="seconds" />
@@ -75,10 +84,11 @@ This example shows how to configure API Management response caching duration tha
 <!-- The following cache policy snippets demonstrate how to control API Management response cache duration with Cache-Control headers sent by the backend service. -->
 
 <!-- Copy this snippet into the inbound section -->
-<cache-store vary-by-developer="false" vary-by-developer-groups="false" downstream-caching-type="public" must-revalidate="true" >
+<cache-lookup vary-by-developer="false" vary-by-developer-groups="false" downstream-caching-type="public" must-revalidate="true" >
   <vary-by-header>Accept</vary-by-header>
   <vary-by-header>Accept-Charset</vary-by-header>
-</cache-store>
+</cache-lookup>
+<rate-limit calls="10" renewal-period="60" />
 
 <!-- Copy this snippet into the outbound section. Note that cache duration is set to the max-age value provided in the Cache-Control header received from the backend service or to the default value of 5 min if none is found  -->
 <cache-store duration="@{
@@ -94,6 +104,6 @@ For more information, see [Policy expressions](api-management-policy-expressions
 
 ## Related policies
 
-* [API Management caching policies](api-management-caching-policies.md)
+* [Caching](api-management-policies.md#caching)
 
 [!INCLUDE [api-management-policy-ref-next-steps](../../includes/api-management-policy-ref-next-steps.md)]

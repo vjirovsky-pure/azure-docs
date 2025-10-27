@@ -1,10 +1,11 @@
 ---
-author: lauradolan
+author: ju-shim
 ms.service: sap-on-azure
 ms.subservice: sap-monitor
 ms.topic: include
 ms.date: 10/27/2022
-ms.author: ladolan
+ms.author: jushiman
+# Customer intent: "As an IT administrator evaluating cloud monitoring options, I want to assess Azure Monitor for SAP solutions in its preview stage, so that I can determine its capabilities for managing and monitoring my SAP deployments on the cloud."
 ---
 
 > [!IMPORTANT]

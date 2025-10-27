@@ -1,14 +1,20 @@
 ---
-title: Install Cloud Backup for Virtual Machines (preview)
+title: Install Cloud Backup for Virtual Machines 
 description: Cloud Backup for Virtual Machines is a plug-in installed in the Azure VMware Solution and enables you to back up and restore Azure NetApp Files datastores and virtual machines.
 ms.topic: how-to
+ms.author: anfdocs
 ms.service: azure-vmware
-ms.date: 05/10/2023
+ms.date: 12/03/2024
+ms.custom: engagement-fy23
+# Customer intent: As a cloud administrator, I want to install and configure a backup solution for virtual machines in my Azure environment, so that I can ensure VM consistency and enable quick recovery of Azure NetApp Files datastores and virtual machines.
 ---
 
 # Install Cloud Backup for Virtual Machines (preview)
 
-Cloud Backup for Virtual Machines is a plug-in installed in the Azure VMware Solution and enables you to back up and restore Azure NetApp Files datastores and virtual machines (VMs). 
+Cloud Backup for Virtual Machines is a plug-in installed in the Azure VMware Solution and enables you to back up and restore Azure NetApp Files datastores and virtual machines (VMs) residing in NetApp Datastore to be backed up and restored.
+
+:::image type="content" source="./media/cloud-backup/cloud-backup-overview.png" alt-text="Diagram showing solution overview of Cloud Backup for Virtual Machines." lightbox="./media/cloud-backup/cloud-backup-overview.png":::
+
 
 Cloud Backup for Virtual Machines features:
 
@@ -24,11 +30,11 @@ You need to install Cloud Backup for Virtual Machines through the Azure portal a
 1. Sign in to your Azure VMware Solution private cloud. 
 1. Select **Run command** > **Packages** > **NetApp.CBS.AVS** > **Install-NetAppCBSA**.
  
-    :::image type="content" source="./media/cloud-backup/run-command.png" alt-text="Screenshot of the Azure interface that shows the configure signal logic step with a backdrop of the Create alert rule page." lightbox="./media/cloud-backup/run-command.png":::
+    :::image type="content" source="./media/cloud-backup/run-command.png" alt-text="Screenshot of the Azure interface that shows the configured signal logic step with a backdrop of the Create alert rule page." lightbox="./media/cloud-backup/run-command.png":::
 
 1. Provide the required values, then select **Run**. 
 
-    :::image type="content" source="./media/cloud-backup/run-commands-fields.png" alt-text="Image of the Run Command fields which are described in the table below." lightbox="./media/cloud-backup/run-commands-fields.png":::
+    :::image type="content" source="./media/cloud-backup/run-commands-fields.png" alt-text="Screenshot of the Run Command fields that are described in the following table." lightbox="./media/cloud-backup/run-commands-fields.png":::
 
     | Field | Value |
     | ------ | ----- |
@@ -48,7 +54,7 @@ You need to install Cloud Backup for Virtual Machines through the Azure portal a
     >[!TIP]
     >You can also install Cloud Backup for Virtual Machines using DHCP by running the package `NetAppCBSApplianceUsingDHCP`. If you install Cloud Backup for Virtual Machines using DHCP, you don't need to provide the values for the PrimaryDNS, Gateway, Netmask, and ApplianceIPAddress fields. These values are automatically generated. 
 
-1. Check **Notifications** or the **Run Execution Status** tab to see the progress. For more information about the status of the execution, see [Run command in Azure VMware Solution](concepts-run-command.md).  
+1. Check **Notifications** or the **Run Execution Status** tab to see the progress. For more information about the status of the execution, see [Run command in Azure VMware Solution](using-run-command.md).  
     
 Upon successful execution, the Cloud Backup for Virtual Machines is automatically displayed in the VMware vSphere client. 
 
@@ -61,12 +67,12 @@ Before you initiate the upgrade, you must:
 
 ### Back up the MySQL database 
 
-Do not start back up of the MySQL database when an on-demand backup job is already running.
+Don't start backup of the MySQL database when an on-demand backup job is already running.
 
 1. From the VMware vSphere web client, select the VM where the SnapCenter VMware plug-in is located.
 1. Right-click the VM. On the **Summary** tab of the virtual appliance, select **Launch Remote Console or Launch Web Console** to open a maintenance console window.
     
-    The logon defaults for the SnapCenter VMware plug-in maintenance console are:
+    The sign in defaults for the SnapCenter VMware plug-in maintenance console are:
 
     Username: `maint`
     Password: `admin123`
@@ -94,7 +100,7 @@ You can execute the run command to uninstall Cloud Backup for Virtual Machines.
 
 > [!IMPORTANT]
 > Before you initiate the upgrade, you must:
-> * Backup the MySQL database of Cloud Backup for Virtual Machines. 
+> * Back up the MySQL database of Cloud Backup for Virtual Machines. 
 > * Ensure that there are no other VMs installed in the VMware vSphere tag: `AVS_ANF_CLOUD_ADMIN_VM_TAG`. All VMs with this tag are deleted when you uninstall.
 
 1. Select **Run command** > **Packages** > **NetApp.CBS.AVS** > **Uninstall-NetAppCBSAppliance**.

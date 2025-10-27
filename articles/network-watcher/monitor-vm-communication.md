@@ -4,10 +4,12 @@ titleSuffix: Azure Network Watcher
 description: In this tutorial, learn how to monitor network communication between two Azure virtual machines with Azure Network Watcher's connection monitor capability.
 author: halkazwini
 ms.author: halkazwini
-ms.service: network-watcher
+ms.service: azure-network-watcher
 ms.topic: tutorial
-ms.date: 08/24/2023
-#CustomerIntent: As an Azure administrator, I want to monitor the communication between two virtual machines in Azure so I can be alerted if the communication fails to take actions. I alow want to know why the communication failed, so that I can resolve the problem. 
+ms.date: 09/23/2025
+ms.custom: sfi-image-nochange
+
+# Customer intent: As an Azure administrator, I want to monitor network communication between virtual machines so that I can identify and troubleshoot any connection failures promptly to maintain operational continuity.
 ---
 
 # Tutorial: Monitor network communication between two virtual machines using the Azure portal
@@ -22,25 +24,23 @@ In this tutorial, you learn how to:
 > * Monitor communication between the two virtual machines
 > * Diagnose a communication problem between the two virtual machines
 
-:::image type="content" source="./media/monitor-vm-communication/vm-connection-monitor-architecture-diagram.png" alt-text="Diagram shows the resources created in the tutorial.":::
+:::image type="content" source="./media/monitor-vm-communication/monitor-vm-connection-tutorial-diagram.png" alt-text="Diagram shows the resources created in the tutorial.":::
 
-If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 ## Prerequisites
 
 - An Azure account with an active subscription.
 
-## Sign in to Azure
-
-Sign in to the [Azure portal](https://portal.azure.com).
-
 ## Create a virtual network
 
 In this section, you create **myVNet** virtual network with two subnets and an Azure Bastion host. The first subnet is used for the virtual machine, and the second subnet is used for the Bastion host.
 
-1. In the search box at the top of the portal, enter *virtual networks*. Select **Virtual networks** in the search results.
+1. Sign in to the [Azure portal](https://portal.azure.com).
 
-    :::image type="content" source="./media/monitor-vm-communication/virtual-network-azure-portal.png" alt-text="Screenshot shows searching for virtual networks in the Azure portal.":::
+1. In the search box at the top of the portal, enter ***virtual networks***. Select **Virtual networks** from the search results.
+
+    :::image type="content" source="./media/virtual-networks-portal-search.png" alt-text="Screenshot that shows how to search for virtual networks in the Azure portal." lightbox="./media/virtual-networks-portal-search.png":::
 
 1. Select **+ Create**. In **Create virtual network**, enter or select the following values in the **Basics** tab:
 
@@ -69,7 +69,7 @@ In this section, you create two virtual machines: **myVM1** and **myVM2** to tes
 
 ### Create the first virtual machine
 
-1. In the search box at the top of the portal, enter *virtual machine*. Select **Virtual machines** in the search results.
+1. In the search box at the top of the portal, enter *virtual machine*. Select **Virtual machines** from the search results.
 
 1. In **Virtual machines**, select **+ Create** then **+ Azure virtual machine**.
 
@@ -123,7 +123,7 @@ In this section, you create a connection monitor to monitor communication over T
 
 1. Select **+ Create**.
 
-    :::image type="content" source="./media/monitor-vm-communication/connection-monitor.png" alt-text="Screenshot shows Connection monitor page in the Azure portal.":::
+    :::image type="content" source="./media/monitor-vm-communication/connection-monitor.png" alt-text="Screenshot shows Connection monitor page in the Azure portal." lightbox="./media/monitor-vm-communication/connection-monitor.png":::
 
 1. Enter or select the following information in the **Basics** tab of **Create Connection Monitor**:
 
@@ -137,7 +137,7 @@ In this section, you create a connection monitor to monitor communication over T
     | Region | Select **(US) East US**. |
     | Workspace configuration | Leave the default. |
 
-    :::image type="content" source="./media/monitor-vm-communication/create-connection-monitor-basics.png" alt-text="Screenshot shows the Basics tab of creating a connection monitor in the Azure portal.":::
+    :::image type="content" source="./media/monitor-vm-communication/create-connection-monitor-basics.png" alt-text="Screenshot shows the Basics tab of creating a connection monitor in the Azure portal." lightbox="./media/monitor-vm-communication/create-connection-monitor-basics.png":::
 
 1. Select the **Test groups** tab, or select **Next: Test groups** button.
 
@@ -147,7 +147,7 @@ In this section, you create a connection monitor to monitor communication over T
 
 1. In the **Add sources** page, select **myVM1** as the source endpoint, and then select **Add endpoints**.
 
-    :::image type="content" source="./media/monitor-vm-communication/add-source-endpoint.png" alt-text="Screenshot shows how to add a source endpoint for a connection monitor in the Azure portal.":::
+    :::image type="content" source="./media/monitor-vm-communication/add-source-endpoint.png" alt-text="Screenshot shows how to add a source endpoint for a connection monitor in the Azure portal." lightbox="./media/monitor-vm-communication/add-source-endpoint.png":::
 
     > [!NOTE]
     > You can use **Subscription**, **Resource group**, **VNET**, or **Subnet** filters to narrow down the list of virtual machines.
@@ -161,7 +161,7 @@ In this section, you create a connection monitor to monitor communication over T
     | Destination port | Enter *22*. | 
     | Test frequency | Select the default **Every 30 seconds**. | 
 
-    :::image type="content" source="./media/monitor-vm-communication/add-test-configuration.png" alt-text="Screenshot shows how to add a test configuration for a connection monitor in the Azure portal.":::
+    :::image type="content" source="./media/monitor-vm-communication/add-test-configuration.png" alt-text="Screenshot shows how to add a test configuration for a connection monitor in the Azure portal." lightbox="./media/monitor-vm-communication/add-test-configuration.png":::
 
 1. Select **Add test configuration**.
 
@@ -169,7 +169,7 @@ In this section, you create a connection monitor to monitor communication over T
 
 1. In the **Add Destinations** page, select **myVM2** as the destination endpoint, and then select **Add endpoints**.
 
-    :::image type="content" source="./media/monitor-vm-communication/add-destination-endpoint.png" alt-text="Screenshot shows how to add a destination endpoint for a connection monitor in the Azure portal.":::
+    :::image type="content" source="./media/monitor-vm-communication/add-destination-endpoint.png" alt-text="Screenshot shows how to add a destination endpoint for a connection monitor in the Azure portal." lightbox="./media/monitor-vm-communication/add-destination-endpoint.png":::
 
     > [!NOTE]
     > In addition to the **Subscription**, **Resource group**, **VNET**, and **Subnet** filters, you can use the **Region** filter to narrow down the list of virtual machines.
@@ -184,11 +184,11 @@ In this section, you view all the details of the connection monitor that you cre
 
 1. Go to the **Connection monitor** page. If you don't see **myConnectionMonitor** in the list of connection monitors, wait a few minutes, then select **Refresh**. 
 
-    :::image type="content" source="./media/monitor-vm-communication/new-connection-monitor.png" alt-text="Screenshot shows the new connection monitor that you've just created." lightbox="./media/monitor-vm-communication/new-connection-monitor.png":::
+    :::image type="content" source="./media/monitor-vm-communication/new-connection-monitor.png" alt-text="Screenshot shows the new connection monitor." lightbox="./media/monitor-vm-communication/new-connection-monitor.png":::
 
 1. Select **myConnectionMonitor** to see the performance metrics of the connection monitor like round trip time and percentage of failed checks
   
-    :::image type="content" source="./media/monitor-vm-communication/connection-monitor-summary.png" alt-text="Screenshot shows the new connection monitor." lightbox="./media/monitor-vm-communication/connection-monitor-summary.png":::
+    :::image type="content" source="./media/monitor-vm-communication/connection-monitor-summary.png" alt-text="Screenshot that shows the summary page of the new connection monitor." lightbox="./media/monitor-vm-communication/connection-monitor-summary.png":::
 
 1. Select **Time Intervals** to adjust the time range to see the performance metrics for a specific time period. Available time intervals are **Last 1 hour**, **Last 6 hours**, **Last 24 hours**, **Last 7 days**, and **Last 30 days**. You can also select **Custom** to specify a custom time range.
 
@@ -198,7 +198,7 @@ In this section, you view all the details of the connection monitor that you cre
 
 The connection monitor you created in the previous section monitors the connection between **myVM1** and port 22 on **myVM2**. If the connection fails for any reason, connection monitor detects and logs the failure. In this section, you simulate a problem by stopping **myVM2**.
 
-1. In the search box at the top of the portal, enter *virtual machine*. Select **Virtual machines** in the search results.
+1. In the search box at the top of the portal, enter *virtual machine*. Select **Virtual machines** from the search results.
 
 1. In **Virtual machines**, select **myVM2**.
 
@@ -212,21 +212,19 @@ The connection monitor you created in the previous section monitors the connecti
 
 ## Clean up resources
 
-When no longer needed, delete the resource group and all of the resources it contains:
+When no longer needed, delete **myResourceGroup** resource group and all of the resources it contains:
 
-1. In the search box at the top of the portal, enter *myResourceGroup*. When you see **myResourceGroup** in the search results, select it.
+1. In the search box at the top of the portal, enter ***myResourceGroup***. Select **myResourceGroup** from the search results.
 
 1. Select **Delete resource group**.
 
-1. In **Delete a resource group**, enter *myResourceGroup*, and then select **Delete**.
+1. In **Delete a resource group**, enter ***myResourceGroup***, and then select **Delete**.
 
 1. Select **Delete** to confirm the deletion of the resource group and all its resources.
 
-## Next steps
+## Next step
 
-In this tutorial, you learned how to monitor a connection between two virtual machines. You learned that connection monitor detected the connection failure to port 22 on target virtual machine after you stopped it. To learn about all of the different metrics that connection monitor can return, see [Metrics in Azure Monitor](connection-monitor-overview.md#metrics-in-azure-monitor).
-
-To learn how to diagnose and troubleshoot problems with virtual network gateways, advance to the next tutorial.
+To learn how to monitor virtual machine scale set network communication, advance to the next tutorial:
 
 > [!div class="nextstepaction"]
 > [Diagnose communication problems between networks](diagnose-communication-problem-between-networks.md)

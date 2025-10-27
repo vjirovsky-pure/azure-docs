@@ -3,13 +3,14 @@ title: Scalability and performance targets for standard storage accounts
 titleSuffix: Azure Storage
 description: Learn about scalability and performance targets for standard storage accounts.
 services: storage
-author: tamram
+author: akashdubey-ms
 
 ms.service: azure-storage
-ms.topic: conceptual
+ms.topic: concept-article
 ms.date: 05/25/2022
-ms.author: tamram
+ms.author: akashdubey
 ms.subservice: storage-common-concepts
+# Customer intent: "As a cloud architect, I want to understand the scalability and performance targets for standard storage accounts, so that I can ensure that our storage solutions meet our application demands."
 ---
 
 # Scalability and performance targets for standard storage accounts

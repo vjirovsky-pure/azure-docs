@@ -4,11 +4,11 @@ description: Learn how to configure compute role on Azure Stack Edge Pro GPU and
 services: databox
 author: alkohli
 
-ms.service: databox
-ms.subservice: edge
+ms.service: azure-stack-edge
 ms.topic: tutorial
-ms.date: 02/02/2023
+ms.date: 04/01/2024
 ms.author: alkohli
+ms.custom: sfi-image-nochange
 # Customer intent: As an IT admin, I need to understand how to configure compute on Azure Stack Edge Pro so I can use it to transform the data before sending it to Azure.
 ---
 
@@ -18,7 +18,7 @@ ms.author: alkohli
 
 This tutorial describes how to configure a compute role and create a Kubernetes cluster on your Azure Stack Edge Pro GPU device. 
 
-This procedure can take around 20 to 30 minutes to complete.
+This procedure can take 20 to 30 minutes to complete.
 
 
 In this tutorial, you learn how to:
@@ -27,7 +27,8 @@ In this tutorial, you learn how to:
 > * Configure compute
 > * Get Kubernetes endpoints
 
- 
+ [!INCLUDE [deprecation-notice-managed-iot-edge](../../includes/azure-stack-edge-deprecation-notice-managed-iot-edge.md)]
+
 ## Prerequisites
 
 Before you set up a compute role on your Azure Stack Edge Pro device:

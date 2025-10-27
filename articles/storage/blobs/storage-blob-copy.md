@@ -2,17 +2,20 @@
 title: Copy a blob with .NET
 titleSuffix: Azure Storage
 description: Learn how to copy blobs in Azure Storage using the .NET client library.
-author: pauljewellmsft
+author: stevenmatthew
 
-ms.author: pauljewell
-ms.date: 04/14/2023
+ms.author: shaas
+ms.date: 08/05/2024
 ms.service: azure-blob-storage
 ms.topic: how-to
 ms.devlang: csharp
 ms.custom: devx-track-csharp, devguide-csharp, devx-track-dotnet
+# Customer intent: "As a .NET developer, I want to copy blobs using the Azure Storage client library, so that I can efficiently move and manage data within and between storage accounts."
 ---
 
 # Copy a blob with .NET
+
+[!INCLUDE [storage-dev-guide-selector-copy](../../../includes/storage-dev-guides/storage-dev-guide-selector-copy.md)]
 
 This article provides an overview of copy operations using the [Azure Storage client library for .NET](/dotnet/api/overview/azure/storage).
 
@@ -41,3 +44,4 @@ For page blobs, you can use the [Put Page From URL](/rest/api/storageservices/pu
 - [Client library reference documentation](/dotnet/api/azure.storage.blobs)
 - [Client library source code](https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/storage/Azure.Storage.Blobs)
 - [Package (NuGet)](https://www.nuget.org/packages/Azure.Storage.Blobs)
+

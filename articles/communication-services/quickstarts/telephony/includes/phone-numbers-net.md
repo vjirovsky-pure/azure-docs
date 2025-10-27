@@ -3,7 +3,7 @@
 
 ## Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 - The latest version [.NET Core client library](https://dotnet.microsoft.com/download/dotnet-core) for your operating system.
 - An active Communication Services resource and connection string. [Create a Communication Services resource](../../create-communication-resource.md).
 
@@ -64,7 +64,7 @@ var connectionString = "<connection_string>";
 var client = new PhoneNumbersClient(connectionString);
 ```
 
-Phone Number clients also have the option to authenticate with Azure Active Directory Authentication. With this option,
+Phone Number clients also have the option to authenticate with Microsoft Entra authentication. With this option,
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables need to be set up for authentication.
 
 ```csharp

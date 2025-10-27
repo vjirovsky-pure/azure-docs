@@ -2,8 +2,9 @@
 title: Get started with PowerShell
 description: A quick introduction to the Azure PowerShell cmdlets you can use to manage Batch resources.
 ms.topic: how-to
-ms.date: 05/24/2023
-ms.custom: seodec18, devx-track-azurepowershell, devx-track-linux
+ms.date: 04/02/2025
+ms.custom: devx-track-azurepowershell
+# Customer intent: As a cloud administrator, I want to use PowerShell cmdlets to manage Azure Batch resources, so that I can automate the creation, modification, and querying of Batch accounts, pools, jobs, tasks, and application packages efficiently.
 ---
 
 # Manage Batch resources with PowerShell cmdlets
@@ -25,7 +26,7 @@ We recommend that you update your Azure PowerShell modules frequently to take ad
   ```
 
 - **Register with the Batch provider namespace**. You only need to perform this operation **once per subscription**.
-  
+
   ```powershell
   Register-AzResourceProvider -ProviderNamespace Microsoft.Batch
   ```
@@ -84,7 +85,7 @@ When prompted, confirm you want to remove the account. Account removal can take 
 
 ## Create a BatchAccountContext object
 
-You can authenticate to manage Batch resources using either shared key authentication or Azure Active Directory authentication. To authenticate using the Batch PowerShell cmdlets, first create a BatchAccountContext object to store your account credentials or identity. You pass the BatchAccountContext object into cmdlets that use the **BatchContext** parameter.
+You can authenticate to manage Batch resources using either shared key authentication or Microsoft Entra authentication. To authenticate using the Batch PowerShell cmdlets, first create a BatchAccountContext object to store your account credentials or identity. You pass the BatchAccountContext object into cmdlets that use the **BatchContext** parameter.
 
 ### Shared key authentication
 
@@ -95,7 +96,9 @@ $context = Get-AzBatchAccountKeys -AccountName <account_name>
 > [!NOTE]
 > By default, the account's primary key is used for authentication, but you can explicitly select the key to use by changing your BatchAccountContext object’s **KeyInUse** property: `$context.KeyInUse = "Secondary"`.
 
-### Azure Active Directory authentication
+<a name='azure-active-directory-authentication'></a>
+
+### Microsoft Entra authentication
 
 ```powershell
 $context = Get-AzBatchAccount -AccountName <account_name>

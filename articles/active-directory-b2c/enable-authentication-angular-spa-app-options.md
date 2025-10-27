@@ -1,19 +1,24 @@
 ---
 title: Configure authentication options in an Angular application by using Azure Active Directory B2C
 description:  Enable the use of Angular application options in several ways.
-services: active-directory-b2c
+
 author: kengaderdus
 manager: CelesteDG
-ms.service: active-directory
-ms.workload: identity
+ms.service: azure-active-directory
+
 ms.topic: how-to
-ms.date: 03/23/2023
+ms.date: 01/11/2024
 ms.author: kengaderdus
-ms.subservice: B2C
+ms.subservice: b2c
 ms.custom: "b2c-support"
+
+
+#Customer intent: As an Angular developer, I want to configure authentication options in my application using Azure Active Directory B2C, so that I can customize and enhance the authentication experience for my users.
+
 ---
 
 # Configure authentication options in an Angular application by using Azure Active Directory B2C
+[!INCLUDE [active-directory-b2c-end-of-sale-notice-b](../../includes/active-directory-b2c-end-of-sale-notice-b.md)]
 
 This article describes how you can customize and enhance the Azure Active Directory B2C (Azure AD B2C) authentication experience for your Angular single-page application (SPA). 
 
@@ -407,7 +412,7 @@ if (this.msalGuardConfig.authRequest) {
   authRequestConfig = { ...this.msalGuardConfig.authRequest } as RedirectRequest
 }
 
-authRequestConfig.extraQueryParameters = {"id_token_hint": idToken};;
+authRequestConfig.extraQueryParameters = {"id_token_hint": idToken};
 
 this.authService.loginRedirect(authRequestConfig);
 

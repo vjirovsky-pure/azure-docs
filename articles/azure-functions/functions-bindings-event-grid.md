@@ -4,8 +4,8 @@ description: Understand how to handle Event Grid events in Azure Functions.
 
 ms.topic: reference
 ms.date: 03/04/2022
-ms.custom: fasttrack-edit, devx-track-extended-java, devx-track-js, devx-track-python
-zone_pivot_groups: programming-languages-set-functions-lang-workers
+ms.custom: fasttrack-edit, devx-track-extended-java, devx-track-js, devx-track-python, devx-track-ts
+zone_pivot_groups: programming-languages-set-functions
 ---
 
 # Azure Event Grid bindings for Azure Functions
@@ -27,15 +27,17 @@ This reference shows how to connect to Azure Event Grid using Azure Functions tr
 
 The extension NuGet package you install depends on the C# mode you're using in your function app: 
 
-# [In-process](#tab/in-process)
+# [Isolated worker model](#tab/isolated-process)
+
+Functions execute in an isolated C# worker process. To learn more, see [Guide for running C# Azure Functions in an isolated worker process](dotnet-isolated-process-guide.md).
+
+# [In-process model](#tab/in-process)
+
+[!INCLUDE [functions-in-process-model-retirement-note](../../includes/functions-in-process-model-retirement-note.md)]
 
 Functions execute in the same process as the Functions host. To learn more, see [Develop C# class library functions using Azure Functions](functions-dotnet-class-library.md).
 
 In a variation of this model, Functions can be run using [C# scripting], which is supported primarily for C# portal editing. To update existing binding extensions for C# script apps running in the portal without having to republish your function app, see [Update your extensions].
-
-# [Isolated process](#tab/isolated-process)
-
-Functions execute in an isolated C# worker process. To learn more, see [Guide for running C# Azure Functions in an isolated worker process](dotnet-isolated-process-guide.md).
 
 ---
 
@@ -59,8 +61,9 @@ Add the extension to your project by installing the [NuGet package], version 2.x
 
 # [Functions 1.x](#tab/functionsv1/in-process)
 
-Functions 1.x apps automatically have a reference to the [Microsoft.Azure.WebJobs](https://www.nuget.org/packages/Microsoft.Azure.WebJobs) NuGet package, version 2.x. Event Grid extension versions earlier than 3.x don't support [CloudEvents schema](../event-grid/cloudevents-schema.md#azure-functions). To consume this schema, instead use an HTTP trigger, or switch to **Extension v3.x**. To do so, you will need to [upgrade your application to Functions 4.x].
+[!INCLUDE [functions-runtime-1x-retirement-note](../../includes/functions-runtime-1x-retirement-note.md)]
 
+Functions 1.x apps automatically have a reference to the [Microsoft.Azure.WebJobs](https://www.nuget.org/packages/Microsoft.Azure.WebJobs) NuGet package, version 2.x. Event Grid extension versions earlier than 3.x don't support [CloudEvents schema](../event-grid/cloudevents-schema.md#azure-functions). To consume this schema, instead use an HTTP trigger, or switch to **Extension v3.x**. To do so, you will need to [upgrade your application to Functions 4.x].
 
 The Event Grid output binding is only available for Functions 2.x and higher.
 
@@ -82,29 +85,14 @@ The Event Grid output binding is only available for Functions 2.x and higher.
 
 ::: zone-end  
 
-::: zone pivot="programming-language-javascript,programming-language-python,programming-language-java,programming-language-powershell"  
+::: zone pivot="programming-language-javascript,programming-language-typescript,programming-language-python,programming-language-java,programming-language-powershell"  
 
-## Install bundle
+[!INCLUDE [functions-install-extension-bundle](../../includes/functions-install-extension-bundle.md)]
 
-The Event Grid extension is part of an [extension bundle], which is specified in your host.json project file. You may need to modify this bundle to change the version of the Event Grid binding, or if bundles aren't already installed. To learn more, see [extension bundle].
+Considerations for the Event Grid extension:
 
-# [Bundle v3.x](#tab/extensionv3)
-
-You can add this version of the extension from the extension bundle v3 by adding or replacing the following configuration in your `host.json` file:
-
-[!INCLUDE [functions-extension-bundles-json-v3](../../includes/functions-extension-bundles-json-v3.md)]
-
-To learn more, see [Update your extensions].
-
-# [Bundle v2.x](#tab/extensionv2)
-
-You can install this version of the extension in your function app by registering the [extension bundle], version 2.x. Event Grid extension versions earlier than 3.x don't support [CloudEvents schema](../event-grid/cloudevents-schema.md#azure-functions). To consume this schema, instead use an HTTP trigger.
-
-# [Functions 1.x](#tab/functionsv1)
-
-The Event Grid output binding is only available for Functions 2.x and higher. Event Grid extension versions earlier than 3.x don't support [CloudEvents schema](../event-grid/cloudevents-schema.md#azure-functions). To consume this schema, instead use an HTTP trigger.
-
----
++ Event Grid extension versions earlier than 3.x don't support [CloudEvents schema](../event-grid/cloudevents-schema.md#azure-functions). To consume this schema, instead use an HTTP trigger.
++ The Event Grid output binding is only available for Functions 2.x and higher. 
 
 ::: zone-end
 
@@ -114,14 +102,14 @@ The Event Grid output binding is only available for Functions 2.x and higher. Ev
 
 The binding types supported for .NET depend on both the extension version and C# execution mode, which can be one of the following: 
    
-# [In-process](#tab/in-process)
-
-An in-process class library is a compiled C# function runs in the same process as the Functions runtime.
- 
-# [Isolated process](#tab/isolated-process)
+# [Isolated worker model](#tab/isolated-process)
 
 An isolated worker process class library compiled C# function runs in a process isolated from the runtime.  
 
+# [In-process model](#tab/in-process)
+
+An in-process class library is a compiled C# function runs in the same process as the Functions runtime.
+ 
 ---
 
 Choose a version to see binding type details for the mode and version.
@@ -186,6 +174,10 @@ Functions version 1.x doesn't support isolated worker process. To use the isolat
 
 :::zone-end
 
+## host.json settings
+
+The Event Grid trigger uses a webhook HTTP request, which can be configured using the same [*host.json* settings as the HTTP Trigger](functions-bindings-http-webhook.md#hostjson-settings).
+
 ## Next steps
 
 * If you have questions, submit an issue to the team [here](https://github.com/Azure/azure-sdk-for-net/issues)
@@ -199,7 +191,7 @@ Functions version 1.x doesn't support isolated worker process. To use the isolat
 
 [binding]: functions-bindings-event-grid-output.md
 [trigger]: functions-bindings-event-grid-trigger.md
-[extension bundle]: ./functions-bindings-register.md#extension-bundles
+[extension bundle]: ./extension-bundles.md
 [NuGet package]: https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.EventGrid
 [Update your extensions]: ./functions-bindings-register.md
 

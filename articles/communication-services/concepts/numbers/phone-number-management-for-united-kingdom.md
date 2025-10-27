@@ -21,13 +21,18 @@ Use the below tables to find all the relevant information on number availability
 
 | Number Type | Send SMS             | Receive SMS          | Make Calls           | Receive Calls          |
 | :---------- | :------------------- | :------------------- | :------------------- | :--------------------- |
-| Toll-Free   |General Availability  | General Availability | General Availability | General Availability\* |
+| Toll-Free   | -                    | -                    | General Availability | General Availability\* |
 | Local       | -                    | -                    | General Availability | General Availability\* |
-|Alphanumeric Sender ID\**|Public Preview|-|-|-|
+| Mobile                    | General Availability\**       | General Availability\**       | -                    | -                      |
+|Alphanumeric Sender ID\**|General Availability  |-|-|-|
+| Short code       |General Availability                    |General Availability                    | - | - |
 
 \* Please refer to [Inbound calling capabilities page](../telephony/inbound-calling-capabilities.md) for details.
 
 \** Please refer to [SMS Concepts page](../sms/concepts.md) for supported destinations for this service.
+
+> [!IMPORTANT]
+> Effective **June 30, 2024**, unregistered alphanumeric sender IDs sending messages to UK phone numbers will have its traffic blocked. To prevent this from happening, a [registration application](https://forms.office.com/r/pK8Jhyhtd4) needs to be submitted and be in approved status.
 
 ## Subscription eligibility
 
@@ -37,7 +42,7 @@ More details on eligible subscription types are as follows:
 
 | Number Type                      | Eligible Azure Agreement Type                                                                             |
 | :------------------------------- | :-------------------------------------------------------------------------------------------------------- |
-| Toll-Free and Local (Geographic/National) | Modern Customer Agreement (Field and Customer Led), Modern Partner Agreement (CSP), Enterprise Agreement, Pay-As-You-Go |
+| Toll-Free, Local (Geographic/National), Mobile | Modern Customer Agreement (Field and Customer Led), Modern Partner Agreement (CSP), Enterprise Agreement, Pay-As-You-Go |
 | Alphanumeric Sender ID            | Modern Customer Agreement (Field Led and Customer Led), Modern Partner Agreement (CSP), Enterprise Agreement**, Pay-As-You-Go                                      |
 
 \** Applications from all other subscription types are reviewed and approved on a case-by-case basis. Reach out to acstns@microsoft.com for assistance with your application.
@@ -46,15 +51,58 @@ More details on eligible subscription types are as follows:
 ## Azure subscription billing locations where United Kingdom phone numbers are available
 | Country/Region |
 | :---------- |
+|Australia|
 |Canada|
 |Denmark|
+|France|
+|Germany|
 |Ireland|
 |Italy|
+|Japan|
+|Netherlands|
 |Puerto Rico|
+|Spain|
 |Sweden|
 |United Kingdom|
 |United States|
 
+[!INCLUDE [Azure Prepayment](../../includes/azure-prepayment.md)]
+
+## Azure subscription billing locations where United Kingdom mobile numbers are available
+| Country/Region |
+| :---------- |
+| Australia       |
+| Belgium         |
+| Denmark         |
+| Finland         |
+| Ireland         |
+| Latvia          |
+| Netherlands     |
+| Poland          |
+| Sweden          |
+| United Kingdom  |
+| United States  |
+
+## Azure subscription billing locations where United Kingdom alphanumeric sender IDs are available
+| Country/Region |
+| :---------- |
+| Australia |
+| Austria |
+| Denmark |
+| France |
+| Germany |
+| India |
+| Ireland |
+| Italy |
+| Netherlands |
+| Poland |
+| Portugal |
+| Puerto Rico |
+| Spain |
+| Sweden |
+| Switzerland |
+| United Kingdom |
+| United States |
 
 ## Find information about other countries/regions
 

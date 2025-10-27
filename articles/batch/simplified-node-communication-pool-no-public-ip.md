@@ -2,8 +2,9 @@
 title: Create a simplified node communication pool without public IP addresses
 description: Learn how to create an Azure Batch simplified node communication pool without public IP addresses.
 ms.topic: how-to
-ms.date: 8/14/2023
-ms.custom: references_regions, devx-track-arm-template, devx-track-linux
+ms.date: 09/30/2025
+ms.custom: references_regions, devx-track-arm-template, linux-related-content
+# Customer intent: "As a cloud architect, I want to create a Batch pool without public IP addresses so that I can enhance security and reduce the discoverability of compute nodes while managing compute resources efficiently."
 ---
 
 # Create a simplified node communication pool without public IP addresses
@@ -29,7 +30,7 @@ To restrict access to these nodes and reduce the discoverability of these nodes 
 
 - Use simplified compute node communication. For more information, see [Use simplified compute node communication](simplified-compute-node-communication.md).
 
-- The Batch client API must use Azure Active Directory (AD) authentication. Azure Batch support for Azure AD is documented in [Authenticate Batch service solutions with Active Directory](batch-aad-auth.md).
+- The Batch client API must use Microsoft Entra authentication. Azure Batch support for Microsoft Entra ID is documented in [Authenticate Batch service solutions with Active Directory](batch-aad-auth.md).
 
 - Create your pool in an [Azure virtual network (VNet)](batch-virtual-network.md), follow these  requirements and configurations. To prepare a VNet with one or more subnets in advance, you can use the Azure portal, Azure PowerShell, the Azure Command-Line Interface (Azure CLI), or other methods.
 
@@ -131,7 +132,7 @@ Following resources will be deployed by the template:
 
 If you're familiar with using ARM templates, select the **Deploy to Azure** button. The template will open in the Azure portal.
 
-[![Deploy to Azure](../media/template-deployments/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fquickstarts%2Fmicrosoft.batch%2Fbatch-pool-no-public-ip%2Fazuredeploy.json)
+:::image type="content" source="~/reusable-content/ce-skilling/azure/media/template-deployments/deploy-to-azure-button.svg" alt-text="Button to deploy the Resource Manager template to Azure." border="false" link="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fquickstarts%2Fmicrosoft.batch%2Fbatch-pool-no-public-ip%2Fazuredeploy.json":::
 
 > [!NOTE]
 > If the private endpoint deployment failed due to invalid groupId "nodeManagement", please check if the region is in the supported list for [Simplified compute node communication](simplified-compute-node-communication.md). Choose the right region, and then retry the deployment.
@@ -143,7 +144,7 @@ In a pool without public IP addresses, your virtual machines won't be able to ac
 Another way to provide outbound connectivity is to use a user-defined route (UDR). This method lets you route traffic to a proxy machine that has public internet access, for example [Azure Firewall](../firewall/overview.md).
 
 > [!IMPORTANT]
-> There is no extra network resource (load balancer, network security group) created for simplified node communication pools without public IP addresses. Since the compute nodes in the pool are not bound to any load balancer, Azure may provide [Default Outbound Access](../virtual-network/ip-services/default-outbound-access.md). However, Default Outbound Access is not suitable for production workloads, so it is strongly recommended to bring your own Internet outbound access.
+> There is no extra network resource (load balancer, network security group) created for simplified node communication pools without public IP addresses. Since the compute nodes in the pool are not bound to any load balancer, Azure may provide [Default Outbound Access](../virtual-network/ip-services/default-outbound-access.md). However, Default Outbound Access is not suitable for production workloads, and will be retired on March 31, 2026 (see the [official announcement](https://azure.microsoft.com/updates/default-outbound-access-for-vms-in-azure-will-be-retired-transition-to-a-new-method-of-internet-access/)). So if your workloads do require internet outbound access, or your pool doesn't use private endpoint to access Batch node management endpoint, you must provide your own solution to enable internet outbound access.
 
 ## Troubleshooting
 

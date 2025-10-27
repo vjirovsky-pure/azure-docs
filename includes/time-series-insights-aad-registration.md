@@ -2,13 +2,15 @@
 title: include file
 description: include file
 ms.topic: include
-ms.custom: include file
-services: time-series-insights
-ms.service: time-series-insights
+ms.service: azure-time-series-insights
 author: deepakpalled
 ms.author: dpalled
 manager: cshankar
 ms.date: 10/02/2020
+ms.custom:
+  - include file
+  - sfi-image-nochange
+  - sfi-ropc-blocked
 ---
 
 
@@ -27,9 +29,9 @@ ms.date: 10/02/2020
 
     Click **Configure**, then **Save**.
 
-* Associate your Azure Active Directory app Azure Time Series Insights. Select **API permissions** > **Add a permission** > **APIs my organization uses**.
+* Associate your Microsoft Entra app Azure Time Series Insights. Select **API permissions** > **Add a permission** > **APIs my organization uses**.
 
-    [![Associate an API with your Azure Active Directory app](media/time-series-insights-registration/app-api-permission.png)](media/time-series-insights-registration/app-api-permission.png#lightbox)
+    [![Associate an API with your Microsoft Entra app](media/time-series-insights-registration/app-api-permission.png)](media/time-series-insights-registration/app-api-permission.png#lightbox)
 
    Type `Azure Time Series Insights` into the search bar then select `Azure Time Series Insights`.
 

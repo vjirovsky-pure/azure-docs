@@ -1,18 +1,16 @@
 ---
 title: Create an App Service Environment (ASE) v3 with Azure Resource Manager
 description: Learn how to create an external or ILB App Service Environment v3 by using an Azure Resource Manager template.
-author: madsd
+author: seligj95
 ms.topic: how-to
 ms.custom: devx-track-arm-template
 ms.date: 03/09/2023
-ms.author: madsd
+ms.author: jordanselig
+ms.service: azure-app-service
 ---
 # Create an App Service Environment by using an Azure Resource Manager template
 
 App Service Environment can be created using an Azure Resource Manager template allowing you to do repeatable deployment.
-
-> [!NOTE]
-> This article is about App Service Environment v3, which is used with isolated v2 App Service plans.
 
 ## Overview
 
@@ -67,6 +65,9 @@ In addition to the core properties, there are other configuration options that y
 * *networkingConfiguration -> ftpEnabled*: Optional. For more information, see [networking configuration](./configure-network-settings.md#ftp-access).
 * *networkingConfiguration -> inboundIpAddressOverride*: Optional. Allow you to create an App Service Environment with your own Azure Public IP address (specify the resource ID) or define a static IP for ILB deployments. This setting can't be changed after the App Service Environment is created.
 * *customDnsSuffixConfiguration*: Optional. Allows you to specify a custom domain suffix for the App Service Environment. Requires a valid certificate from a Key Vault and access using a Managed Identity. For more information about the specific parameters, see [configuration custom domain suffix](./how-to-custom-domain-suffix.md).
+
+> [!NOTE]
+> The properties `dnsSuffix`, `multiSize`, `frontEndScaleFactor`, `userWhitelistedIpRanges`, and `ipSslAddressCount` are not supported when creating App Service Environment v3.
 
 ### Deploying the App Service Environment
 

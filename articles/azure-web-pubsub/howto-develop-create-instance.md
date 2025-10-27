@@ -1,13 +1,17 @@
 ---
 title: Create an Azure Web PubSub resource
 titleSuffix: Azure Web PubSub
-description: Quickstart showing how to create a Web PubSub resource from Azure portal, using Azure CLI and a Bicep template
+description: Quickstart showing how to create a Web PubSub resource from Azure portal, using Azure CLI and a Bicep file
 author: kevinguo-ed
 ms.author: kevinguo
 ms.service: azure-web-pubsub
 ms.topic: quickstart
 ms.date: 03/13/2023
-ms.custom: mode-ui, devx-track-azurecli, devx-track-bicep
+ms.custom:
+  - mode-ui
+  - devx-track-azurecli
+  - devx-track-bicep
+  - build-2025
 zone_pivot_groups: azure-web-pubsub-create-resource-methods
 ---
 
@@ -17,7 +21,7 @@ zone_pivot_groups: azure-web-pubsub-create-resource-methods
 
 > [!div class="checklist"]
 >
-> - An Azure account with an active subscription. [Create a free Azure account](https://azure.microsoft.com/free/), if don't have one already.
+> - An Azure account with an active subscription. [Create a free Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn), if don't have one already.
 
 > [!TIP]
 > Web PubSub includes a generous **free tier** that can be used for testing and production purposes.
@@ -26,7 +30,7 @@ zone_pivot_groups: azure-web-pubsub-create-resource-methods
 
 ## Create a resource from Azure portal
 
-1. Select the New button found on the upper left-hand corner of the Azure portal. In the New screen, type **Web PubSub** in the search box and press enter.
+1. Select the New button found on the upper left-hand corner of the Azure portal. In the New screen, type **Web PubSub** in the search box and then press Enter.
 
    :::image type="content" source="./media/create-instance-portal/search-web-pubsub-in-portal.png" alt-text="Screenshot of searching the Azure Web PubSub in portal.":::
 
@@ -68,9 +72,9 @@ The [Azure CLI](/cli/azure) is a set of commands used to create and manage Azure
 
 ::: zone pivot="method-bicep"
 
-## Create a resource using Bicep template
+## Create a resource using Bicep file
 
-[!INCLUDE [About Bicep](../../includes/resource-manager-quickstart-bicep-introduction.md)]
+[!INCLUDE [About Bicep](~/reusable-content/ce-skilling/azure/includes/resource-manager-quickstart-bicep-introduction.md)]
 
 ## Review the Bicep file
 

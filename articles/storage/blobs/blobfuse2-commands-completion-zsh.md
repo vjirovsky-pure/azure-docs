@@ -2,12 +2,12 @@
 title: How to use the 'blobfuse2 completion zsh' command to generate the autocompletion script for BlobFuse2
 titleSuffix: Azure Storage
 description: Learn how to use the 'blobfuse2 completion zsh' command to generate the autocompletion script for BlobFuse2.
-author: jimmart-dev
-ms.service: azure-storage
+author: akashdubey-ms
+ms.service: azure-blob-storage
 ms.topic: how-to
 ms.date: 12/02/2022
-ms.author: jammart
-ms.reviewer: tamram
+ms.author: akashdubey
+# Customer intent: As a developer using BlobFuse2, I want to generate an autocompletion script for the zsh shell, so that I can improve my command-line efficiency and productivity while working with Azure Blob storage.
 ---
 
 # BlobFuse2 completion zsh command

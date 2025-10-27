@@ -51,7 +51,7 @@
     - name: Authorizing data operations
       href: ../common/authorize-data-access.md?toc=/azure/storage/blobs/toc.json
       items:
-      - name: Authorize with Azure AD
+      - name: Authorize with Microsoft Entra ID
         items:
         - name: Authorize with Azure roles
           href: authorize-access-azure-active-directory.md
@@ -59,7 +59,9 @@
           href: queues-auth-abac.md
         - name: Actions and attributes for conditions
           href: queues-auth-abac-attributes.md
-    - name: Authenticate and authorize with Azure AD
+        - name: Example conditions
+          href: queues-auth-abac-examples.md
+    - name: Authenticate and authorize with Microsoft Entra ID
       href: authorize-access-azure-active-directory.md
     - name: Authorize with Shared Key
       items:
@@ -91,10 +93,14 @@
       href: security-recommendations.md
     - name: Security baseline
       href: /security/benchmark/azure/baselines/storage-security-baseline?toc=/azure/storage/queues/toc.json?toc=/azure/storage/queues/TOC.json
-  - name: Data redundancy
-    href: ../common/storage-redundancy.md?toc=/azure/storage/queues/toc.json
-  - name: Disaster recovery and failover
-    href: ../common/storage-disaster-recovery-guidance.md?toc=/azure/storage/queues/toc.json
+  - name: Reliability
+    items:
+    - name: Reliability in Azure Queue storage
+      href: ../../reliability/reliability-storage-queue.md?toc=/azure/storage/queues/toc.json
+    - name: Data redundancy
+      href: ../common/storage-redundancy.md?toc=/azure/storage/queues/toc.json
+    - name: Disaster recovery and failover
+      href: ../common/storage-disaster-recovery-guidance.md?toc=/azure/storage/queues/toc.json
   - name: Performance, scaling, and cost optimization
     items:
     - name: Scalability and performance targets
@@ -111,14 +117,10 @@
     items:
     - name: Monitor Queue storage
       href: monitor-queue-storage.md
-    - name: Transition from classic metrics
-      href: ../common/storage-metrics-migration.md?toc=/azure/storage/queues/toc.json
     - name: Monitoring (classic)
       items:
       - name: Storage Analytics
         href: ../common/storage-analytics.md?toc=/azure/storage/queues/toc.json
-      - name: Metrics
-        href: ../common/storage-analytics-metrics.md?toc=/azure/storage/queues/toc.json
       - name: Logs
         href: ../common/storage-analytics-logging.md?toc=/azure/storage/queues/toc.json
       - name: Monitor, diagnose, and troubleshoot
@@ -272,7 +274,7 @@
       href: /python/api/overview/azure/storage#management
     - name: JavaScript SDK
       href: /javascript/api/overview/azure/storage#management
-  - name: Monitoring Azure Queue storage reference
+  - name: Monitoring Queue Storage data reference
     href: monitor-queue-storage-reference.md
   - name: Spring Integration with Azure Storage Queue
     href: /azure/developer/java/spring-framework/spring-cloud-azure?toc=/azure/storage/queues/TOC.json#spring-integration-with-azure-storage-queue
@@ -304,7 +306,7 @@
   - name: Azure pricing calculator
     href: https://azure.microsoft.com/pricing/calculator/
   - name: Videos
-    href: https://azure.microsoft.com/documentation/videos/index/?services=storage
+    href: /shows/data-exposed/?products=azure-storage
   - name: NuGet packages (.NET)
     items:
     - name: Microsoft.Azure.Storage.Common (version 11.x)
@@ -332,7 +334,7 @@
       - name: Data Movement library
         href: /dotnet/api/microsoft.azure.storage.datamovement
       - name: Storage Resource Provider library
-        href: https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/storage/Microsoft.Azure.Management.Storage
+        href: https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/storage/Azure.ResourceManager.Storage
     - name: Java
       items:
       - name: Azure Storage client library version 12.x
@@ -353,17 +355,5 @@
         href: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/storage
       - name: Azure Storage client library version 2.1
         href: https://github.com/Azure/azure-storage-python
-  - name: Code samples using deprecated SDKs
-    items:
-    - name: .NET
-      items:
-      - name: Version 11.x samples
-        href: queues-v11-samples-dotnet.md
-      - name: Design highly available applications (.NET version 11.x)
-        href: ../common/geo-redundant-design-legacy.md?toc=/azure/storage/queues/toc.json
-    - name: Java version 8 samples
-      href: queues-v8-samples-java.md
-    - name: Python version 2 samples
-      href: queues-v2-samples-python.md
   - name: Compliance offerings
     href: ../common/storage-compliance-offerings.md

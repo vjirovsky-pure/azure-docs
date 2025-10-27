@@ -3,9 +3,10 @@ title: Use SQL Database reference data in an Azure Stream Analytics job
 description: This article describes how to use a SQL Database as reference data input for an Azure Stream Analytics job in the Azure portal and in Visual Studio.
 author: ahartoon
 ms.author: anboisve
-ms.service: stream-analytics
+ms.service: azure-stream-analytics
 ms.topic: how-to
 ms.date: 04/20/2022
+ms.custom: sfi-image-nochange
 ---
 # Use reference data from a SQL Database for an Azure Stream Analytics job
 
@@ -31,7 +32,7 @@ Use the following steps to add Azure SQL Database as a reference input source us
 
    ![Inputs is selected in the left navigation pane. On Inputs, + Add reference input is selected, revealing a drop-down list that shows the values Blob storage and SQL Database.](./media/sql-reference-data/stream-analytics-inputs.png)
 
-2. Fill out the Stream Analytics Input Configurations. Choose the database name, server name, username and password. If you want your reference data input to refresh periodically, choose “On” to specify the refresh rate in DD:HH:MM. If you have large data sets with a short refresh rate.  Delta query enables you to track changes within your reference data by retreiving all of the rows in SQL Database that were inserted or deleted within a start time, @deltaStartTime, and an end time @deltaEndTime. 
+2. Fill out the Stream Analytics Input Configurations. Choose the database name, server name, username and password. If you want your reference data input to refresh periodically, choose “On” to specify the refresh rate in DD:HH:MM. If you have large data sets with a short refresh rate.  Delta query enables you to track changes within your reference data by retrieving all of the rows in SQL Database that were inserted or deleted within a start time, @deltaStartTime, and an end time @deltaEndTime. 
 
 Please see [delta query](sql-reference-data.md#delta-query).
 
@@ -171,6 +172,20 @@ When using the delta query, [temporal tables in Azure SQL Database](/azure/azure
 
    Note that Stream Analytics runtime may periodically run the snapshot query in addition to the delta query to store checkpoints.
 
+      > [!IMPORTANT]
+   > When using reference data delta queries, do not make identical updates to the temporal reference data table multiple times. This could cause incorrect results to be produced.
+      > Here's an example which may cause reference data to produce incorrect results:
+      > ```SQL
+      >  UPDATE myTable SET VALUE=2 WHERE ID = 1;
+      >  UPDATE myTable SET VALUE=2 WHERE ID = 1;      
+      > ```
+      > Correct example:
+      > ```SQL
+      >  UPDATE myTable SET VALUE = 2 WHERE ID = 1 and not exists (select * from myTable where ID = 1 and value = 2);
+      > ```
+      > This ensures no duplicate updates are performed.
+
+
 ## Test your query
    It is important to verify that your query is returning the expected dataset that the Stream Analytics job will use as reference data. To test your query, go to Input under Job Topology section on portal. You can then select Sample Data on your SQL Database Reference input. After the sample becomes available, you can download the file and check to see if the data being returned is as expected. If you want a optimize your development and test iterations, it is recommended to use the [Stream Analytics tools for Visual Studio](./stream-analytics-tools-for-visual-studio-install.md). You can also any other tool of your preference to first ensure the query is returning the right results from you Azure SQL Database and then use that in your Stream Analytics job.
 
@@ -196,7 +211,7 @@ When using the delta query, [temporal tables in Azure SQL Database](/azure/azure
 
 5. Choose your connection.
 
-   ![The dialog box says "Create a connection profile from the list below", and the list has one entry, which is hightlighted.](./media/sql-reference-data/choose-connection.png)
+   ![The dialog box says "Create a connection profile from the list below", and the list has one entry, which is highlighted.](./media/sql-reference-data/choose-connection.png)
 
 6. Review and verify your query result.
 

@@ -3,11 +3,12 @@ title: 'Configure BGP for VPN Gateway: PowerShell'
 titleSuffix: Azure VPN Gateway
 description: Learn how to configure BGP for VPN gateways using PowerShell.
 author: cherylmc
-ms.service: vpn-gateway
+ms.service: azure-vpn-gateway
 ms.topic: how-to
 ms.date: 07/12/2023
 ms.author: cherylmc 
 ms.custom: devx-track-azurepowershell
+# Customer intent: "As a network administrator, I want to configure BGP for VPN gateways using PowerShell, so that I can efficiently manage routing and connectivity between on-premises networks and Azure VNets."
 ---
 # How to configure BGP for VPN Gateway: PowerShell
 
@@ -162,7 +163,7 @@ To establish a cross-premises connection, you need to create a *local network ga
 
 Before proceeding, make sure you enabled BGP for the VPN gateway in the previous section.
 
-### Step 1 - Create and configure the local network gateway
+### Step 1: Create and configure the local network gateway
 
 #### 1. Declare your variables
 
@@ -182,6 +183,7 @@ A couple of things to note regarding the local network gateway parameters:
 
 * The local network gateway can be in the same or different location and resource group as the VPN gateway. This example shows them in different resource groups in different locations.
 * The prefix you need to declare for the local network gateway is the host address of your BGP Peer IP address on your VPN device. In this case, it's a /32 prefix of "10.51.255.254/32".
+* You can also leave the prefix empty if you're using BGP to connect to this network. Azure VPN gateway will internally add a route of your BGP peer IP address to the corresponding IPsec tunnel.
 * As a reminder, you must use different BGP ASNs between your on-premises networks and Azure VNet. If they're the same, you need to change your VNet ASN if your on-premises VPN device already uses the ASN to peer with other BGP neighbors.
 
 #### 2. Create the local network gateway for Site5
@@ -198,7 +200,7 @@ Create the local network gateway. Notice the two additional parameters for the l
 New-AzLocalNetworkGateway -Name $LNGName5 -ResourceGroupName $RG5 -Location $Location5 -GatewayIpAddress $LNGIP5 -AddressPrefix $LNGPrefix50 -Asn $LNGASN5 -BgpPeeringAddress $BGPPeerIP5
 ```
 
-### Step 2 - Connect the VNet gateway and local network gateway
+### Step 2: Connect the VNet gateway and local network gateway
 
 #### 1. Get the two gateways
 
@@ -250,7 +252,7 @@ This section adds a VNet-to-VNet connection with BGP, as shown in the Diagram 4.
 
 The following instructions continue from the previous steps. You must first complete the steps in the [Enable BGP for the VPN gateway](#enablebgp) section to create and configure TestVNet1 and the VPN gateway with BGP.
 
-### Step 1 - Create TestVNet2 and the VPN gateway
+### Step 1: Create TestVNet2 and the VPN gateway
 
 It's important to make sure that the IP address space of the new virtual network, TestVNet2, doesn't overlap with any of your VNet ranges.
 
@@ -313,7 +315,7 @@ Create the VPN gateway with the AS number. You must override the default ASN on 
 New-AzVirtualNetworkGateway -Name $GWName2 -ResourceGroupName $RG2 -Location $Location2 -IpConfigurations $gwipconf2 -GatewayType Vpn -VpnType RouteBased -GatewaySku VpnGw1 -Asn $VNet2ASN
 ```
 
-### Step 2 - Connect the TestVNet1 and TestVNet2 gateways
+### Step 2: Connect the TestVNet1 and TestVNet2 gateways
 
 In this example, both gateways are in the same subscription. You can complete this step in the same PowerShell session.
 

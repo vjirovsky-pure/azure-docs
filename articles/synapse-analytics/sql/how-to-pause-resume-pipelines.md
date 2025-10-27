@@ -3,12 +3,14 @@ title: How to pause and resume dedicated SQL pools with Synapse Pipelines
 description: Learn to automate pause and resume for a dedicated SQL pool with Synapse Pipelines in Azure Synapse Analytics. 
 author: kromerm
 ms.author: makromer
-ms.service: synapse-analytics
-ms.reviewer: wiassaf
+ms.service: azure-synapse-analytics
+
 ms.subservice: sql
 ms.topic: how-to 
 ms.date: 08/12/2021
-ms.custom: template-how-to 
+ms.custom:
+  - template-how-to
+  - sfi-image-nochange
 ---
 
 # Pause and resume dedicated SQL pools with Synapse Pipelines
@@ -160,7 +162,7 @@ Evaluate the desired state, Pause or Resume, and the current status, Online, or 
 1. On the Activities tab, select **+ Add Case**.  Add the cases `Paused-Resume` and `Online-Pause`. 
     ![Check status condition of the dedicated SQL pool](./media/how-to-pause-resume-pipelines/check-condition.png)
 
-### Step 5c: Pause or Resume dedicated SQL pools     
+## Step 5c: Pause or Resume dedicated SQL pools     
 
 The final and only relevant step for some requirements, is to initiate the pause or resume of your dedicated SQL pool. This step again uses a Web activity, calling the [Pause or Resume compute REST API for Azure Synapse](../sql-data-warehouse/sql-data-warehouse-manage-compute-rest-api.md#pause-compute). 
 1. Select the activity edit pencil and add a **Web** activity to the State-PauseorResume canvas. 

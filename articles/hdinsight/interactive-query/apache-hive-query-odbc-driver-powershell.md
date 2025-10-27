@@ -2,9 +2,15 @@
 title: Query Apache Hive with ODBC Driver & PowerShell - Azure HDInsight
 description: Use the Microsoft Hive ODBC driver and PowerShell to query Apache Hive clusters on Azure HDInsight.
 keywords: hive,hive odbc,powershell
-ms.service: hdinsight
+ms.service: azure-hdinsight
 ms.topic: tutorial
-ms.date: 05/24/2023
+author: abhishjain002
+ms.author: abhishjain
+ms.reviewer: nijelsf
+ms.date: 10/14/2025
+ms.custom:
+  - sfi-image-nochange
+  - sfi-ropc-nochange
 #Customer intent: As a HDInsight user, I want to query data from my Apache Hive datasets so that I can view and interpret the data.
 ---
 
@@ -19,7 +25,7 @@ In this tutorial, you'll do the following tasks:
 > * Create an Apache Hive ODBC data source linked to your cluster
 > * Query sample information from your cluster using PowerShell
 
-If you don’t have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+If you don’t have an Azure subscription, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 ## Prerequisites
 
@@ -29,6 +35,9 @@ Before you begin this tutorial, you must have the following items:
 
 ## Install Microsoft Hive ODBC driver
 
+> [!Note]
+> [Microsoft Hive ODBC driver](https://www.microsoft.com/en-us/download/details.aspx?id=40886) is no longer supported with HDInsight and to be discontinued.
+
 Download and install the [Microsoft Hive ODBC Driver](https://www.microsoft.com/download/details.aspx?id=40886).
 
 ## Create Apache Hive ODBC data source
@@ -37,7 +46,7 @@ The following steps show you how to create an Apache Hive ODBC data source.
 
 1. From Windows, navigate to **Start** > **Windows Administrative Tools** > **ODBC Data Sources (32-bit)/(64-bit)**.  An **ODBC Data Source Administrator** window opens.
 
-    :::image type="content" source="./media/apache-hive-query-odbc-driver-powershell/hive-odbc-driver-dsn-setup.png " alt-text="OBDC data source administrator" border="true":::
+    :::image type="content" source="./media/apache-hive-query-odbc-driver-powershell/hive-odbc-driver-dsn-setup.png " alt-text="ODBC data source administrator." border="true":::
 
 1. From the **User DSN** tab, select **Add** to open the **Create New Data Source** window.
 
@@ -63,7 +72,7 @@ The following steps show you how to create an Apache Hive ODBC data source.
    |  Rows fetched per block |When fetching a large number of records, tuning this parameter may be required to ensure optimal performances. |
    |  Default string column length, Binary column length, Decimal column scale |The data type lengths and precisions may affect how data is returned. They cause incorrect information to be returned because of loss of precision and truncation. |
 
-    :::image type="content" source="./media/apache-hive-query-odbc-driver-powershell/odbc-data-source-advanced-options.png " alt-text="Advanced DSN configuration options" border="true":::
+    :::image type="content" source="./media/apache-hive-query-odbc-driver-powershell/odbc-data-source-advanced-options.png " alt-text="Advanced DSN configuration options." border="true":::
 
 1. Select **Test** to test the data source. When the data source is configured correctly, the test result shows **SUCCESS**.  
 

@@ -6,10 +6,8 @@ summary: Azure File Sync enables centralizing your organization's file shares in
 metadata:
   title: Azure File Sync documentation
   description: Mount file shares in the cloud or on-premises on Windows, Linux, and macOS. Cache Azure file shares on Windows Servers with Azure File Sync for local access.
-  services: storage
   ms.service: azure-file-storage
   ms.topic: landing-page
-  ms.collection: collection
   author: khdownie
   ms.author: kendownie
   ms.date: 09/08/2022
@@ -75,8 +73,8 @@ landingContent:
         links:
           - text: Implement a hybrid file server infrastructure
             url: /training/modules/implement-hybrid-file-server-infrastructure/
-          - text: Extend your on-premises file share capacity using Azure File Sync
-            url: /training/modules/extend-share-capacity-with-azure-file-sync/
+          - text: Configure Azure Files and Azure File Sync
+            url: /training/modules/configure-azure-files-file-sync/
 
   # Card
   - title: Architecture

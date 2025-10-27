@@ -55,51 +55,16 @@ Registration is always initiated from the agent. In the interest of security, on
 
 ## Step 1: Connect to the agent VM
 
-The agent VM is an appliance. It offers an administrative shell that limits the operations you can perform on this machine. When you connect to the agent, the shell loads and provides you with options that allow you to interact with it directly. However, the agent VM is a Linux based appliance, and copy and paste functionality often doesn't work within the default Hyper-V window.
+The agent VM is an appliance. It offers an administrative shell that limits the operations you can perform on this machine. When you connect to the agent, the shell loads and provides you with options that allow you to interact with it directly. However, the agent VM is a Linux based appliance, and copy and paste functionality often doesn't work within the default host window.
 
-Rather than use the Hyper-V window, use an SSH connection instead. This approach provides the following advantages:
+Rather than use the host window, consider using an SSH connection instead. This approach provides the following advantages:
 
-- You can connect to the agent VM's shell from any management machine and don't need to be logged into the Hyper-V host.
+- You can connect to the agent VM's shell from any management machine and don't need to be logged into the host.
 - Copy / paste is fully supported.
 
 [!INCLUDE [agent-shell-connect](includes/agent-shell-connect.md)]
 
-## Step 2: Test network connectivity
-
-Your agent needs to be connected to the internet.
-
-When logged into the administrative shell, you can test the agents connectivity state:
-
-```StorageMoverAgent-AdministrativeShell
-1) System configuration
-2) Network configuration
-3) Service and job status
-4) Register
-5) Open restricted shell
-6) Collect support bundle
-7) Restart agent
-8) Exit
-
-xdmsh> 2
-```
-Select menu item 2) *Network configuration*.
-
-```StorageMoverAgent-AdministrativeShell
-1) Show network configuration
-2) Update network configuration
-3) Test network connectivity
-4) Quit
-
-Choice: 3
-```
-Select menu item 3) *Test network connectivity*.
-
-
-
-> [!IMPORTANT]
-> Only proceed to the registration step when your network connectivity test returns no issues.
-
-## Step 3: Register the agent
+## Step 2: Register the agent
 
 In this step, you register your agent with the storage mover resource you've deployed in an Azure subscription.
 [Connect to the administrative shell](#step-1-connect-to-the-agent-vm) of your agent, then select menu item *4) Register*:
@@ -109,26 +74,47 @@ In this step, you register your agent with the storage mover resource you've dep
 2) Network configuration
 3) Service and job status
 4) Register
-5) Open restricted shell
-6) Collect support bundle
-7) Restart agent
-8) Exit
+5) Collect support bundle
+6) Restart agent
+7) Disk Cleanup
+8) Open restricted shell
+9) Troubleshooting
+10) Exit
 
 xdmsh> 4
 ```
 You're prompted for:
+- Azure region: This is the region where you will have your Azure Storage Mover resource.
+- Private Link Scope: Provide the fully qualified resource ID of your Private Link Scope if you're utilizing private networking. You can find more information on Azure Private Link in the [Azure Private Link documentation](/azure/private-link/) article.
+
+   > [!IMPORTANT]
+   > If you've configured Storage Mover to migrate your data over Private Link, you must provide the fully qualified resource ID of your Private Link Scope. For example, `/subscriptions/[GUID]/resourceGroups/myGroup/providers/Microsoft.HybridCompute/privateLinkScopes/myScope`.
+
+Network checks are run automatically. You can optionally run checks for endpoints manually by selecting item 2) *Network configuration* in the main menu
+
+```StorageMoverAgent-AdministrativeShell
+1) Show network configuration
+2) Update network configuration
+3) Test network connectivity
+4) Test network connectivity verbosely
+5) Quit
+
+Choice: 3
+```
+Select menu item 3) *Test network connectivity*.
+
+Post network checks, you will be prompted for:
 - Subscription ID
 - Resource group name
 - Storage mover resource name
 - Agent name: This name is shown for the agent in the Azure portal. Select a name that clearly identifies this agent VM for you. Refer to the [resource naming convention](../azure-resource-manager/management/resource-name-rules.md#microsoftstoragesync) to choose a supported name.
-- Private Link Scope: Provide the fully qualified resource ID of your Private Link Scope if you're utilizing private networking. You can find more information on Azure Private Link in the [Azure Private Link documentation](/azure/private-link/) article.
 
 After you've supplied these values, the agent will attempt registration. During the registration process, you're required to sign into Azure with credentials that have permissions to your subscription and storage mover resource.
 
 > [!IMPORTANT]
 > The Azure credentials you use for registration must have owner permissions to the specified resource group and storage mover resource.
 
- For authentication, the agent utilizes the [device authentication flow](../active-directory/develop/msal-authentication-flows.md#device-code) with Azure Active Directory.
+ For authentication, the agent utilizes the [device authentication flow](../active-directory/develop/msal-authentication-flows.md#device-code) with Microsoft Entra ID.
 
 The agent displays the device auth URL: [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin) and a unique sign-in code. Navigate to the displayed URL on an internet connected machine, enter the code, and sign into Azure with your credentials.
 
@@ -149,7 +135,7 @@ You can reference this Azure Resource Manager (ARM) resource when you want to as
 
 ### Azure Arc service
 
-The agent is also registered with the [Azure Arc service](../azure-arc/overview.md). Arc is used to assign and maintain an [Azure AD managed identity](../active-directory/managed-identities-azure-resources/overview.md) for this registered agent.
+The agent is also registered with the [Azure Arc service](/azure/azure-arc/overview). Arc is used to assign and maintain an [Microsoft Entra managed identity](../active-directory/managed-identities-azure-resources/overview.md) for this registered agent.
 
 Azure Storage Mover uses a system-assigned managed identity. A managed identity is a service principal of a special type that can only be used with Azure resources. When the managed identity is deleted, the corresponding service principal is also automatically removed.
 

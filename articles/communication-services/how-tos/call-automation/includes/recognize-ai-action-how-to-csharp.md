@@ -12,7 +12,7 @@ ms.author: kpunjabi
 ---
 
 ## Prerequisites
-- Azure account with an active subscription, for details see [Create an account for free.](https://azure.microsoft.com/free/)
+- Azure account with an active subscription, for details see [Create an account for free.](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn)
 - Azure Communication Services resource. See [Create an Azure Communication Services resource](../../../quickstarts/create-communication-resource.md?tabs=windows&pivots=platform-azp). Note the connection string for this resource. 
 - Create a new web service application using the [Call Automation SDK](../../../quickstarts/call-automation/callflows-for-customer-interactions.md).
 - The latest [.NET library](https://dotnet.microsoft.com/download/dotnet-core) for your operating system.
@@ -27,7 +27,7 @@ The following parameters are available to customize the Recognize function:
 | Parameter | Type|Default (if not specified) | Description | Required or Optional |
 | ------- |--| ------------------------ | --------- | ------------------ |
 | Prompt <br/><br/> *(for details on Play action, refer to [this how-to guide](../play-ai-action.md))* | FileSource, TextSource | Not set |This will be the message you wish to play before recognizing input. | Optional |
-| InterToneTimeout | TimeSpan | 2 seconds <br/><br/>**Min:** 1 second <br/>**Max:** 60 seconds | Limit in seconds that ACS will wait for the caller to press another digit (inter-digit timeout). | Optional |
+| InterToneTimeout | TimeSpan | 2 seconds <br/><br/>**Min:** 1 second <br/>**Max:** 60 seconds | Limit in seconds that Azure Communication Services will wait for the caller to press another digit (inter-digit timeout). | Optional |
 | InitialSegmentationSilenceTimeoutInSeconds | Integer | 0.5 seconds | How long recognize action will wait for input before considering it a timeout. [Read more here](../../../../../articles/cognitive-services/Speech-Service/how-to-recognize-speech.md). | Optional |
 | RecognizeInputsType | Enum | dtmf | Type of input that will be recognized. Options will be dtmf, choices, speech and speechordtmf. | Required |
 | InitialSilenceTimeout | TimeSpan | 5 seconds<br/><br/>**Min:** 0 seconds <br/>**Max:** 300 seconds (DTMF) <br/>**Max:** 20 seconds (Choices) <br/>**Max:** 20 seconds (Speech)| Initial silence timeout adjusts how much non-speech audio is allowed before a phrase before the recognition attempt ends in a "no match" result. [Read more here](../../../../../articles/cognitive-services/Speech-Service/how-to-recognize-speech.md). | Optional |
@@ -62,7 +62,7 @@ During the preview phase, the NuGet package can be obtained by configuring your 
 By this point you should be familiar with starting calls, if you need to learn more about how to start a call view our [quickstart](../../../quickstarts/call-automation/callflows-for-customer-interactions.md). In this instance, we'll answer an incoming call.
 
 ``` csharp
-var callAutomationClient = new CallAutomationClient("<ACS connection string>");
+var callAutomationClient = new CallAutomationClient("<Azure Communication Services connection string>");
 
 var answerCallOptions = new AnswerCallOptions("<Incoming call context once call is connected>", new Uri("<https://sample-callback-uri>"))
     {
@@ -140,7 +140,7 @@ var recognizeOptions = new CallMediaRecognizeSpeechOptions(
                                                    targetParticipant: targetParticipant)
 {
       InterruptCallMediaOperation = true,
-      InterrupPrompt = false, 
+      InterruptPrompt = false, 
       Prompt = greetingPrompt,
       EndSilenceTimeoutInMS = TimeSpan.FromMilliseconds(1000),
       OperationContext = “OpenQuestionSpeech”
@@ -164,14 +164,14 @@ Developers can subscribe to the *RecognizeCompleted* and *RecognizeFailed* event
             string phraseDetected = null;
             switch (recognizeCompletedEvent.RecognizeResult)
             {
-                // Take action for Recongition through Choices
+                // Take action for Recognition through Choices
                 case ChoiceResult choiceResult:
                     labelDetected = choiceResult.Label;
                     phraseDetected = choiceResult.RecognizedPhrase;
                     //If choice is detected by phrase, choiceResult.RecognizedPhrase will have the phrase detected,
                     // if choice is detected using dtmf tone, phrase will be null
                     break;
-                //Take action for Recongition through DTMF
+                //Take action for Recognition through DTMF
                 case DtmfResult dtmfResult: 
                     var tones = dtmfResult.Tones;
                     break;
@@ -197,7 +197,7 @@ if (@event is RecognizeFailed { OperationContext: "AppointmentReminderMenu" })
             if (ReasonCode.RecognizeInitialSilenceTimedOut.Equals(recognizeFailedEvent.ReasonCode))
             {
                 logger.LogInformation($"Recognition timed out for call connection id: {@event.CallConnectionId}");
-                var playSource = new TextSource("No input recieved and recognition timed out, Disconnecting the call. Thank you!");
+                var playSource = new TextSource("No input received and recognition timed out, Disconnecting the call. Thank you!");
                 //Play audio for time out
                 await callConnectionMedia.PlayToAllAsync(playSource, new PlayOptions { OperationContext = "ResponseToChoice", Loop = false });
             }

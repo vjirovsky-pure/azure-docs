@@ -2,13 +2,12 @@
 title: Deactivate an Activity in Azure Data Factory 
 titleSuffix: Azure Data Factory & Azure Synapse
 description: Learn how to deactivate an activity to exclude from pipeline run and validation
-author: chez-charlie
-ms.author: chez
-ms.service: data-factory
+author: kromerm
+ms.author: makromer
 ms.subservice: orchestration
 ms.custom: synapse
 ms.topic: conceptual
-ms.date: 07/01/2023
+ms.date: 01/05/2024
 ---
 
 # Deactivate an Activity
@@ -31,7 +30,7 @@ First, you may deactivate a single activity from its **General** tab.
 - Pick a state for _Mark activity as_. Choose from _Succeeded_, _Failed_ or _Skipped_
 
 
-:::image type="content" source="./media/deactivate-activity/deactivate-03-setup-single.png" alt-text="Deactive one activity at a time":::
+:::image type="content" source="./media/deactivate-activity/deactivate-03-setup-single.png" alt-text="Deactivate one activity at a time":::
 
 Alternatively, you can deactivate multiple activities with right click.
 
@@ -40,7 +39,7 @@ Alternatively, you can deactivate multiple activities with right click.
 - Select _Deactivate_ to deactivate them all
 - To fine tune the settings for _Mark activity as_, go to **General** tab of the activity, and make appropriate changes
 
-:::image type="content" source="./media/deactivate-activity/deactivate-04-setup-multiple.png" alt-text="Deactive multiple activities all at once":::
+:::image type="content" source="./media/deactivate-activity/deactivate-04-setup-multiple.png" alt-text="Deactivate multiple activities all at once":::
 
 In both cases, you do need to deploy the changes to deactivate the parts during pipeline run.
 
@@ -74,7 +73,7 @@ Deactivation is a powerful tool for pipeline developer. It allows developers to 
 
 An inactive activity never actually runs. This means the activity won't have an error field, or its typical output fields. Any references to missing fields may throw errors downstream.
 
-## Next steps
+## Related content
 
 Learn more about Azure Data Factory and Synapse pipelines.
 

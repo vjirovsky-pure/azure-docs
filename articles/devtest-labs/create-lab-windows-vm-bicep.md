@@ -5,7 +5,7 @@ ms.author: rosemalcolm
 author: RoseHJM
 ms.topic: quickstart
 ms.custom: subject-armqs, mode-arm, devx-track-bicep, UpdateFrequency2
-ms.date: 03/22/2022
+ms.date: 09/30/2023
 ---
 
 # Quickstart: Use Bicep to create a lab in DevTest Labs
@@ -22,11 +22,11 @@ In this quickstart, you take the following actions:
 
 ## Prerequisites
 
-If you don't have an Azure subscription, [create a free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+If you don't have an Azure subscription, [create a free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 ## Review the Bicep file
 
-[!INCLUDE [About Bicep](../../includes/resource-manager-quickstart-bicep-introduction.md)]
+[!INCLUDE [About Bicep](~/reusable-content/ce-skilling/azure/includes/resource-manager-quickstart-bicep-introduction.md)]
 
 The Bicep file defines the following resource types:
 

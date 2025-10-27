@@ -1,26 +1,23 @@
 ---
-title: The Advanced Security Information Model (ASIM) Process Event normalization schema reference (Public preview) | Microsoft Docs
+title: The Advanced Security Information Model (ASIM) Process Event normalization schema reference | Microsoft Docs
 description: This article describes the Microsoft Sentinel Process Event normalization schema.
 author: oshezaf
 ms.topic: reference
 ms.date: 11/09/2021
 ms.author: ofshezaf
-ms.custom: ignite-fall-2021
+
+
+#Customer intent: As a security analyst, I want to use the Process Event normalization schema so that I can standardize and analyze process activity data across different sources for better threat detection and response.
+
 ---
 
-# The Advanced Security Information Model (ASIM) Process Event normalization schema reference (Public preview)
+# The Advanced Security Information Model (ASIM) Process Event normalization schema reference
 
 The Process Event normalization schema is used to describe the operating system activity of running and terminating a process. Such events are reported by operating systems and security systems, such as EDR (End Point Detection and Response) systems.
 
 A process, as defined by OSSEM, is a containment and management object that represents a running instance of a program. While processes themselves do not run, they do manage threads that run and execute code.
 
 For more information about normalization in Microsoft Sentinel, see [Normalization and the Advanced Security Information Model (ASIM)](normalization.md).
-
-> [!IMPORTANT]
-> The Process Event normalization schema is currently in PREVIEW. This feature is provided without a service level agreement, and is not recommended for production workloads.
->
-> The [Azure Preview Supplemental Terms](https://azure.microsoft.com/support/legal/preview-supplemental-terms/) include additional legal terms that apply to Azure features that are in beta, preview, or otherwise not yet released into general availability.
->
 
 ## Parsers
 
@@ -67,12 +64,12 @@ The following filtering parameters are available:
 
 or example, to filter only authentication events from the last day to a specific user, use:
 
-```kql
+```kusto
 imProcessCreate (targetusername_has = 'johndoe', starttime = ago(1d), endtime=now())
 ```
 
 > [!TIP]
-> To pass a literal list to parameters that expect a dynamic value, explicitly use a [dynamic literal](/azure/data-explorer/kusto/query/scalar-data-types/dynamic#dynamic-literals.md). For example: `dynamic(['192.168.','10.'])`.
+> To pass a literal list to parameters that expect a dynamic value, explicitly use a [dynamic literal](/kusto/query/scalar-data-types/dynamic?view=microsoft-sentinel&preserve-view=true#dynamic-literals). For example: `dynamic(['192.168.','10.'])`.
 >
 
 ## Normalized content
@@ -146,7 +143,7 @@ The process event schema references the following entities, which are central to
 |---------------|--------------|------------|-----------------|
 | <a name="actoruserid"></a>**ActorUserId**    | Recommended  | String     |   A machine-readable, alphanumeric, unique representation of the Actor. For the supported format for different ID types, refer to [the User entity](normalization-about-schemas.md#the-user-entity). <br><br>Example: `S-1-12` |
 | **ActorUserIdType**| Conditional  | String     |  The type of the ID stored in the [ActorUserId](#actoruserid) field. For a list of allowed values and further information refer to [UserIdType](normalization-about-schemas.md#useridtype) in the [Schema Overview article](normalization-about-schemas.md). |
-| **ActorScope** | Optional | String | The scope, such as Azure AD tenant, in which [ActorUserId](#actoruserid) and [ActorUsername](#actorusername) are defined. or more information and list of allowed values, see [UserScope](normalization-about-schemas.md#userscope) in the [Schema Overview article](normalization-about-schemas.md).|
+| **ActorScope** | Optional | String | The scope, such as Microsoft Entra tenant, in which [ActorUserId](#actoruserid) and [ActorUsername](#actorusername) are defined. or more information and list of allowed values, see [UserScope](normalization-about-schemas.md#userscope) in the [Schema Overview article](normalization-about-schemas.md).|
 | <a name="actorusername"></a>**ActorUsername**  | Mandatory    | String     | The Actor username, including domain information when available. For the supported format for different ID types, refer to [the User entity](normalization-about-schemas.md#the-user-entity). Use the simple form only if domain information isn't available.<br><br>Store the Username type in the [ActorUsernameType](#actorusernametype) field. If other username formats are available, store them in the fields `ActorUsername<UsernameType>`.<br><br>Example: `AlbertE`   |
 | <a name="actorusernametype"></a>**ActorUsernameType**              | Conditional    | Enumerated |   Specifies the type of the user name stored in the [ActorUsername](#actorusername) field. For a list of allowed values and further information refer to [UsernameType](normalization-about-schemas.md#usernametype) in the [Schema Overview article](normalization-about-schemas.md).<br><br>Example: `Windows`       |
 | **ActorSessionId** | Optional     | String     |   The unique ID of the login session of the Actor.  <br><br>Example: `999`<br><br>**Note**: The type is defined as *string* to support varying systems, but on Windows this value must be numeric. <br><br>If you are using a Windows machine and used a different type, make sure to convert the values. For example, if you used a hexadecimal value, convert it to a decimal value.   |
@@ -173,7 +170,7 @@ The process event schema references the following entities, which are central to
 | **ActingProcessMD5**               | Optional     | String     |The MD5 hash of the acting process image file.  <br><br>Example:  `75a599802f1fa166cdadb360960b1dd0`|
 | **ActingProcessSHA1**              | Optional     | SHA1       | The SHA-1 hash of the acting process image file.             <br><br>  Example: `d55c5a4df19b46db8c54c801c4665d3338acdab0`  |
 | **ActingProcessSHA256**            | Optional     | SHA256     | The SHA-256 hash of the acting process image file.    <br><br> Example: <br> `e81bb824c4a09a811af17deae22f22dd`<br>`2e1ec8cbb00b22629d2899f7c68da274`   |
-| **ActingProcessSHA512**            | Optional     | SHA521     |       The SHA-512 hash of the acting process image file.       |
+| **ActingProcessSHA512**            | Optional     | SHA512     |       The SHA-512 hash of the acting process image file.       |
 | **ActingProcessIMPHASH**           | Optional     | String     |       The Import Hash of all the library DLLs that are used by the acting process.    |
 | **ActingProcessCreationTime**      | Optional     | DateTime   |       The date and time when the acting process was started. |
 | **ActingProcessTokenElevation**    | Optional     | String     | A token indicating the presence or absence of User Access Control (UAC) privilege elevation applied to the acting process.   <br><br>Example:  `None`|

@@ -1,25 +1,26 @@
 ---
-title: Investigate devices in the OT sensor or on-premises management console device map
-description: Learn how to use the device map on an OT sensor or an on-premises management console, which provides a graphical representation of devices and the connections between them.
+title: Investigate devices in the OT sensor device map
+description: Learn how to use the device map on an OT sensor which provides a graphical representation of devices and the connections between them.
 ms.date: 01/25/2023
 ms.topic: how-to
+ms.custom: sfi-image-nochange
 ---
 
 # Investigate devices on a device map
 
 OT device maps provide a graphic representation of the network devices detected by the OT network sensor and the connections between them.
 
-Use a device map to retrieve, analyze, and manage device information, either all at once or by network segment, such as specific interest groups or Purdue layers. If you're working in an air-gapped environment with an on-premises management console, use a *zone map* to view devices across all connected OT sensors in a specific zone.
+Use a device map to retrieve, analyze, and manage device information, either all at once or by network segment, such as specific interest groups or Purdue layers. If you're working in an air-gapped environment with an OT sensor, use a *zone map* to view devices across all connected OT sensors in a specific zone.
 
 ## Prerequisites
 
 To perform the procedures in this article, make sure that you have:
 
-- An OT network sensor [installed](ot-deploy/install-software-ot-sensor.md), [configured, and activated](ot-deploy/activate-deploy-sensor.md), with network traffic ingested 
+- An OT network sensor [installed](ot-deploy/install-software-ot-sensor.md), [configured, and activated](ot-deploy/activate-deploy-sensor.md), with network traffic ingested.
 
-- Access to your OT sensor or on-premises management console. Users with the **Viewer** role can view data on the map. To import or export data or edit the map view, you need access as a **Security Analyst** or **Admin** user. For more information, see [On-premises users and roles for OT monitoring with Defender for IoT](roles-on-premises.md).
+- Access to your OT sensor. Users with the **Viewer** role can view data on the map. To import or export data or edit the map view, you need access as a **Security Analyst** or **Admin** user. For more information, see [On-premises users and roles for OT monitoring with Defender for IoT](roles-on-premises.md).
 
-To view devices across multiple sensors in a zone, you'll also need an on-premises management console [installed](ot-deploy/install-software-on-premises-management-console.md), [activated, and configured](ot-deploy/activate-deploy-management.md), with multiple sensors connected and assigned to sites and zones.
+To view devices across multiple sensors in a zone, you'll also need an OT sensor installed, activated, and configured, with multiple sensors connected and assigned to sites and zones.
 
 ## View devices on OT sensor device map
 
@@ -214,17 +215,16 @@ The following table lists available responses for each notification, and when we
 | **No subnets configured** | No subnets are currently configured in your network. <br /><br /> We recommend configuring subnets for the ability to differentiate between OT and IT devices on the map. | - **Open Subnet Configuration** and [configure subnets](how-to-manage-individual-sensors.md#update-the-ot-sensor-network-configuration). <br />- **Dismiss**: Remove the notification. |**Dismiss** |
 | **Operating system changes** | One or more new operating systems have been associated with the device. | - Select the name of the new OS that you want to associate with the device.<br /> - **Dismiss**:  Remove the notification. | Set with new operating system only if not already configured manually. <br><br>If the operating system has already been configured: **Dismiss**. |
 | **New subnets** | New subnets were discovered. |-  **Learn**: Automatically add the subnet.<br />- **Open Subnet Configuration**: Add all missing subnet information.<br />- **Dismiss**: <br />Remove the notification. |**Dismiss** |
-| **Device type changes** | A new device type has been associated with the device. | - **Set as {…}**: Associate the new type with the device.<br />- **Dismiss**: Remove the notification. |No automatic handling|
 
 ## View a device map for a specific zone
 
-If you're working with an on-premises management console with sites and zones configured, device maps are also available for each zone.
+If you're working with an OT sensor with sites and zones configured, device maps are also available for each zone.
 
-On the on-premises management console, zone maps show all network elements related to a selected zone, including OT sensors, detected devices, and more.
+On the OT sensor console, zone maps show all network elements related to a selected zone, including OT sensors, detected devices, and more.
 
 **To view a zone map**:
 
-1. Sign into an on-premises management console and select **Site Management** > **View Zone Map** for the zone you want to view. For example:
+1. Sign into an OT sensor and select **Site Management** > **View Zone Map** for the zone you want to view. For example:
 
     :::image type="content" source="media/how-to-work-with-asset-inventory-information/default-region-to-default-business-unit-v2.png" alt-text="Screenshot of default region to default business unit." lightbox="media/how-to-work-with-asset-inventory-information/default-region-to-default-business-unit-v2.png":::
 

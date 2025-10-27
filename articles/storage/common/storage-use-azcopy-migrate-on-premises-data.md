@@ -8,7 +8,9 @@ ms.date: 05/14/2019
 ms.author: normesta
 ms.reviewer: seguler
 ms.subservice: storage-common-concepts
+ms.custom: sfi-image-nochange
 #Customer intent: As a customer with data, I want to move my data from its existing location so that I can have access to that data in my storage account.
+# Customer intent: "As an IT administrator, I want to migrate on-premises data to cloud storage using a command-line tool, so that I can ensure efficient data access and management in my organization's storage account."
 ---
 
 #  Tutorial: Migrate on-premises data to cloud storage with AzCopy
@@ -23,7 +25,7 @@ In this tutorial, you learn how to:
 > - Modify the data for test purposes.
 > - Create a scheduled task or cron job to identify new files to upload.
 
-If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
 
 ## Prerequisites
 
@@ -56,7 +58,9 @@ Download the AzCopy V10 executable file.
 
 Place the AzCopy file anywhere on your computer. Add the location of the file to your system path variable so that you can refer to this executable file from any folder on your computer.
 
-## Authenticate with Azure AD
+<a name='authenticate-with-azure-ad'></a>
+
+## Authenticate with Microsoft Entra ID
 
 First, assign the [Storage Blob Data Contributor](../../role-based-access-control/built-in-roles.md#storage-queue-data-contributor) role to your identity. See [Assign an Azure role for access to blob data](../blobs/assign-azure-role-data-access.md).
 
@@ -115,7 +119,7 @@ Copy the AzCopy command to a text editor. Update the parameter values of the AzC
 These examples assume that your folder is named `myFolder`, your storage account name is `mystorageaccount` and your container name is `mycontainer`.
 
 > [!NOTE]
-> The Linux example appends a SAS token. You'll need to provide one in your command. The current version of AzCopy V10 doesn't support Azure AD authorization in cron jobs.
+> The Linux example appends a SAS token. You'll need to provide one in your command. To utilize Microsoft Entra authentication in cron jobs, ensure you configure the AZCOPY_AUTO_LOGIN_TYPE environment variable appropriately.
 
 # [Linux](#tab/linux)
 

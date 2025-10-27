@@ -3,11 +3,13 @@ title: Managed virtual network and managed private endpoints
 description: Learn about managed virtual network and managed private endpoints in Azure Data Factory.
 ms.author: lle
 author: lrtoyou1223
-ms.service: data-factory
 ms.subservice: integration-runtime
 ms.topic: conceptual
-ms.custom: seo-lt-2019, references_regions, devx-track-azurepowershell
-ms.date: 08/02/2023
+ms.date: 02/13/2025
+ms.custom:
+  - references_regions
+  - devx-track-azurepowershell
+  - sfi-image-nochange
 ---
 
 # Azure Data Factory managed virtual network
@@ -77,6 +79,9 @@ Only a managed private endpoint in an approved state can send traffic to a speci
 > [!NOTE]
 > Custom DNS is not supported in managed virtual network.
 
+> [!NOTE]
+> Both managed virtual network and managed private endpoint are under Microsoft subscription.
+
 ## Interactive authoring
 
 Interactive authoring capabilities are used for functionalities like test connection, browse folder list and table list, get schema, and preview data. You can enable interactive authoring when creating or editing an Azure integration runtime, which is in Azure Data Factory managed virtual network. The backend service will pre-allocate compute for interactive authoring functionalities. Otherwise, the compute will be allocated every time any interactive operation is performed which will take more time. The time to live (TTL) for interactive authoring is 60 minutes by default, which means it will automatically become disabled after 60 minutes of the last interactive authoring operation. You can change the TTL value according to your actual needs.
@@ -116,7 +121,7 @@ You can utilize the table below as a reference to determine the optimal number o
 
 | Activity Type | Capacity |
 | --------------------------- | --------------------------------------------- |
-| Pipeline activity | Approximately 50 per node <br> Script activity and Lookup activity with SQL alwaysEncrypted tend to consume more resources compared to other pipeline activities, with the suggested number being around 10 per node |
+| Pipeline activity | Approximately 50 per node <br> Script activity and Lookup activity with SQL alwaysEncrypted tend to consume more resources compared to other pipeline activities, with the suggested number being around 4 per node |
 | External activity | Approximately 800 per node |
 
 
@@ -132,6 +137,9 @@ The following table lists the differences between different types of TTL：
 
 > [!NOTE]
 > You can't enable TTL in default auto-resolve Azure integration runtime. You can create a new Azure integration runtime for it.
+
+> [!NOTE]
+> When Copy/Pipeline/External compute scale TTL is activated, the billing is determined by the reserved compute resources. As a result, the output of the activity does not include the **billingReference**, as this is exclusively relevant in non-TTL scenarios.
 
 ## Create a managed virtual network via Azure PowerShell
 
@@ -178,9 +186,11 @@ New-AzResource -ApiVersion "${apiVersion}" -ResourceId "${integrationRuntimeReso
 
 ```
 
-> [!Note]
+> [!NOTE]
 > You can get the **groupId** of other data sources from a [private link resource](../private-link/private-endpoint-overview.md#private-link-resource).
 
+> [!NOTE]
+> The referenceName should only be set as "default" if you create via PowerShell Command.
 
 ## Outbound connection
 
@@ -233,7 +243,7 @@ You're unable to access each PaaS resource when both sides are exposed to Privat
 
 For example, you have a managed private endpoint for storage account A. You can also access storage account B through public network in the same managed virtual network. But when storage account B has a private endpoint connection from other managed virtual network or customer virtual network, then you can't access storage account B in your managed virtual network through public network.
 
-## Next steps
+## Related content
 
 See the following tutorials:
 

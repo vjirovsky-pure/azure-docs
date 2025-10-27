@@ -1,12 +1,12 @@
 ---
-title: Linter rule - admin user name should not be literal
-description: Linter rule - admin user name should not be a literal
-ms.topic: conceptual
+title: Linter rule - admin user name shouldn't be literal
+description: Linter rule - admin user name shouldn't be a literal
+ms.topic: reference
 ms.custom: devx-track-bicep
-ms.date: 06/23/2023
+ms.date: 02/12/2025
 ---
 
-# Linter rule - admin user name should not be literal
+# Linter rule - admin user name shouldn't be literal
 
 This rule finds when an admin user name is set to a literal value.
 
@@ -23,6 +23,8 @@ Don't use a literal value or an expression that evaluates to a literal value. In
 The following example fails this test because the user name is a literal value.
 
 ```bicep
+param location string = resourceGroup().location
+
 resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   name: 'name'
   location: location
@@ -37,6 +39,8 @@ resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
 The next example fails this test because the expression evaluates to a literal value when the default value is used.
 
 ```bicep
+param location string = resourceGroup().location
+
 var defaultAdmin = 'administrator'
 resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   name: 'name'
@@ -54,7 +58,8 @@ This example passes this test.
 ```bicep
 @secure()
 param adminUsername string
-param location string
+param location string = resourceGroup().location
+
 resource vm 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   name: 'name'
   location: location

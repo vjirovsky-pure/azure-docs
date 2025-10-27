@@ -2,21 +2,22 @@
 title: Set up sign-up and sign-in with a Microsoft Account
 titleSuffix: Azure AD B2C
 description: Provide sign-up and sign-in to customers with Microsoft Accounts in your applications using Azure Active Directory B2C.
-services: active-directory-b2c
 author: garrodonnell
 manager: CelesteDG
-
-ms.service: active-directory
-ms.workload: identity
+ms.service: azure-active-directory
 ms.topic: how-to
-ms.date: 05/01/2023
-ms.custom: project-no-code
+ms.date: 01/05/2025
 ms.author: godonnell
-ms.subservice: B2C
+ms.subservice: b2c
 zone_pivot_groups: b2c-policy-type
+
+#Customer Intent: As a developer using Azure Active Directory B2C, I want to set up sign-up and sign-in with a Microsoft account, so that users can authenticate using their Microsoft account credentials.
+
 ---
 
 # Set up sign-up and sign-in with a Microsoft account using Azure Active Directory B2C
+
+[!INCLUDE [active-directory-b2c-end-of-sale-notice-b](../../includes/active-directory-b2c-end-of-sale-notice-b.md)]
 
 [!INCLUDE [active-directory-b2c-choose-user-flow-or-custom-policy](../../includes/active-directory-b2c-choose-user-flow-or-custom-policy.md)]
 
@@ -35,8 +36,7 @@ zone_pivot_groups: b2c-policy-type
 To enable sign-in for users with a Microsoft account in Azure Active Directory B2C (Azure AD B2C), you need to create an application in the [Azure portal](https://portal.azure.com). For more information, see [Register an application with the Microsoft identity platform](../active-directory/develop/quickstart-register-app.md). If you don't already have a Microsoft account, you can get one at [https://www.live.com/](https://www.live.com/).
 
 1. Sign in to the [Azure portal](https://portal.azure.com).
-1. Make sure you're using the directory that contains your Azure AD tenant. Select the **Directories + subscriptions** icon in the portal toolbar.
-1. On the **Portal settings | Directories + subscriptions** page, find your Azure AD directory in the **Directory name** list, and then select **Switch**.
+1. If you have access to multiple tenants, select the **Settings** icon in the top menu to switch to your Microsoft Entra ID tenant from the **Directories + subscriptions** menu.
 1. Choose **All services** in the top-left corner of the Azure portal, and then search for and select **App registrations**.
 1. Select **New registration**.
 1. Enter a **Name** for your application. For example, *MSAapp1*.
@@ -55,13 +55,12 @@ To enable sign-in for users with a Microsoft account in Azure Active Directory B
 
 ## Configure Microsoft as an identity provider
 
-1. Sign in to the [Azure portal](https://portal.azure.com) as the global administrator of your Azure AD B2C tenant.
-1. Make sure you're using the directory that contains your Azure AD B2C tenant. Select the **Directories + subscriptions** icon in the portal toolbar.
-1. On the **Portal settings | Directories + subscriptions** page, find your Azure AD B2C directory in the **Directory name** list, and then select **Switch**.
+1. Sign in to the [Azure portal](https://portal.azure.com/) with an account that has at least [External Identity Provider Administrator](/entra/identity/role-based-access-control/permissions-reference#external-identity-provider-administrator) privileges.
+1. If you have access to multiple tenants, select the **Settings** icon in the top menu to switch to your Azure AD B2C tenant from the **Directories + subscriptions** menu.
 1. Choose **All services** in the top-left corner of the Azure portal, search for and select **Azure AD B2C**.
 1. Select **Identity providers**, then select **Microsoft Account**.
 1. Enter a **Name**. For example, *MSA*.
-1. For the **Client ID**, enter the Application (client) ID of the Azure AD application that you created earlier.
+1. For the **Client ID**, enter the Application (client) ID of the Microsoft Entra application that you created earlier.
 1. For the **Client secret**, enter the client secret that you recorded.
 1. Select **Save**.
 
@@ -86,9 +85,9 @@ If the sign-in process is successful, your browser is redirected to `https://jwt
 
 ## Configuring optional claims
 
-If you want to get the `family_name` and `given_name` claims from Azure AD, you can configure optional claims for your application in the Azure portal UI or application manifest. For more information, see [How to provide optional claims to your Azure AD app](../active-directory/develop/active-directory-optional-claims.md).
+If you want to get the `family_name` and `given_name` claims from Microsoft Entra ID, you can configure optional claims for your application in the Azure portal UI or application manifest. For more information, see [How to provide optional claims to your Microsoft Entra app](../active-directory/develop/optional-claims.md).
 
-1. Sign in to the [Azure portal](https://portal.azure.com). Search for and select **Azure Active Directory**.
+1. Sign in to the [Azure portal](https://portal.azure.com). Search for and select **Microsoft Entra ID**.
 1. From the **Manage** section, select **App registrations**.
 1. Select the application you want to configure optional claims for in the list.
 1. From the **Manage** section, select **Token configuration (preview)**.
@@ -99,11 +98,10 @@ If you want to get the `family_name` and `given_name` claims from Azure AD, you 
 
 ## Create a policy key
 
-Now that you've created the application in your Azure AD tenant, you need to store that application's client secret in your Azure AD B2C tenant.
+Now that you've created the application in your Microsoft Entra tenant, you need to store that application's client secret in your Azure AD B2C tenant.
 
 1. Sign in to the [Azure portal](https://portal.azure.com).
-1. Make sure you're using the directory that contains your Azure AD B2C tenant. Select the **Directories + subscriptions** icon in the portal toolbar.
-1. On the **Portal settings | Directories + subscriptions** page, find your Azure AD B2C directory in the **Directory name** list, and then select **Switch**.
+1. If you have access to multiple tenants, select the **Settings** icon in the top menu to switch to your Azure AD B2C tenant from the **Directories + subscriptions** menu.
 1. Choose **All services** in the top-left corner of the Azure portal, and then search for and select **Azure AD B2C**.
 1. On the Overview page, select **Identity Experience Framework**.
 1. Select **Policy Keys** and then select **Add**.
@@ -117,7 +115,7 @@ Now that you've created the application in your Azure AD tenant, you need to sto
 
 To enable users to sign in using a Microsoft account, you need to define the account as a claims provider that Azure AD B2C can communicate with through an endpoint. The endpoint provides a set of claims that are used by Azure AD B2C to verify that a specific user has authenticated.
 
-You can define Azure AD as a claims provider by adding the **ClaimsProvider** element in the extension file of your policy.
+You can define Microsoft Entra ID as a claims provider by adding the **ClaimsProvider** element in the extension file of your policy.
 
 1. Open the *TrustFrameworkExtensions.xml* policy file.
 1. Find the **ClaimsProviders** element. If it does not exist, add it under the root element.
@@ -165,10 +163,10 @@ You can define Azure AD as a claims provider by adding the **ClaimsProvider** el
     </ClaimsProvider>
     ```
 
-1. Replace the value of **client_id** with the Azure AD application's *Application (client) ID* that you recorded earlier.
+1. Replace the value of **client_id** with the Microsoft Entra application's *Application (client) ID* that you recorded earlier.
 1. Save the file.
 
-You've now configured your policy so that Azure AD B2C knows how to communicate with your Microsoft account application in Azure AD.
+You've now configured your policy so that Azure AD B2C knows how to communicate with your Microsoft account application in Microsoft Entra ID.
 
 [!INCLUDE [active-directory-b2c-add-identity-provider-to-user-journey](../../includes/active-directory-b2c-add-identity-provider-to-user-journey.md)]
 

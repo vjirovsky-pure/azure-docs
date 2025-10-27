@@ -1,7 +1,7 @@
 ---
 title: Maintain threat intelligence packages on OT network sensors - Microsoft Defender for IoT
 description: Learn how to maintain threat intelligence packages on OT network sensors.
-ms.date: 02/09/2023
+ms.date: 08/28/2023
 ms.topic: how-to
 ---
 
@@ -14,6 +14,8 @@ Microsoft Defender for IoT regularly delivers threat intelligence package update
 
 Threat intelligence packages contain signatures, such as malware signatures, CVEs, and other security content.
 
+CVE scores shown are aligned with the [National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln-metrics/cvss), and CVSS v3 scores are shown if they're relevant. If there's no CVSS v3 score relevant, the CVSS v2 score is shown instead.
+
 > [!TIP]
 > We recommend ensuring that your OT network sensors always have the latest threat intelligence package installed so that you always have the full context of a threat before an environment is affected, and increased relevancy, accuracy, and actionable recommendations.
 >
@@ -25,13 +27,13 @@ To perform the procedures in this article, make sure that you have:
 
 - One or more OT sensors [onboarded](onboard-sensors.md) to Azure.
 
-- Relevant permissions on the Azure portal and any OT network sensors or on-premises management console you want to update.
+- Relevant permissions on the Azure portal and any OT network sensors you want to update.
 
   - **To download threat intelligence packages from the Azure portal**, you need access to the Azure portal as a [Security Reader](../../role-based-access-control/built-in-roles.md#security-reader), [Security Admin](../../role-based-access-control/built-in-roles.md#security-admin), [Contributor](../../role-based-access-control/built-in-roles.md#contributor), or [Owner](../../role-based-access-control/built-in-roles.md#owner) role.
 
   - **To push threat intelligence updates to cloud-connected OT sensors from the Azure portal**, you need access to the Azure portal as a [Security Admin](../../role-based-access-control/built-in-roles.md#security-admin), [Contributor](../../role-based-access-control/built-in-roles.md#contributor), or [Owner](../../role-based-access-control/built-in-roles.md#owner) role.
 
-  - **To manually upload threat intelligence packages to OT sensors or on-premises management consoles**, you need access to the OT sensor or on-premises management console as an **Admin** user.
+  - **To manually upload threat intelligence packages to OT sensors**, you need access to the OT sensor as an **Admin** user.
 
 For more information, see [Azure user roles and permissions for Defender for IoT](roles-azure.md) and [On-premises users and roles for OT monitoring with Defender for IoT](roles-on-premises.md).
 
@@ -49,7 +51,7 @@ Update threat intelligence packages on your OT sensors using any of the followin
 
 - [Have updates pushed](#automatically-push-updates-to-cloud-connected-sensors) to cloud-connected OT sensors automatically as they're released.
 - [Manually push](#manually-push-updates-to-cloud-connected-sensors) updates to cloud-connected OT sensors.
-- [Download an update package](#manually-update-locally-managed-sensors) and manually upload it to your OT sensor. Alternately, upload the package to an on-premises management console and push the updates from there to any connected OT sensors.
+- [Download an update package](#manually-update-locally-managed-sensors) and manually upload it to your OT sensor.
 
 ### Automatically push updates to cloud-connected sensors
 
@@ -85,8 +87,6 @@ The **Threat Intelligence update status** field displays the update progress for
 
 If you're working with locally managed OT sensors, you need to download the updated threat intelligence packages and upload them manually on your sensors.
 
-If you're also working with an on-premises management console, we recommend that you upload the threat intelligence package to the on-premises management console and push the update from there.
-
 > [!TIP]
 > This option can also be used for cloud-connected sensors if you don't want to push the updates from the Azure portal.
 >
@@ -108,24 +108,6 @@ If you're also working with an on-premises management console, we recommend that
     :::image type="content" source="media/how-to-work-with-threat-intelligence-packages/update-threat-intelligence-single-sensor.png" alt-text="Screenshot of where you can upload Threat Intelligence package to a single sensor." lightbox="media/how-to-work-with-threat-intelligence-packages/update-threat-intelligence-single-sensor.png":::
 
 1. Browse to and select the package you'd downloaded from the Azure portal and upload it to the sensor.
-
-**To update multiple sensors simultaneously:**
-
-1. Sign in to your on-premises management console and select **System settings**.
-
-1. In the **Sensor Engine Configuration** area, select the sensors that you want to receive the updated packages. For example:
-
-    :::image type="content" source="media/how-to-work-with-threat-intelligence-packages/update-threat-intelligence-multiple-sensors.png" alt-text="Screenshot of where you can select which sensors you want to make changes to." lightbox="media/how-to-work-with-threat-intelligence-packages/update-threat-intelligence-multiple-sensors.png":::
-
-1. In the **Sensor Threat Intelligence Data** section, select the plus sign (**+**).
-
-1. In the **Upload File** dialog, select **BROWSE FILE...** to browse to and select the update package. For example:
-
-    :::image type="content" source="media/how-to-work-with-threat-intelligence-packages/upload-threat-intelligence-to-management-console.png" alt-text="Screenshot of where you can upload a Threat Intelligence package to multiple sensors." lightbox="media/how-to-work-with-threat-intelligence-packages/upload-threat-intelligence-to-management-console.png":::
-
-1. Select **CLOSE** and then **SAVE CHANGES** to push the threat intelligence update to all selected sensors.
-
-    :::image type="content" source="media/how-to-work-with-threat-intelligence-packages/save-changes-management-console.png" alt-text="Screenshot of where you can save changes made to selected sensors on the management console." lightbox="media/how-to-work-with-threat-intelligence-packages/save-changes-management-console.png":::
 
 ## Review threat intelligence update statuses
 
@@ -153,5 +135,3 @@ For cloud-connected OT sensors, threat intelligence data is also shown in the **
 For more information, see:
 
 - [Onboard OT sensors to Defender for IoT](onboard-sensors.md)
-
-- [Manage sensors from the management console](how-to-manage-sensors-from-the-on-premises-management-console.md)

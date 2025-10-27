@@ -1,19 +1,26 @@
 ---
 title: Localization string IDs - Azure Active Directory B2C
-description: Specify the IDs for a content definition with an ID of api.signuporsignin in a custom policy in Azure Active Directory B2C.
-services: active-directory-b2c
+description: Specify the IDs for a content definition with an ID of api.signuporsignin in a custom policy in Azure AD B2C.
+
 author: kengaderdus
 manager: CelesteDG
 
-ms.service: active-directory
-ms.workload: identity
+ms.service: azure-active-directory
+
 ms.topic: reference
-ms.date: 04/19/2022
+ms.date: 02/24/2024
 ms.author: kengaderdus
-ms.subservice: B2C
+ms.subservice: b2c
+ms.custom: sfi-image-nochange
+
+
+#Customer intent: As a developer implementing user interface localization in Azure AD B2C, I want to access the list of localization string IDs, so that I can use them in my policy to support multiple locales or languages in the user journeys.
+
 ---
 
 # Localization string IDs
+
+[!INCLUDE [active-directory-b2c-end-of-sale-notice-b](../../includes/active-directory-b2c-end-of-sale-notice-b.md)]
 
 [!INCLUDE [active-directory-b2c-advanced-audience-warning](../../includes/active-directory-b2c-advanced-audience-warning.md)]
 
@@ -30,7 +37,7 @@ The following IDs are used for a content definition with an ID of `api.signupors
 | `button_signin` | Sign in | `All` |
 | `social_intro` | Sign in with your social account | `All` |
 | `remember_me` |Keep me signed in. | `All` |
-| `unknown_error` | We are having trouble signing you in. Please try again later. | `All` |
+| `unknown_error` | We're having trouble signing you in. Please try again later. | `All` |
 | `divider_title` | OR | `All` |
 | `local_intro_email` | Sign in with your existing account | `< 2.0.0` |
 | `logonIdentifier_email` | Email Address | `< 2.0.0` |
@@ -44,7 +51,7 @@ The following IDs are used for a content definition with an ID of `api.signupors
 | `requiredField_password` | Please enter your password | `< 2.0.0` |
 | `createaccount_link` | Sign up now | `< 2.0.0` |
 | `cancel_message` | The user has forgotten their password | `< 2.0.0` |
-| `invalid_password` | The password you entered is not in the expected format. | `< 2.0.0` |
+| `invalid_password` | The password you entered isn't in the expected format. | `< 2.0.0` |
 | `createaccount_one_link` | Sign up now | `>= 2.0.0` |
 | `createaccount_two_links` | Sign up with {0} or {1} | `>= 2.0.0` |
 | `createaccount_three_links` | Sign up with {0}, {1}, or {2} | `>= 2.0.0` |
@@ -157,7 +164,7 @@ The following IDs are used for a content definition having an ID of `api.localac
 | `month` | Month |
 | `ver_success_msg` | E-mail address verified. You can now continue. |
 | `months` | January, February, March, April, May, June, July, August, September, October, November, December |
-| `ver_fail_server` | We are having trouble verifying your email address. Please enter a valid email address and try again. |
+| `ver_fail_server` | We're having trouble verifying your email address. Please enter a valid email address and try again. |
 | `error_requiredFieldMissing` | A required field is missing. Please fill out all required fields and try again. |
 | `heading` | User Details |
 | `initial_intro` | Please provide the following details. |
@@ -182,7 +189,7 @@ The following IDs are used for a content definition having an ID of `api.localac
 
 ### Sign-up and self-asserted pages disclaimer links
 
-The following `UxElement` string IDs will display disclaimer link(s) at the bottom of the self-asserted page. These links are not displayed by default unless specified in the localized strings.
+The following `UxElement` string IDs display disclaimer links at the bottom of the self-asserted page. These links aren't displayed by default unless specified in the localized strings.
 
 | ID | Example value |
 | --- | ------------- |
@@ -208,7 +215,7 @@ The following example shows the use of some of the user interface elements in th
 
 ![Sign-up page with its UI element names labeled](./media/localization-string-ids/localization-sign-up.png)
 
-The following example shows the use of some of the user interface elements in the sign-up page, after user clicks on send verification code button:
+The following example shows the use of some of the user interface elements in the sign-up page, after user select on send verification code button:
 
 ![Sign-up page email verification UX elements](./media/localization-string-ids/localization-email-verification.png)
 
@@ -270,6 +277,7 @@ The following example shows the use of some of the user interface elements in th
     <LocalizedString ElementType="ErrorMessage" StringId="UserMessageIfInvalidInput">{0} has invalid input.</LocalizedString>
     <LocalizedString ElementType="ErrorMessage" StringId="UserMessageIfMissingRequiredElement">Missing required element: {0}</LocalizedString>
     <LocalizedString ElementType="ErrorMessage" StringId="UserMessageIfValidationError">Error in validation by: {0}</LocalizedString>
+    <LocalizedString ElementType="ErrorMessage" StringId="InvalidUserInput"> An Invalid value was presented for a property</LocalizedString>
   </LocalizedStrings>
 </LocalizedResources>
 ```
@@ -282,7 +290,7 @@ The Following are the IDs for a content definition with an ID of `api.phonefacto
 | --- | ------------- | ------ |
 | `button_verify` | Call Me | `All` |
 | `country_code_label` | Country Code | `All` |
-| `cancel_message` | The user has canceled multi-factor authentication | `All` |
+| `cancel_message` | The user has canceled multifactor authentication | `All` |
 | `text_button_send_second_code` | send a new code | `All` |
 | `code_pattern` | \\d{6} | `All` |
 | `intro_mixed` | We have the following number on record for you. We can send a code via SMS or phone to authenticate you. | `All` |
@@ -314,7 +322,7 @@ The Following are the IDs for a content definition with an ID of `api.phonefacto
 | `error_phone_throttled` | You hit the limit on the number of call attempts. Try again shortly. | `>= 1.2.3` |
 | `error_throttled` | You hit the limit on the number of verification attempts. Try again shortly. | `>= 1.2.3` |
 | `error_incorrect_code` | The verification code you have entered does not match our records. Please try again, or request a new code. | `All` |
-| `countryList` | See [the countries list](#phone-factor-authentication-page-example). | `All` |
+| `countryList` | See [the countries/regions list](#phone-factor-authentication-page-example). | `All` |
 | `error_448` | The phone number you provided is unreachable. | `All` |
 | `error_449` | User has exceeded the number of retry attempts. | `All` |
 | `verification_code_input_placeholder_text` | Verification code | `All` |
@@ -392,12 +400,15 @@ The following IDs are used for a [Verification display control](display-control-
 | `but_send_new_code` | Send new code|
 | `but_change_claims` | Change e-mail|
 | `UserMessageIfVerificationControlClaimsNotVerified` <sup>2</sup> | The claims for verification control have not been verified. |
+| `UserMessageIfVerificationControlClaimsHaveChanged` <sup>3</sup> | The claims to verify have been changed. |
 
 <sup>1</sup> The `intro_msg` element is hidden, and not shown on the self-asserted page. To make it visible, use the [HTML customization](customize-ui-with-html.md) with Cascading Style Sheets. For example:
 
 `.verificationInfoText div{display: block!important}`
 
 <sup>2</sup> This error message is displayed to the user if they enter a verification code, but instead of completing the verification by selecting on the **Verify** button, they select the **Continue** button.
+
+<sup>3</sup> This error message is displayed to the user if they validate an email address but then they select the **Change e-mail** button and don't validate the new email.
 
 ### Verification display control example
 
@@ -415,6 +426,7 @@ The following IDs are used for a [Verification display control](display-control-
     <LocalizedString ElementType="DisplayControl" ElementId="emailVerificationControl" StringId="but_send_new_code">Send new code</LocalizedString>
     <LocalizedString ElementType="DisplayControl" ElementId="emailVerificationControl" StringId="but_change_claims">Change e-mail</LocalizedString>
     <LocalizedString ElementType="ErrorMessage" StringId="UserMessageIfVerificationControlClaimsNotVerified">The claims for verification control have not been verified.</LocalizedString>
+    <LocalizedString ElementType="ErrorMessage" StringId="UserMessageIfVerificationControlClaimsHaveChanged">The claims to verify have been changed.</LocalizedString>
   </LocalizedStrings>
 </LocalizedResources>
 ```
@@ -491,18 +503,18 @@ The following IDs are used for a [time-based one-time password (TOTP) display co
       </LocalizedResources>
 ```
 
-## Restful service error messages
+## RESTful service error messages
 
-The following IDs are used for [Restful service technical profile](restful-technical-profile.md) error messages:
+The following IDs are used for [RESTful service technical profile](restful-technical-profile.md) error messages:
 
 | ID | Default value |
 | --- | ------------- |
-| `DefaultUserMessageIfRequestFailed` | Failed to establish connection to restful service end point. Restful service URL: {0} |
-| `UserMessageIfCircuitOpen` | {0} Restful Service URL: {1} |
-| `UserMessageIfDnsResolutionFailed` | Failed to resolve the hostname of the restful service endpoint. Restful service URL: {0} |
-| `UserMessageIfRequestTimeout` | Failed to establish connection to restful service end point within timeout limit {0} seconds. Restful service URL: {1} |
+| `DefaultUserMessageIfRequestFailed` | Failed to establish connection to restful service end point. RESTful service URL: {0} |
+| `UserMessageIfCircuitOpen` | {0} RESTful Service URL: {1} |
+| `UserMessageIfDnsResolutionFailed` | Failed to resolve the hostname of the restful service endpoint. RESTful service URL: {0} |
+| `UserMessageIfRequestTimeout` | Failed to establish connection to restful service end point within timeout limit {0} seconds. RESTful service URL: {1} |
 
-### Restful service example
+### RESTful service example
 
 ```xml
 <LocalizedResources Id="api.localaccountsignup.en">
@@ -515,9 +527,11 @@ The following IDs are used for [Restful service technical profile](restful-techn
 </LocalizedResources>
 ```
 
-## Azure AD MFA error messages
+<a name='azure-ad-mfa-error-messages'></a>
 
-The following IDs are used for an [Azure AD MFA technical profile](multi-factor-auth-technical-profile.md) error message:
+## Microsoft Entra multifactor authentication error messages
+
+The following IDs are used for an [Microsoft Entra ID multifactor authentication technical profile](multi-factor-auth-technical-profile.md) error message:
 
 | ID | Default value |
 | --- | ------------- |
@@ -526,9 +540,11 @@ The following IDs are used for an [Azure AD MFA technical profile](multi-factor-
 | `UserMessageIfMaxAllowedCodeRetryReached` | Wrong code entered too many times, please try again later.|
 | `UserMessageIfServerError` | Cannot use MFA service, please try again later.|
 | `UserMessageIfThrottled` | Your request has been throttled, please try again later.|
-| `UserMessageIfWrongCodeEntered` |Wrong code entered, please try again.|
+| `UserMessageIfIncorrectOTPCodeEntered` |Wrong code entered, please try again.|
 
-### Azure AD MFA example
+<a name='azure-ad-mfa-example'></a>
+
+### Microsoft Entra multifactor authentication example
 
 ```xml
 <LocalizedResources Id="api.localaccountsignup.en">
@@ -543,9 +559,11 @@ The following IDs are used for an [Azure AD MFA technical profile](multi-factor-
 </LocalizedResources>
 ```
 
-## Azure AD SSPR
+<a name='azure-ad-sspr'></a>
 
-The following IDs are used for [Azure AD SSPR technical profile](aad-sspr-technical-profile.md) error messages:
+## Microsoft Entra SSPR
+
+The following IDs are used for [Microsoft Entra ID SSPR technical profile](aad-sspr-technical-profile.md) error messages:
 
 | ID | Default value |
 | --- | ------------- |
@@ -555,7 +573,9 @@ The following IDs are used for [Azure AD SSPR technical profile](aad-sspr-techni
 |`UserMessageIfVerificationFailedNoRetry` | You have exceeded maximum number of verification attempts.|
 |`UserMessageIfVerificationFailedRetryAllowed` | The verification has failed, please try again.|
 
-### Azure AD SSPR example
+<a name='azure-ad-sspr-example'></a>
+
+### Microsoft Entra SSPR example
 
 ```xml
 <LocalizedResources Id="api.localaccountsignup.en">
@@ -571,16 +591,16 @@ The following IDs are used for [Azure AD SSPR technical profile](aad-sspr-techni
 
 ## One-time password error messages
 
-The following IDs are used for a [one-time password technical profile](one-time-password-technical-profile.md) error messages
+The following IDs are used for a [one-time password technical profile](one-time-password-technical-profile.md) error messages.
 
 | ID | Default value | Description |
 | --- | ------------- | ----------- |
-| `UserMessageIfSessionDoesNotExist` | No | The message to display to the user if the code verification session has expired. It is either the code has expired or the code has never been generated for a given identifier. |
-| `UserMessageIfMaxRetryAttempted` | No | The message to display to the user if they've exceeded the maximum allowed verification attempts. |
+| `UserMessageIfSessionDoesNotExist` | No | The message to display to the user if the code verification session is expired. It's either the code is expired or the code has never been generated for a given identifier. |
+| `UserMessageIfMaxRetryAttempted` | No | The message to display to the user if they exceed the maximum allowed verification attempts. |
 | `UserMessageIfMaxNumberOfCodeGenerated` | No | The message to display to the user if the code generation has exceeded the maximum allowed number of attempts. |
-| `UserMessageIfInvalidCode` | No | The message to display to the user if they've provided an invalid code. |
-| `UserMessageIfVerificationFailedRetryAllowed` | No | The message to display to the user if they've provided an invalid code, and user is allowed to provide the correct code.  |
-| `UserMessageIfSessionConflict` | No | The message to display to the user if the code cannot be verified.|
+| `UserMessageIfInvalidCode` | No | The message to display to the user if they enter an invalid code. |
+| `UserMessageIfVerificationFailedRetryAllowed` | No | The message to display to the user if they enter an invalid code, and user is allowed to provide the correct code.  |
+| `UserMessageIfSessionConflict` | No | The message to display to the user if the code can't be verified.|
 
 ### One time password example
 
@@ -607,7 +627,8 @@ The following IDs are used for claims transformations error messages:
 | `DateTimeGreaterThan` |[AssertDateTimeIsGreaterThan](date-transformations.md#assertdatetimeisgreaterthan) | Claim value comparison failed: The provided left operand is greater than the right operand.|
 | `UserMessageIfClaimsTransformationStringsAreNotEqual` |[AssertStringClaimsAreEqual](string-transformations.md#assertstringclaimsareequal) | Claim value comparison failed using StringComparison "OrdinalIgnoreCase".|
 
-### Claims transformations example
+### Claims transformations example 1:
+This example shows localized messages for local account sign-up.
 
 ```xml
 <LocalizedResources Id="api.localaccountsignup.en">
@@ -619,9 +640,55 @@ The following IDs are used for claims transformations error messages:
 </LocalizedResources>
 ```
 
-## Next steps
+### Claims transformations example 2:
+This example shows localized messages for local account password reset.
 
+```xml
+<LocalizedResources Id="api.localaccountpasswordreset.en">
+  <LocalizedStrings>
+    <LocalizedString ElementType="ErrorMessage" StringId="UserMessageIfClaimsTransformationBooleanValueIsNotEqual">You cannot use the old password</LocalizedString>    
+  </LocalizedStrings>
+</LocalizedResources>
+```
+
+## CAPTCHA display control user interface elements
+
+The following IDs are used for a [CAPTCHA display control](display-control-captcha.md):
+
+| ID | Default value | Description |
+| --- | ------------- | ----------- |
+| `newCaptcha_arialabel` | Create new CAPTCHA | The tooltip message to display to the user when they move the mouse pointer over the CAPTCHA replay icon. |
+| `switchCaptchaType_title` | Switch CAPTCHA type to {0} | The tooltip message to display to they user when the move the mouse pointer over the CAPTCHA  Audio or image icon. |
+| `captchatype_visual_help` | Enter the characters you see | The placeholder text in the input box where the user inputs the CAPTCHA code if the user is in visual mode. |
+| `captchatype_audio_title` | Press audio button to play the challenge | The tooltip message to display to the user when they move the mouse pointer over the CAPTCHA speaker icon if the user switches to audio mode. |
+| `captchatype_audio_help` | Enter the characters you hear | The placeholder text in the input box where the user inputs the CAPTCHA code if the user switches to audio mode. |
+| `charsnotmatched_error` | The characters did not match for CAPTCHA challenge. Please try again | The message to display to the user if they enter a wrong CAPTCHA code. |
+| `api_error` | API error on CAPTCHA control | The message to display to the user if an error occurs while Azure AD B2C attempts to validate the CAPTCHA code. |
+| `captcha_resolved` | Success! | The message to display to the user if they enter a correct CAPTCHA code. |
+|`DisplayName`| Help us beat the bots. | The CAPTCHA display control's display name. | 
+
+### CAPTCHA display control example
+
+This example shows localized messages for CAPTCHA display control.
+
+```xml
+      <LocalizedResources Id="api.localaccountsignup.en">
+        <LocalizedStrings>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="newCaptcha_arialabel">Create new CAPTCHA</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="switchCaptchaType_title">Switch CAPTCHA type to {0}</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="captchatype_visual_help">Enter the characters you see</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="captchatype_audio_title">Press audio button to play the challenge</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="captchatype_audio_help">Enter the characters you hear</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="charsnotmatched_error">The characters did not match for CAPTCHA challenge. Please try again</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="api_error">API error on CAPTCHA control</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="captcha_resolved">Success!</LocalizedString>
+          <LocalizedString ElementType="DisplayControl" ElementId="captchaControlChallengeCode" StringId="DisplayName">Help us beat the bots</LocalizedString>
+        </LocalizedStrings>
+      </LocalizedResources>
+```
+
+## Related content
 See the following articles for localization examples:
 
-- [Language customization with custom policy in Azure Active Directory B2C](language-customization.md)
-- [Language customization with user flows in Azure Active Directory B2C](language-customization.md)
+- [Language customization with custom policy in Azure AD B2C](language-customization.md)
+- [Language customization with user flows in Azure AD B2C](language-customization.md)

@@ -2,19 +2,18 @@
 title: High availability setup with fencing device for SAP HANA on Azure (Large Instances)| Microsoft Docs
 description: Learn to establish high availability for SAP HANA on Azure (Large Instances) in SUSE by using the fencing device.
 services: virtual-machines-linux
-documentationcenter:
-author: lauradolan
+author: ju-shim
 manager: juergent
-editor:
 ms.service: sap-on-azure
 ms.subservice: sap-large-instances
 ms.topic: article
 ms.tgt_pltfrm: vm-linux
-ms.workload: infrastructure
 ms.date: 9/01/2021
-ms.author: ladolan
-ms.custom: H1Hack27Feb2017
-
+ms.author: jushiman
+ms.custom:
+  - H1Hack27Feb2017
+  - sfi-image-nochange
+# Customer intent: "As a system administrator, I want to configure high availability for SAP HANA on SUSE using fencing devices, so that I can ensure continuous operation and quick recovery in case of failures."
 ---
 # High availability setup in SUSE using the fencing device
 
@@ -602,7 +601,7 @@ To fix it:
 
 You can find more information on SUSE HA setup in the following articles: 
 
-- [SAP HANA SR Performance Optimized Scenario](https://www.suse.com/support/kb/doc/?id=000019450) (SUSE website)
+- [SAP HANA SR Performance Optimized Scenario](https://documentation.suse.com/sbp/sap-12/html/SLES4SAP-hana-sr-guide-PerfOpt-12/index.html) (SUSE website)
 - [Fencing and fencing devices](https://documentation.suse.com/sle-ha/15-SP1/html/SLE-HA-all/cha-ha-fencing.html) (SUSE website)
 - [Be Prepared for Using Pacemaker Cluster for SAP HANA – Part 1: Basics](https://blogs.sap.com/2017/11/19/be-prepared-for-using-pacemaker-cluster-for-sap-hana-part-1-basics/) (SAP blog)
 - [Be Prepared for Using Pacemaker Cluster for SAP HANA – Part 2: Failure of Both Nodes](https://blogs.sap.com/2017/11/19/be-prepared-for-using-pacemaker-cluster-for-sap-hana-part-2-failure-of-both-nodes/) (SAP blog)

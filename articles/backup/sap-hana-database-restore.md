@@ -2,18 +2,18 @@
 title: Restore SAP HANA databases on Azure VMs
 description: In this article, you'll learn how to restore SAP HANA databases that are running on Azure virtual machines. You can also use Cross Region Restore to restore your databases to a secondary region.
 ms.topic: how-to
-ms.date: 07/31/2023
-ms.service: backup
-ms.custom: ignite-2022
+ms.date: 06/05/2025
+ms.service: azure-backup
 author: AbhishekMallick-MS
-ms.author: v-abhmallick
+ms.author: v-mallicka
+# Customer intent: "As a database administrator, I want to restore SAP HANA databases on Azure VMs so that I can recover lost data and create test environments efficiently."
 ---
 
-# Restore SAP HANA databases on Azure VMs
+# Restore SAP HANA databases on Azure VMs using Azure portal
 
-This article describes how to restore SAP HANA databases that are running on Azure virtual machines (VMs) and that the Azure Backup service has backed up to a Recovery Services vault. You can use the restored data to create copies for development and test scenarios or to return to a previous state.
+This article describes how to restore SAP HANA databases that are running on Azure virtual machines (VMs) using Azure portal and that the Azure Backup service has backed up to a Recovery Services vault. Azure Backup allows you to use the restored data to create copies for development and test scenarios or to return to a previous state. You can also [restore the database using Azure CLI](tutorial-sap-hana-restore-cli.md).
 
-Azure Backup now supports backup and restore of SAP HANA System Replication (HSR) instance.
+Azure Backup now supports backup and restore of SAP HANA System Replication (HSR) instance using Azure portal. You can also do the restore operation using [Azure CLI](quick-restore-hana-cli.md).
 
 >[!Note]
 >- The restore process for HANA databases with HSR is the same as the restore process for HANA databases without HSR. As per SAP advisories, you can restore databases with HSR mode as *standalone* databases. If the target system has the HSR mode enabled, first disable the mode, and then restore the database. However, if you're restoring as files, disabling the HSR mode (breaking the HSR) isn't needed.
@@ -26,9 +26,9 @@ For information about the supported configurations and scenarios, see the [SAP H
 
 Azure Backup restores SAP HANA databases that are running on Azure VMs. It can:
 
-* Restore them to a specific date or time (to the second) by using log backups. Azure Backup automatically determines the appropriate full backups, differential backups, and chain of log backups that are required to restore based on the selected time.
+* Restore them to a specific date or time (to the second) by using log backups. Azure Backup automatically determines the appropriate full backups, differential backups, and chain of log backups that are required to restore based on the selected time. [Learn more](#restore-to-a-specific-point-in-time).
 
-* Restore them to a specific full or differential backup to restore them to a specific recovery point.
+* Restore them to a specific full or differential backup to restore them to a specific recovery point. [Learn more](#restore-to-a-specific-recovery-point).
 
 ## Prerequisites
 
@@ -349,6 +349,8 @@ The secondary region restore user experience is similar to the primary region re
 >* The role and access level that are required to perform a restore operation in cross-regions are the Backup Operator role in the subscription and Contributor (write) access on the source and target virtual machines. To view backup jobs, Backup reader is the minimum permission that's required in the subscription.
 >* The recovery point objective (RPO) for the backup data to be available in secondary region is 12 hours. Therefore, when you turn on CRR, the RPO for the secondary region is *12 hours + log frequency duration* (which can be set to a minimum of 15 minutes).
 
+Learn about the [minimum role requirements for cross-region restore](backup-rbac-rs-vault.md#minimum-role-requirements-for-azure-workload-backups-sql-and-hana-db-backups).
+
 ### Monitor secondary region restore jobs
 
 1. In the Azure portal, go to **Backup center**, and then select **Backup Jobs**.
@@ -366,6 +368,16 @@ With Cross Subscription Restore (CSR), you have the flexibility of restoring to 
 >- You can trigger Cross Subscription Restore from Recovery Services vault.
 >- CSR is supported only for streaming/Backint-based backups and is not supported for snapshot-based backup.
 >- Cross Regional Restore (CRR) with CSR is not supported.
+
+**Cross Subscription Restore to a Private Endpoint enabled vault**
+
+To perform Cross Subscription Restore to a Private Endpoint enabled vault:
+
+1. In the *source Recovery Services vault*, go to the **Networking** tab.
+2. Go to the **Private access** section and create **Private Endpoints**.
+3. Select the *subscription* of the target vault in which you want to restore.
+4. In the **Virtual Network** section, select the **VNet** of the target VM that you want to restore across subscription.
+5. Create the **Private Endpoint** and trigger the restore process.
 
 **Azure RBAC  requirements**
 
@@ -403,7 +415,9 @@ Add the parameter `--target-subscription-id` that enables you to provide the tar
 
 ```
 
+
 ## Next steps
 
-- [Manage SAP HANA databases by using Azure Backup](sap-hana-db-manage.md)
-- [About backing up SAP HANA databases on Azure VMs](sap-hana-database-about.md)
+- [Manage SAP HANA databases by Azure Backup using Azure portal](sap-hana-db-manage.md).
+- [Manage SAP HANA databases that are backed up by Azure Backup using Azure CLI](tutorial-sap-hana-manage-cli.md).
+- [About backing up SAP HANA databases on Azure VMs](sap-hana-database-about.md).

@@ -1,25 +1,21 @@
 ---
-title: Microsoft Sentinel user management normalization schema reference (Public Preview) | Microsoft Docs
+title: Microsoft Sentinel user management normalization schema reference | Microsoft Docs
 description: This article describes the Microsoft Sentinel user management normalization schema.
 author: oshezaf
 ms.topic: reference
 ms.date: 02/06/2022
 ms.author: ofshezaf
+
+
+#Customer intent: As a security analyst, I want to understand the User Management normalization schema so that I can effectively monitor and analyze user management activities within my organization.
+
 ---
 
-# Microsoft Sentinel user management normalization schema reference (preview)
+# Microsoft Sentinel user management normalization schema reference
 
 The Microsoft Sentinel user management normalization schema is used to describe user management activities, such as creating a user or a group, changing user attribute, or adding a user to a group. Such events are reported, for example, by operating systems, directory services, identity management systems, and any other system reporting on its local user management activity.
 
 For more information about normalization in Microsoft Sentinel, see [Normalization and the Advanced Security Information Model (ASIM)](normalization.md).
-
-> [!IMPORTANT]
-> The user management normalization schema is currently in *preview*. This feature is provided without a service level agreement. We don't recommend it for production workloads.
->
-> The [Azure Preview Supplemental Terms](https://azure.microsoft.com/support/legal/preview-supplemental-terms/) include additional legal terms that apply to Azure features that are in beta, preview, or otherwise not yet released into general availability.
->
-
-
 
 ## Schema overview
 
@@ -84,7 +80,7 @@ Fields that appear in the table below are common to all ASIM schemas. Any guidel
 
 | Field | Class | Type | Description |
 |-------|-------|------|-------------|
-| <a name="targetuserid"></a>**TargetUserId** | Optional | String | A machine-readable, alphanumeric, unique representation of the target user. <br><br>Supported formats and types include:<br>- **SID** (Windows): `S-1-5-21-1377283216-344919071-3415362939-500`<br>- **UID** (Linux): `4578`<br>-  **AADID** (Azure Active Directory): `9267d02c-5f76-40a9-a9eb-b686f3ca47aa`<br>-  **OktaId**: `00urjk4znu3BcncfY0h7`<br>-  **AWSId**: `72643944673`<br><br>Store the ID type in the [TargetUserIdType](#targetuseridtype) field. If other IDs are available, we recommend that you normalize the field names to **TargetUserSid**, **TargetUserUid**, **TargetUserAADID**, **TargetUserOktaId**, and **TargetUserAwsId**, respectively. For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: `S-1-12` |
+| <a name="targetuserid"></a>**TargetUserId** | Optional | String | A machine-readable, alphanumeric, unique representation of the target user. <br><br>Supported formats and types include:<br>- **SID** (Windows): `S-1-5-21-1377283216-344919071-3415362939-500`<br>- **UID** (Linux): `4578`<br>-  **AADID** (Microsoft Entra ID): `9267d02c-5f76-40a9-a9eb-b686f3ca47aa`<br>-  **OktaId**: `00urjk4znu3BcncfY0h7`<br>-  **AWSId**: `72643944673`<br><br>Store the ID type in the [TargetUserIdType](#targetuseridtype) field. If other IDs are available, we recommend that you normalize the field names to **TargetUserSid**, **TargetUserUid**, **TargetUserAADID**, **TargetUserOktaId**, and **TargetUserAwsId**, respectively. For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: `S-1-12` |
 | <a name="targetuseridtype"></a>**TargetUserIdType** | Optional | Enumerated | The type of the ID stored in the [TargetUserId](#targetuserid) field. <br><br>Supported values are `SID`, `UID`, `AADID`, `OktaId`, and `AWSId`. |
 | <a name="targetusername"></a>**TargetUsername** | Optional | String | The target username, including domain information when available. <br><br>Use one of the following formats and in the following order of priority:<br>- **Upn/Email**: `johndow@contoso.com`<br>- **Windows**: `Contoso\johndow`<br>- **DN**: `CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=COM`<br>- **Simple**: `johndow`. Use the Simple form only if domain information isn't available.<br><br>Store the Username type in the [TargetUsernameType](#targetusernametype) field. If other IDs are available, we recommend that you normalize the field names to **TargetUserUpn**, **TargetUserWindows**, and **TargetUserDn**. For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: `AlbertE` |
 | <a name="targetusernametype"></a>**TargetUsernameType** | Optional | Enumerated | Specifies the type of the username stored in the [TargetUsername](#targetusername) field. Supported values include `UPN`, `Windows`, `DN`, and `Simple`. For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: `Windows` |
@@ -96,7 +92,7 @@ Fields that appear in the table below are common to all ASIM schemas. Any guidel
 
 | Field | Class | Type | Description |
 |-------|-------|------|-------------|
-| <a name="actoruserid"></a>**ActorUserId** | Optional | String | A machine-readable, alphanumeric, unique representation of the Actor. <br><br>Supported formats and types include:<br>- **SID** (Windows): `S-1-5-21-1377283216-344919071-3415362939-500`<br>- **UID** (Linux): `4578`<br>- **AADID** (Azure Active Directory): `9267d02c-5f76-40a9-a9eb-b686f3ca47aa`<br>- **OktaId**: `00urjk4znu3BcncfY0h7`<br>- **AWSId**: `72643944673`<br><br>Store the ID type in the [ActorUserIdType](#actoruseridtype) field. If other IDs are available, we recommend that you normalize the field names to **ActorUserSid**, **ActorUserUid**, **ActorUserAadId**, **ActorUserOktaId**, and **ActorAwsId**, respectively. For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: S-1-12 |
+| <a name="actoruserid"></a>**ActorUserId** | Optional | String | A machine-readable, alphanumeric, unique representation of the Actor. <br><br>Supported formats and types include:<br>- **SID** (Windows): `S-1-5-21-1377283216-344919071-3415362939-500`<br>- **UID** (Linux): `4578`<br>- **AADID** (Microsoft Entra ID): `9267d02c-5f76-40a9-a9eb-b686f3ca47aa`<br>- **OktaId**: `00urjk4znu3BcncfY0h7`<br>- **AWSId**: `72643944673`<br><br>Store the ID type in the [ActorUserIdType](#actoruseridtype) field. If other IDs are available, we recommend that you normalize the field names to **ActorUserSid**, **ActorUserUid**, **ActorUserAadId**, **ActorUserOktaId**, and **ActorAwsId**, respectively. For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: S-1-12 |
 | <a name="actoruseridtype"></a>**ActorUserIdType** | Optional | Enumerated | The type of the ID stored in the [ActorUserId](#actoruserid) field. Supported values include `SID`, `UID`, `AADID`, `OktaId`, and `AWSId`. |
 | <a name="actorusername"></a>**ActorUsername** | Mandatory | String | The Actor username, including domain information when available. <br><br>Use one of the following formats and in the following order of priority:<br>- **Upn/Email**: `johndow@contoso.com`<br>- **Windows**: `Contoso\johndow`<br>- **DN**: `CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=COM`<br>- **Simple**: `johndow`. Use the Simple form only if domain information isn't available.<br><br>Store the Username type in the [ActorUsernameType](#actorusernametype) field. If other IDs are available, we recommend that you normalize the field names to **ActorUserUpn**, **ActorUserWindows**, and **ActorUserDn**.<br><br>For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: `AlbertE` |
 | <a name="user"></a>**User** | Alias | | Alias to [ActorUsername](#actorusername). |
@@ -112,7 +108,7 @@ Fields that appear in the table below are common to all ASIM schemas. Any guidel
 |-------|-------|------|-------------|
 | <a name="groupid"></a>**GroupId** | Optional | String | A machine-readable, alphanumeric, unique representation of the group, for activities involving a group. <br><br>Supported formats and types include:<br>- **SID** (Windows): `S-1-5-21-1377283216-344919071-3415362939-500`<br>- **UID** (Linux): `4578`<br><br>Store the ID type in the [GroupIdType](#groupidtype) field. If other IDs are available, we recommend that you normalize the field names to **GroupSid** or **GroupUid**, respectively. For more information, see [The User entity](normalization-about-schemas.md#the-user-entity).<br><br>Example: `S-1-12` |
 | <a name="groupidtype"></a>**GroupIdType** | Optional | Enumerated | The type of the ID stored in the [GroupId](#groupid) field. <br><br>Supported values are `SID`, and `UID`. |
-| <a name="groupname"></a>**GroupName** | Optional | String | The group name, including domain information when available, for activities involving a group. <br><br>Use one of the following formats and in the following order of priority:<br>- **Upn/Email**: `grp@contoso.com`<br>- **Windows**: `Contoso\grp`<br>- **DN**: `CN=grp,OU=Sales,DC=Fabrikam,DC=COM`<br>- **Simple**: `grp`. Use the Simple form only if domain information isn't available.<br><br>Store the group name type in the [GroupNameType](#groupnametype) field. If other IDs are available, we recommend that you normalize the field names to **GroupUpn**, **GorupNameWindows**, and **GroupDn**.<br><br>Example: `Contoso\Finance` |
+| <a name="groupname"></a>**GroupName** | Optional | String | The group name, including domain information when available, for activities involving a group. <br><br>Use one of the following formats and in the following order of priority:<br>- **Upn/Email**: `grp@contoso.com`<br>- **Windows**: `Contoso\grp`<br>- **DN**: `CN=grp,OU=Sales,DC=Fabrikam,DC=COM`<br>- **Simple**: `grp`. Use the Simple form only if domain information isn't available.<br><br>Store the group name type in the [GroupNameType](#groupnametype) field. If other IDs are available, we recommend that you normalize the field names to **GroupUpn**, **GroupNameWindows**, and **GroupDn**.<br><br>Example: `Contoso\Finance` |
 | <a name="groupnametype"></a>**GroupNameType** | Optional | Enumerated | Specifies the type of the group name stored in the [GroupName](#groupname) field. Supported values include `UPN`, `Windows`, `DN`, and `Simple`.<br><br>Example: `Windows` |
 | **GroupType** | Optional | Enumerated | The type of the group, for activities involving a group. Supported values include:<br>- `Local Distribution`<br>- `Local Security Enabled`<br>- `Global Distribution`<br>- `Global Security Enabled`<br>- `Universal Distribution`<br>- `Universal Security Enabled`<br>- `Other`<br><br>**Note**: The value might be provided in the source record by using different terms, which should be normalized to these values. Store the original value in the [GroupOriginalType](#grouporiginaltype) field. |
 | <a name="grouporiginaltype"></a>**GroupOriginalType** | Optional | String | The original group type, if provided by the source. |
@@ -134,7 +130,7 @@ Fields that appear in the table below are common to all ASIM schemas. Any guidel
 | <a name="srcdvcscope"></a>**SrcDvcScope** | Optional | String | The cloud platform scope the device belongs to. **SrcDvcScope** map to a subscription ID on Azure and to an account ID on AWS. | 
 | **SrcDvcIdType** | Optional | Enumerated | The type of [SrcDvcId](#srcdvcid), if known. Possible values include:<br> - `AzureResourceId`<br>- `MDEid`<br><br>If multiple IDs are available, use the first one from the preceding list, and store the others in **SrcDvcAzureResourceId** and **SrcDvcMDEid**, respectively.<br><br>**Note**: This field is required if [SrcDvcId](#srcdvcid) is used. |
 | **SrcDeviceType** | Optional | Enumerated | The type of the source device. Possible values include:<br>- `Computer`<br>- `Mobile Device`<br>- `IOT Device`<br>- `Other` |
-| **SrcGeoCountry** | Optional | Country | The country associated with the source IP address.<br><br>Example: `USA` |
+| **SrcGeoCountry** | Optional | Country | The country/region associated with the source IP address.<br><br>Example: `USA` |
 | **SrcGeoRegion** | Optional | Region | The region associated with the source IP address.<br><br>Example: `Vermont` |
 | **SrcGeoCity** | Optional | City | The city associated with the source IP address.<br><br>Example: `Burlington` |
 | **SrcGeoLatitude** | Optional | Latitude | The latitude of the geographical coordinate associated with the source IP address.<br><br>Example: `44.475833` |
@@ -168,4 +164,3 @@ For more information, see:
 - [Advanced Security Information Model (ASIM) schemas](normalization-about-schemas.md)
 - [Advanced Security Information Model (ASIM) parsers](normalization-parsers-overview.md)
 - [Advanced Security Information Model (ASIM) content](normalization-content.md)
-

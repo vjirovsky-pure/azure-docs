@@ -5,9 +5,10 @@ author: kimforss
 ms.author: kimforss
 ms.reviewer: kimforss
 ms.date: 11/17/2021
-ms.topic: conceptual
+ms.topic: concept-article
 ms.service: sap-on-azure
 ms.subservice: sap-automation
+# Customer intent: As a system administrator, I want to deploy an SAP system using the automation framework, so that I can efficiently configure and manage virtual machines and supporting components for my SAP applications.
 ---
 
 # SAP system deployment for the automation framework
@@ -47,7 +48,7 @@ You can set the size of database VMs with the parameter `size` for this tier. Fo
 
 By default, the automation framework deploys the correct disk configuration for HANA database deployments. For HANA database deployments, the framework calculates default disk configuration based on VM size. However, for AnyDB database deployments, the framework calculates default disk configuration based on database size. You can set a disk size as needed by creating a custom JSON file in your deployment. For an example, [see the following JSON code sample and replace values as necessary for your configuration](configure-extra-disks.md#custom-sizing-file). Then, define the parameter `db_disk_sizes_filename` in the parameter file for the database tier. An example is `db_disk_sizes_filename = "path/to/JSON/file"`.
 
-You can also [add extra disks to a new system](configure-extra-disks.md#custom-sizing-file) or [add extra disks to an existing system](configure-extra-disks.md#add-extra-disks-to-existing-system).
+You can also [add extra disks to a new system](configure-extra-disks.md#custom-sizing-file) or [add extra disks to an existing system](configure-extra-disks.md#add-extra-disks-to-an-existing-system).
 
 ## Core configuration
 

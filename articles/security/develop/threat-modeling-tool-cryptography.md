@@ -2,7 +2,6 @@
 title: Cryptography - Microsoft Threat Modeling Tool - Azure | Microsoft Docs
 description: Learn about cryptography mitigation for threats exposed in the Threat Modeling Tool. See mitigation information and view code examples.
 author: jegeib
-manager: jegeib
 editor: jegeib
 ms.service: information-protection
 ms.subservice: aiplabels
@@ -219,7 +218,7 @@ As can be seen, the device primary key is not present in the code. Instead, it i
 | **SDL Phase**               | Deployment |  
 | **Applicable Technologies** | Generic |
 | **Attributes**              | N/A  |
-| **References**              | [Identity Server - Keys, Signatures and Cryptography](https://identityserver.github.io/Documentation/docsv2/configuration/crypto.html) |
+| **References**              | N/A |
 | **Steps** | Ensure that signing keys are rolled over when using Identity Server. The link in the references section explains how this should be planned without causing outages to applications relying on Identity Server. |
 
 ## <a id="client-server"></a>Ensure that cryptographically strong client ID, client secret are used in Identity Server

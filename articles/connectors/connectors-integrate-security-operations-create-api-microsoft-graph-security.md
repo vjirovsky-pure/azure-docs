@@ -5,21 +5,22 @@ services: logic-apps
 ms.suite: integration
 author: ecfan
 ms.author: preetikr
-ms.reviewer: v-ching, estfan, azla
+ms.reviewer: estfan, azla
 ms.topic: how-to
-ms.date: 02/21/2020
-tags: connectors
+ms.date: 01/04/2024
 ---
 
 # Improve threat protection by integrating security operations with Microsoft Graph Security & Azure Logic Apps
 
-With [Azure Logic Apps](../logic-apps/logic-apps-overview.md) and the [Microsoft Graph Security](/graph/security-concept-overview) connector, you can improve how your app detects, protects, and responds to threats by creating automated workflows for integrating Microsoft security products, services, and partners. For example, you can create [Microsoft Defender for Cloud playbooks](../security-center/workflow-automation.md) that monitor and manage Microsoft Graph Security entities, such as alerts. Here are some scenarios that are supported by the Microsoft Graph Security connector:
+[!INCLUDE [logic-apps-sku-consumption](~/reusable-content/ce-skilling/azure/includes/logic-apps-sku-consumption.md)]
+
+With [Azure Logic Apps](../logic-apps/logic-apps-overview.md) and the [Microsoft Graph Security](/graph/security-concept-overview) connector, you can improve how your app detects, protects, and responds to threats by creating automated workflows for integrating Microsoft security products, services, and partners. For example, you can create [Microsoft Defender for Cloud playbooks](../security-center/workflow-automation.yml) that monitor and manage Microsoft Graph Security entities, such as alerts. Here are some scenarios that are supported by the Microsoft Graph Security connector:
 
 * Get alerts based on queries or by alert ID. For example, you can get a list that includes high severity alerts.
 
 * Update alerts. For example, you can update alert assignments, add comments to alerts, or tag alerts.
 
-* Monitor when alerts are created or changed by creating [alert subscriptions (webhooks)](/graph/api/resources/webhooks).
+* Monitor when alerts are created or changed by creating [alert subscriptions (webhooks)](/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0).
 
 * Manage your alert subscriptions. For example, you can get active subscriptions, extend the expiration time for a subscription, or delete subscriptions.
 
@@ -29,9 +30,9 @@ To learn more about Microsoft Graph Security, see the [Microsoft Graph Security 
 
 ## Prerequisites
 
-* An Azure account and subscription. If you don't have an Azure subscription, [sign up for a free Azure account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+* An Azure account and subscription. If you don't have an Azure subscription, [sign up for a free Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 
-* To use the Microsoft Graph Security connector, you must have *explicitly given* Azure Active Directory (AD) tenant administrator consent, which is part of the [Microsoft Graph Security Authentication requirements](/graph/security-authorization). This consent requires the Microsoft Graph Security connector's application ID and name, which you can also find in the [Azure portal](https://portal.azure.com):
+* To use the Microsoft Graph Security connector, you must have *explicitly given* Microsoft Entra tenant administrator consent, which is part of the [Microsoft Graph Security Authentication requirements](/graph/security-authorization). This consent requires the Microsoft Graph Security connector's application ID and name, which you can also find in the [Azure portal](https://portal.azure.com):
 
   | Property | Value |
   |----------|-------|
@@ -39,11 +40,11 @@ To learn more about Microsoft Graph Security, see the [Microsoft Graph Security 
   | **Application ID** | `c4829704-0edc-4c3d-a347-7c4a67586f3c` |
   |||
 
-  To grant consent for the connector, your Azure AD tenant administrator can follow either these steps:
+  To grant consent for the connector, your Microsoft Entra tenant administrator can follow either these steps:
 
-  * [Grant tenant administrator consent for Azure AD applications](../active-directory/develop/v2-permissions-and-consent.md).
+  * [Grant tenant administrator consent for Microsoft Entra applications](../active-directory/develop/v2-permissions-and-consent.md).
 
-  * During your logic app's first run, your app can request consent from your Azure AD tenant administrator through the [application consent experience](../active-directory/develop/application-consent-experience.md).
+  * During your logic app's first run, your app can request consent from your Microsoft Entra tenant administrator through the [application consent experience](../active-directory/develop/application-consent-experience.md).
    
 * Basic knowledge about how to create logic apps
 
@@ -82,7 +83,7 @@ In Azure Logic Apps, every logic app must start with a [trigger](../logic-apps/l
 
 This example shows how you can start a logic app workflow when new alerts are sent to your app.
 
-1.	In the Azure portal or Visual Studio, create a blank logic app, which opens the Logic App Designer. This example uses the Azure portal.
+1.	In the Azure portal, create a blank logic app, which opens the Logic App Designer. This example uses the Azure portal.
 
 1.	On the designer, in the search box, enter "microsoft graph security" as your filter. From the triggers list, select this trigger: **On all new alerts**
 
@@ -122,7 +123,7 @@ For more information about the queries you can use with this connector, see the 
 
 ### Manage alert subscriptions
 
-Microsoft Graph supports [*subscriptions*](/graph/api/resources/subscription), or [*webhooks*](/graph/api/resources/webhooks). To get, update, or delete subscriptions, provide the [ODATA query parameters supported by Microsoft Graph](/graph/query-parameters) to the Microsoft Graph entity construct and include 
+Microsoft Graph supports [*subscriptions*](/graph/api/resources/subscription), or [*webhooks*](/graph/api/resources/change-notifications-api-overview?view=graph-rest-1.0). To get, update, or delete subscriptions, provide the [ODATA query parameters supported by Microsoft Graph](/graph/query-parameters) to the Microsoft Graph entity construct and include 
 `security/alerts` followed by the ODATA query. *Don't include* the base URL, for example, `https://graph.microsoft.com/v1.0`. Instead, 
 use the format in this example:
 

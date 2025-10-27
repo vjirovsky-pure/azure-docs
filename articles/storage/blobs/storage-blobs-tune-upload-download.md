@@ -1,17 +1,19 @@
 ---
-title: Performance tuning for uploads and downloads with Azure Storage client library for .NET - Azure Storage
+title: Performance tuning for uploads and downloads with Azure Storage client library for .NET
+titleSuffix: Azure Storage
 description: Learn how to tune your uploads and downloads for better performance with Azure Storage client library for .NET. 
 services: storage
-author: pauljewellmsft
-ms.author: pauljewell
+author: stevenmatthew
+ms.author: shaas
 ms.service: azure-blob-storage
 ms.topic: how-to
-ms.date: 12/09/2022
+ms.date: 08/05/2024
 ms.devlang: csharp
 ms.custom: devx-track-csharp, devguide-csharp, devx-track-dotnet
+# Customer intent: As a .NET developer, I want to optimize data transfer performance using the Azure Storage client library, so that I can enhance speed, reduce memory usage, and ensure reliable uploads and downloads for my applications.
 ---
 
-# Performance tuning for uploads and downloads with the Azure Storage client library for .NET
+# Performance tuning for uploads and downloads with .NET
 
 When an application transfers data using the Azure Storage client library for .NET, there are several factors that can affect speed, memory usage, and even the success or failure of the request. To maximize performance and reliability for data transfers, it's important to be proactive in configuring client library transfer options based on the environment your app runs in.
 
@@ -116,5 +118,7 @@ During a download, the Storage client libraries make one download range request 
 
 ## Next steps
 
+- This article is part of the Blob Storage developer guide for .NET. See the full list of developer guide articles at [Build your app](storage-blob-dotnet-get-started.md#build-your-app).
 - To understand more about factors that can influence performance for Azure Storage operations, see [Latency in Blob storage](storage-blobs-latency.md).
 - To see a list of design considerations to optimize performance for apps using Blob storage, see [Performance and scalability checklist for Blob storage](storage-performance-checklist.md).
+

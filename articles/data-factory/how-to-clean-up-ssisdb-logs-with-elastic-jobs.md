@@ -1,12 +1,14 @@
 ---
 title: How to clean up SSISDB logs automatically 
 description: This article describes how to clean up SSIS project deployment and package execution logs stored in SSISDB by invoking the relevant SSISDB stored procedure automatically via Azure Data Factory, Azure SQL Managed Instance Agent, or Elastic Database Jobs.
-ms.service: data-factory
 ms.subservice: integration-services
 ms.topic: conceptual
-ms.date: 07/17/2023
+ms.date: 05/15/2024
 author: chugugrace
 ms.author: chugu
+ms.custom:
+  - sfi-image-nochange
+  - sfi-ropc-nochange
 ---
 
 # How to clean up SSISDB logs automatically
@@ -386,7 +388,7 @@ SELECT * FROM jobs.job_executions WHERE is_active = 1
 ORDER BY start_time DESC
 ```
 
-## Next steps
+## Related content
 
 To manage and monitor your Azure-SSIS IR, see the following articles.
 

@@ -7,7 +7,7 @@ author: divyaswarnkar
 ms.author: divswa
 ms.reviewer: estfan, azla
 ms.topic: how-to
-ms.date: 08/20/2022
+ms.date: 01/04/2024
 ---
 
 # Validate XML in workflows with Azure Logic Apps
@@ -20,7 +20,7 @@ If you're new to logic apps, review [What is Azure Logic Apps](logic-apps-overvi
 
 ## Prerequisites
 
-* An Azure account and subscription. If you don't have a subscription yet, [sign up for a free Azure account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+* An Azure account and subscription. If you don't have a subscription yet, [sign up for a free Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn).
 
 * The logic app workflow, blank or existing, where you want to use the **XML Validation** action.
 
@@ -56,7 +56,7 @@ If you're new to logic apps, review [What is Azure Logic Apps](logic-apps-overvi
 
 1. Under the step in your workflow where you want to add the **XML Validation** action, choose one of the following steps:
 
-   For a Consumption or ISE plan-based logic app, choose a step:
+   For a Consumption logic app, choose one of the following steps:
 
    * To add the **XML Validation** action at the end of your workflow, select **New step**.
 
@@ -74,7 +74,7 @@ If you're new to logic apps, review [What is Azure Logic Apps](logic-apps-overvi
 
    The dynamic content list shows property tokens that represent the outputs from the previous steps in the workflow. If the list doesn't show an expected property, check the trigger or action heading in the list and whether you can select **See more**.
 
-   For a Consumption or ISE plan-based logic app, the designer looks like this example:
+   For a Consumption logic app, the designer looks like this example:
 
    ![Screenshot showing multi-tenant designer with opened dynamic content list, cursor in "Content" box, and opened dynamic content list.](./media/logic-apps-enterprise-integration-xml-validation/open-dynamic-content-list-multi-tenant.png)
 

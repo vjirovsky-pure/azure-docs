@@ -1,13 +1,14 @@
 ---
 title: Manage network adapters for on-premises disaster recovery with Azure Site Recovery
 description: Describes how to manage network interfaces for on-premises disaster recovery to Azure with Azure Site Recovery
-author: ankitaduttaMSFT
-manager: rochakm
-ms.service: site-recovery
-ms.topic: conceptual
-ms.date: 4/9/2019
-ms.author: ankitadutta
+author: Jeronika-MS
+ms.service: azure-site-recovery
+ms.topic: how-to
+ms.date: 05/27/2024
+ms.author: v-gajeronika
+ms.custom: sfi-image-nochange
 
+# Customer intent: As an IT administrator, I want to manage network interfaces for virtual machines during on-premises disaster recovery, so that I can ensure proper network configurations and prevent redundant interfaces when migrating to Azure.
 ---
 # Manage VM network interfaces for on-premises disaster recovery to Azure
 
@@ -29,7 +30,7 @@ For VMware and physical machines, and for Hyper-V (without System Center Virtual
 
 3. Under **Network properties**, choose a virtual network from the list of available network interfaces.
 
-	![Network settings](./media/site-recovery-manage-network-interfaces-on-premises-to-azure/compute-and-network.png)
+	![Screenshot of network settings.](./media/site-recovery-manage-network-interfaces-on-premises-to-azure/compute-and-networks.png)
 
 Modifying the target network affects all network interfaces for that specific virtual machine.
 
@@ -55,7 +56,7 @@ You can modify the subnet and IP address for a replicated item's network interfa
 
 3. Enter the desired IP address (as required).
 
-	![Network interface settings](./media/site-recovery-manage-network-interfaces-on-premises-to-azure/network-interface-settings.png)
+	![Screenshot of network interface settings.](./media/site-recovery-manage-network-interfaces-on-premises-to-azure/network-interface-setting.png)
 
 4. Select **OK** to finish editing and return to the **Compute and Network** pane.
 
@@ -64,4 +65,5 @@ You can modify the subnet and IP address for a replicated item's network interfa
 6. Select **Save** to save all changes.
 
 ## Next steps
-  [Learn more](../virtual-network/virtual-network-network-interface-vm.md) about network interfaces for Azure virtual machines.
+
+[Learn more](../virtual-network/virtual-network-network-interface-vm.yml) about network interfaces for Azure virtual machines.

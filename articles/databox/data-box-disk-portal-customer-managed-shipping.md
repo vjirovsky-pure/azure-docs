@@ -2,13 +2,16 @@
 title: Microsoft Azure Data Box Disk self-managed Shipping | Microsoft Docs in data 
 description: Describes self-managed shipping workflow for Azure Data Box Disk devices
 services: databox
-author: alkohli
+author: stevenmatthew
 
-ms.service: databox
-ms.subservice: disk
+ms.service: azure-data-box-disk
 ms.topic: how-to
 ms.date: 06/07/2022
-ms.author: alkohli
+ms.author: shaas
+ms.custom:
+  - references_regions
+  - sfi-image-nochange
+# Customer intent: "As a data administrator using Azure Data Box Disk, I want to manage self-shipping for device pickup and drop-off, so that I can efficiently handle data transfers to and from the Azure datacenter while complying with required protocols."
 ---
 
 # Use self-managed shipping for Azure Data Box Disk in the Azure portal
@@ -20,6 +23,7 @@ This article describes self-managed shipping tasks to order, pick-up, and drop-o
 Self-managed shipping is available as an option when you [Order Azure Data Box Disk](data-box-disk-deploy-ordered.md). Self-managed shipping is only available in the following regions:
 
 * US Government
+* United States
 * United Kingdom
 * Western Europe
 * Australia
@@ -27,7 +31,7 @@ Self-managed shipping is available as an option when you [Order Azure Data Box D
 * Singapore
 * South Korea
 * South Africa
-* India (Preview)
+* India
 * Brazil
 
 ## Use self-managed shipping

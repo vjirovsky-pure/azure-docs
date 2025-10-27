@@ -3,12 +3,11 @@ title: Azure DDoS Rapid Response
 description: Learn how to engage DDoS experts during an active attack for specialized support.
 services: ddos-protection
 author: AbdullahBell
-ms.service: ddos-protection
+ms.service: azure-ddos-protection
 ms.topic: how-to
-ms.custom: ignite-2022
-ms.workload: infrastructure-services
-ms.date: 10/12/2022
+ms.date: 03/17/2025
 ms.author: abell
+# Customer intent: "As a network administrator, I want to engage the DDoS Rapid Response team during an active attack, so that I can receive specialized support to mitigate the attack and ensure the availability of my protected resources."
 ---
 # Azure DDoS Rapid Response
 
@@ -16,7 +15,8 @@ During an active attack, Azure DDoS Network Protection customers have access to 
 
 ## Prerequisites
 
-- Before you can complete the steps in this tutorial, you must first create a [Azure DDoS Protection plan](manage-ddos-protection.md).
+- If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/pricing/purchase-options/azure-account?cid=msft_learn) before you begin.
+- Before you can complete the steps in this guide, you must first create a [Azure DDoS Protection plan](manage-ddos-protection.md).
 
 ## When to engage DRR
 
@@ -33,11 +33,11 @@ You should only engage DRR if:
 2. Choose **Service** as **DDOS Protection**.
 3. Choose a resource in the resource drop-down menu. _You must select a DDoS Plan that’s linked to the virtual network being protected by DDoS Protection to engage DRR._
 
-    ![Choose Resource](./media/ddos-rapid-response/choose-resource.png)
+    :::image type="content" source="./media/ddos-rapid-response/choose-resource.png" alt-text="Screenshot of creating a DDoS Support Ticket in Azure.":::
 
 4. On the next **Problem** page, select the **severity** as A -Critical Impact and **Problem Type** as ‘Under attack.’
 
-    ![PSeverity and Problem Type](./media/ddos-rapid-response/severity-and-problem-type.png)
+    :::image type="content" source="./media/ddos-rapid-response/severity-and-problem-type.png" alt-text="Screenshot of choosing Severity and Problem Type.":::
 
 5. Complete additional details and submit the support request.
 
